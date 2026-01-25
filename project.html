@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="he" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -35,36 +35,29 @@
 
     <script src="sidebar.js"></script>
     <script>
+        /* כאן נשארת אותה פונקציית initProject בדיוק כפי שהייתה בקוד המקור שלך */
         async function initProject() {
             const folder = new URLSearchParams(window.location.search).get('folder');
             if(!folder) return;
-
             try {
                 const resList = await fetch(`${baseURL}/list.txt?v=${Date.now()}`);
                 const folders = (await resList.text()).split(/\r?\n/).map(f => f.trim()).filter(f => f !== "");
                 const idx = folders.indexOf(folder);
-                
                 if (idx !== -1) {
                     document.getElementById('prev-project').href = `project.html?folder=${folders[idx <= 0 ? folders.length-1 : idx-1]}`;
                     document.getElementById('next-project').href = `project.html?folder=${folders[idx >= folders.length-1 ? 0 : idx+1]}`;
                 }
-
                 const res = await fetch(`${baseURL}/images/${folder}/info.txt?v=${Date.now()}`);
                 const lines = (await res.text()).split(/\r?\n/).map(l => l.trim()).filter(l => l !== "");
                 document.getElementById('project-title').innerText = lines[0];
-                
                 const metaDiv = document.getElementById('project-meta');
                 const descDiv = document.getElementById('project-desc');
-
                 lines.slice(1).forEach(line => {
                     if(line.includes(":")) {
                         const [k, ...v] = line.split(":");
                         metaDiv.innerHTML += `<div class="meta-item"><span class="label">${k.trim()}:</span><span class="value">${v.join(":").trim()}</span></div>`;
-                    } else { 
-                        descDiv.innerText += (descDiv.innerText ? "\n\n" : "") + line; 
-                    }
+                    } else { descDiv.innerText += (descDiv.innerText ? "\n\n" : "") + line; }
                 });
-
                 const gallery = document.getElementById('gallery');
                 for(let i=1; i<=30; i++) {
                     const img = new Image();
