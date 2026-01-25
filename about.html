@@ -6,7 +6,6 @@
     <title>About | Ariel Armoni</title>
     <link rel="stylesheet" href="style.css">
     <style>
-        /* מבנה דף אודות */
         .about-content { 
             max-width: 1200px; 
             margin: 0 auto; 
@@ -17,50 +16,13 @@
             align-items: start; 
             direction: ltr;
         }
-
-        .about-image img { 
-            width: 90%; 
-            height: auto; 
-            display: block;
-        }
-
-        .about-text { 
-            text-align: left; 
-            direction: ltr;
-        }
-
-        .about-text p { 
-            font-size: 17px; 
-            line-height: 1.65; 
-            margin-bottom: 25px; 
-            color: var(--main);
-        }
-
+        .about-image img { width: 90%; height: auto; display: block; }
+        .about-text { text-align: left; direction: ltr; }
+        .about-text p { font-size: 17px; line-height: 1.65; margin-bottom: 25px; color: var(--main); }
         .clients-section { margin-top: 50px; }
-        .clients-section h3 { 
-            font-size: 11px; 
-            text-transform: uppercase; 
-            letter-spacing: 2px; 
-            color: var(--muted); 
-            margin-bottom: 20px; 
-        }
-
-        .clients-list { 
-            list-style: none; 
-            padding: 0; 
-            display: flex;
-            flex-direction: column; 
-            gap: 12px; 
-        }
-
-        .clients-list li { 
-            font-size: 14px; 
-            color: var(--main); 
-            border-bottom: 1px solid #f0f0f0; 
-            padding-bottom: 8px; 
-            max-width: 300px; 
-        }
-
+        .clients-section h3 { font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: var(--muted); margin-bottom: 20px; }
+        .clients-list { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 12px; }
+        .clients-list li { font-size: 14px; color: var(--main); border-bottom: 1px solid #f0f0f0; padding-bottom: 8px; max-width: 300px; }
         @media (max-width: 900px) {
             .about-content { grid-template-columns: 1fr; gap: 40px; }
             .about-image { order: -1; }
@@ -72,9 +34,11 @@
    <div id="site-wrapper">
         <header>
             <div class="nav-wrapper">
-                <button class="menu-toggle" id="menu-btn">
-                    <span></span><span></span><span></span>
-                </button>
+                <div class="main-nav-links">
+                    <span class="nav-label" id="projects-trigger">Projects</span>
+                    <a href="about.html" class="nav-label">About</a>
+                    <a href="contact.html" class="nav-label">Contact</a>
+                </div>
             </div>
             <a href="index.html" class="logo">ARIEL ARMONI</a>
             <div class="sub-logo" style="font-size: 13px; letter-spacing: 2px; color: #888; text-transform: uppercase; margin-top: 8px;">Exhibition Architecture</div>
@@ -83,9 +47,7 @@
         <main class="about-content">
             <div class="about-text">
                 <p>I am Ariel Armoni, an architect and the founder of an exhibition design studio. A graduate of the Bezalel Academy of Arts and Design in Jerusalem, I lead a practice that specialises in museum exhibitions, covering the entire process from initial concept to final execution.</p>
-                
                 <p>The studio has extensive experience across a wide range of projects—from contemporary art and archaeology to interactive exhibitions for children and families. Beyond spatial design, we collaborate closely with artists, providing creative direction and technical guidance to help develop and realise their works.</p>
-                
                 <p>We utilise advanced digital tools and 3D visualisations to define the atmosphere and flow of every exhibition long before it is built, ensuring a seamless integration of content and space.</p>
 
                 <div class="clients-section">
@@ -102,13 +64,11 @@
                     </ul>
                 </div>
             </div>
-
             <div class="about-image">
                 <img src="images/profile.jpg" alt="Ariel Armoni">
             </div>
         </main>
     </div>
-
     <script src="sidebar.js"></script>
 </body>
 </html>
