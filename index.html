@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="he" dir="rtl">
+<html lang="en" dir="ltr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,12 +9,19 @@
 <body>
     <div id="site-wrapper">
         <header>
-            <div class="nav-wrapper"><button class="menu-toggle" id="menu-btn"><span></span><span></span><span></span></button></div>
+            <div class="nav-wrapper">
+                <div class="main-nav-links">
+                    <span class="nav-label" id="projects-trigger">Projects</span>
+                    <a href="about.html" class="nav-label">About</a>
+                    <a href="contact.html" class="nav-label">Contact</a>
+                </div>
+            </div>
             <a href="index.html" class="logo">ARIEL ARMONI</a>
             <div class="sub-logo" style="font-size: 13px; letter-spacing: 2px; color: #888; text-transform: uppercase; margin-top: 8px;">Exhibition Architecture</div>
         </header>
         <main class="portfolio-grid" id="portfolio-grid"></main>
     </div>
+
     <script src="sidebar.js"></script>
     <script>
         async function loadGrid() {
@@ -24,7 +31,11 @@
             for (const f of folders) {
                 const iR = await fetch(`${baseURL}/images/${f}/info.txt`);
                 const title = iR.ok ? (await iR.text()).split('\n')[0].trim() : f;
-                grid.innerHTML += `<a href="project.html?folder=${f}" class="project-card"><div class="img-container"><img src="${baseURL}/images/${f}/cover.jpg"></div><div class="project-info"><div class="project-title">${title}</div></div></a>`;
+                grid.innerHTML += `
+                <a href="project.html?folder=${f}" class="project-card">
+                    <div class="img-container"><img src="${baseURL}/images/${f}/cover.jpg"></div>
+                    <div class="project-info"><div class="project-title">${title}</div></div>
+                </a>`;
             }
         }
         loadGrid();
