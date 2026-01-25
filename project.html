@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="he" dir="rtl">
+<html lang="en" dir="ltr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,9 +13,11 @@
     <div id="site-wrapper">
         <header>
             <div class="nav-wrapper">
-                <button class="menu-toggle" id="menu-btn">
-                    <span></span><span></span><span></span>
-                </button>
+                <div class="main-nav-links">
+                    <span class="nav-label" id="projects-trigger">Projects</span>
+                    <a href="about.html" class="nav-label">About</a>
+                    <a href="contact.html" class="nav-label">Contact</a>
+                </div>
             </div>
             <a href="index.html" class="logo">ARIEL ARMONI</a>
             <div class="sub-logo" style="font-size: 13px; letter-spacing: 2px; color: #888; text-transform: uppercase; margin-top: 8px;">Exhibition Architecture</div>
@@ -27,7 +29,6 @@
                 <div id="project-meta" class="project-meta"></div>
                 <div id="project-desc" class="project-description"></div>
             </div>
-
             <div id="gallery" class="gallery"></div>
         </main>
     </div>
@@ -39,7 +40,6 @@
             if(!folder) return;
 
             try {
-                // ניווט בין פרויקטים
                 const resList = await fetch(`${baseURL}/list.txt?v=${Date.now()}`);
                 const folders = (await resList.text()).split(/\r?\n/).map(f => f.trim()).filter(f => f !== "");
                 const idx = folders.indexOf(folder);
@@ -49,10 +49,8 @@
                     document.getElementById('next-project').href = `project.html?folder=${folders[idx >= folders.length-1 ? 0 : idx+1]}`;
                 }
 
-                // טעינת תוכן הפרויקט (info.txt)
                 const res = await fetch(`${baseURL}/images/${folder}/info.txt?v=${Date.now()}`);
                 const lines = (await res.text()).split(/\r?\n/).map(l => l.trim()).filter(l => l !== "");
-                
                 document.getElementById('project-title').innerText = lines[0];
                 
                 const metaDiv = document.getElementById('project-meta');
@@ -61,27 +59,19 @@
                 lines.slice(1).forEach(line => {
                     if(line.includes(":")) {
                         const [k, ...v] = line.split(":");
-                        metaDiv.innerHTML += `
-                            <div class="meta-item">
-                                <span class="label">${k.trim()}:</span>
-                                <span class="value">${v.join(":").trim()}</span>
-                            </div>`;
+                        metaDiv.innerHTML += `<div class="meta-item"><span class="label">${k.trim()}:</span><span class="value">${v.join(":").trim()}</span></div>`;
                     } else { 
                         descDiv.innerText += (descDiv.innerText ? "\n\n" : "") + line; 
                     }
                 });
 
-                // טעינת תמונות הגלריה
                 const gallery = document.getElementById('gallery');
                 for(let i=1; i<=30; i++) {
                     const img = new Image();
                     img.src = `${baseURL}/images/${folder}/${i.toString().padStart(2, '0')}.jpg`;
-                    img.onload = () => { 
-                        img.style.display="block"; 
-                        gallery.appendChild(img); 
-                    };
+                    img.onload = () => { gallery.appendChild(img); };
                 }
-            } catch(e) { console.error("Error loading project:", e); }
+            } catch(e) { console.error(e); }
         }
         initProject();
     </script>
