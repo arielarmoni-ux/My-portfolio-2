@@ -1,4 +1,4 @@
-const baseURL = "https://arielarmoni-ux.github.io/my-portfolio";
+const baseURL = "https://arielarmoni-ux.github.io/my-portfolio-2";
 
 async function injectSidebar() {
     if (document.getElementById('side-nav')) return;
