@@ -1,0 +1,248 @@
+:root { 
+    --bg: #fff; 
+    --main: #000; 
+    --muted: #888; 
+    --nav-width: 320px; 
+    --grid-gap: 35px; /* מרווח שווה ומאוזן */
+}
+
+* { box-sizing: border-box; }
+
+html, body { 
+    margin: 0; 
+    padding: 0; 
+    font-family: 'Inter', sans-serif; 
+    background: var(--bg); 
+    overflow-x: hidden; 
+    -webkit-font-smoothing: antialiased; 
+}
+
+/* --- מבנה כללי ותנועת סיידבר --- */
+#site-wrapper { 
+    position: relative; 
+    width: 100%; 
+    margin: 0; 
+    transition: all 0.9s cubic-bezier(0.23, 1, 0.32, 1); 
+    background: var(--bg); 
+    min-height: 100vh; 
+    z-index: 1000; 
+}
+
+body.nav-open #site-wrapper { 
+    margin-left: var(--nav-width); 
+    width: calc(100% - var(--nav-width)); 
+}
+
+#side-nav { 
+    position: fixed; 
+    top: 0; 
+    left: calc(-1 * var(--nav-width)); 
+    width: var(--nav-width); 
+    height: 100vh; 
+    background: var(--bg); 
+    z-index: 3000; 
+    padding: 40px 30px; 
+    overflow-y: auto; 
+    transition: left 0.9s cubic-bezier(0.23, 1, 0.32, 1); 
+    text-align: left; 
+    border-right: 1px solid #f0f0f0; 
+    direction: ltr; 
+}
+
+body.nav-open #side-nav { left: 0; }
+
+/* --- טיפוגרפיה סיידבר עם הובר --- */
+.nav-links a { 
+    font-size: 14px; 
+    text-decoration: none; 
+    color: var(--main); 
+    text-transform: uppercase; 
+    letter-spacing: 1.5px; 
+    font-weight: 600; 
+    display: block; 
+    margin-bottom: 12px; 
+    transition: 0.3s;
+}
+
+.nav-links a:hover { 
+    color: var(--muted); 
+    transform: translateX(4px); 
+}
+
+.project-index-title { 
+    font-size: 11px; 
+    text-transform: uppercase; 
+    color: var(--muted); 
+    margin-bottom: 15px; 
+    border-top: 1px solid #eee; 
+    padding-top: 20px; 
+    letter-spacing: 2px; 
+}
+
+.project-list-nav a { 
+    font-size: 15px; 
+    text-decoration: none; 
+    color: var(--main); 
+    display: block; 
+    margin-bottom: 10px; 
+    font-weight: 400; 
+    line-height: 1.2; 
+    transition: 0.3s; 
+}
+
+.project-list-nav a:hover { 
+    color: var(--muted);
+    transform: translateX(8px); 
+}
+
+/* --- Header & Logo --- */
+header { 
+    position: relative; 
+    min-height: 100px; 
+    padding: 40px 5% 20px; 
+    display: flex; 
+    flex-direction: column; 
+    justify-content: center; 
+    align-items: center; 
+    border-bottom: 1px solid #f0f0f0; 
+}
+
+.logo { 
+    font-size: 29px; 
+    letter-spacing: 5px; 
+    text-transform: uppercase; 
+    text-decoration: none; 
+    color: #000; 
+}
+
+.nav-wrapper { 
+    position: absolute; 
+    left: 5%; 
+    top: 52px; 
+    z-index: 4000; 
+}
+
+/* --- לוגיקת האיקס (X) --- */
+.menu-toggle { 
+    display: flex; 
+    flex-direction: column; 
+    justify-content: space-between; 
+    width: 26px; 
+    height: 14px; 
+    cursor: pointer; 
+    border: none; 
+    background: none; 
+    padding: 0; 
+}
+
+.menu-toggle span { 
+    display: block; 
+    width: 100%; 
+    height: 1px; 
+    background: var(--main); 
+    transition: 0.3s cubic-bezier(0.23, 1, 0.32, 1); 
+}
+
+body.nav-open .menu-toggle span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+body.nav-open .menu-toggle span:nth-child(2) { opacity: 0; }
+body.nav-open .menu-toggle span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+/* --- דף הבית: גריד ריבועי ותוכן לשמאל --- */
+.portfolio-grid { 
+    display: grid; 
+    grid-template-columns: repeat(5, 1fr); 
+    gap: var(--grid-gap); 
+    padding: 60px 5% 100px; 
+    max-width: 1800px; 
+    margin: 0 auto; 
+}
+
+.project-card { 
+    display: flex; 
+    flex-direction: column; 
+    text-decoration: none; 
+    transition: transform 0.7s cubic-bezier(0.23, 1, 0.32, 1); 
+    position: relative; 
+    z-index: 1; 
+}
+
+.project-card:hover { 
+    transform: scale(1.06); 
+    z-index: 10; 
+}
+
+.img-container { 
+    width: 100%; 
+    aspect-ratio: 4/3; 
+    overflow: hidden; 
+    background: #f7f7f7; 
+}
+
+.img-container img { 
+    width: 100%; 
+    height: 100%; 
+    object-fit: cover; 
+    display: block; 
+}
+
+.project-info { 
+    padding: 12px 0; 
+    opacity: 0; 
+    transition: opacity 0.4s ease; 
+    text-align: left; /* יישור לשמאל */
+    direction: ltr;    /* כיוון טקסט אנגלי/בינלאומי */
+}
+
+.project-card:hover .project-info { opacity: 1; }
+
+.project-title { 
+    font-size: 11px; 
+    letter-spacing: 1.2px; 
+    text-transform: uppercase; 
+    color: var(--main); 
+    font-weight: 500; 
+    line-height: 1.2; 
+}
+
+/* --- דף פרויקט --- */
+.project-meta { max-width: 1200px; margin: 30px auto 20px; padding: 0 5%; display: flex; flex-direction: column; gap: 5px; direction: ltr; text-align: left; }
+.meta-item { line-height: 1.3; }
+.meta-item .label { font-weight: 400; color: var(--muted); margin-right: 8px; }
+.meta-item .value { font-weight: 600; color: var(--main); }
+.project-description { max-width: 1200px; margin: 0 auto 50px; padding: 0 5%; font-size: 18px; line-height: 1.55; text-align: left; direction: ltr; white-space: pre-wrap; }
+.gallery { max-width: 1200px; margin: 0 auto; padding: 0 5%; }
+.gallery img { width: 100%; height: auto; margin-bottom: 40px; display: block; }
+
+.nav-arrow { position: fixed; top: 50%; transform: translateY(-50%); z-index: 2500; text-decoration: none; color: var(--main); font-size: 30px; opacity: 0.2; padding: 20px; }
+
+/* --- התאמות מובייל --- */
+@media (max-width: 768px) {
+    header { padding-top: 75px; min-height: 120px; }
+    .nav-wrapper { position: fixed; left: 20px; top: 22px; z-index: 5000; }
+    .project-description { line-height: 1.5; font-size: 16px; text-align: center; }
+    .project-meta { align-items: center; text-align: center; margin-top: 20px; gap: 4px; }
+    .portfolio-grid { 
+        grid-template-columns: repeat(2, 1fr); 
+        gap: 20px; 
+    }
+    .nav-arrow { display: none; }
+    body.nav-open #site-wrapper { transform: translateX(var(--nav-width)); margin-left: 0; width: 100%; }
+}
+/* הובר להמבורגר ולאיקס */
+.menu-toggle:hover span {
+    background: var(--muted); /* משנה את צבע הפסים לאפור בזמן הובר */
+     color: var(--muted); /* שינוי צבע קל לאפור */
+    transform: translateY(-50%) scale(1.1);
+}
+
+/* הובר לחצי הניווט בדף פרויקט */
+.nav-arrow:hover {
+    opacity: 1; /* הופך לברור לגמרי (100%) בזמן הובר */
+    color: var(--muted); /* שינוי צבע קל לאפור */
+    transform: translateY(-50%) scale(1.1); /* הגדלה קלה של החץ */
+}
+
+/* תנועה חלקה לשינויים */
+.menu-toggle span, .nav-arrow {
+    transition: all 0.3s ease;
+}

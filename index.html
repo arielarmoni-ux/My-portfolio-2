@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ariel Armoni | Portfolio</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="site-wrapper">
+        <header>
+            <div class="nav-wrapper"><button class="menu-toggle" id="menu-btn"><span></span><span></span><span></span></button></div>
+            <a href="index.html" class="logo">ARIEL ARMONI</a>
+            <div class="sub-logo" style="font-size: 13px; letter-spacing: 2px; color: #888; text-transform: uppercase; margin-top: 8px;">Exhibition Architecture</div>
+        </header>
+        <main class="portfolio-grid" id="portfolio-grid"></main>
+    </div>
+    <script src="sidebar.js"></script>
+    <script>
+        async function loadGrid() {
+            const grid = document.getElementById('portfolio-grid');
+            const res = await fetch(`${baseURL}/list.txt?v=${Date.now()}`);
+            const folders = (await res.text()).split(/\r?\n/).filter(f => f.trim() !== "");
+            for (const f of folders) {
+                const iR = await fetch(`${baseURL}/images/${f}/info.txt`);
+                const title = iR.ok ? (await iR.text()).split('\n')[0].trim() : f;
+                grid.innerHTML += `<a href="project.html?folder=${f}" class="project-card"><div class="img-container"><img src="${baseURL}/images/${f}/cover.jpg"></div><div class="project-info"><div class="project-title">${title}</div></div></a>`;
+            }
+        }
+        loadGrid();
+    </script>
+</body>
+</html>
