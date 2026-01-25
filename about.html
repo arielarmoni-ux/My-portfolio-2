@@ -23,6 +23,7 @@
         .clients-section h3 { font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: var(--muted); margin-bottom: 20px; }
         .clients-list { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 12px; }
         .clients-list li { font-size: 14px; color: var(--main); border-bottom: 1px solid #f0f0f0; padding-bottom: 8px; max-width: 300px; }
+        
         @media (max-width: 900px) {
             .about-content { grid-template-columns: 1fr; gap: 40px; }
             .about-image { order: -1; }
@@ -45,30 +46,56 @@
         </header>
 
         <main class="about-content">
-            <div class="about-text">
-                <p>I am Ariel Armoni, an architect and the founder of an exhibition design studio. A graduate of the Bezalel Academy of Arts and Design in Jerusalem, I lead a practice that specialises in museum exhibitions, covering the entire process from initial concept to final execution.</p>
-                <p>The studio has extensive experience across a wide range of projects—from contemporary art and archaeology to interactive exhibitions for children and families. Beyond spatial design, we collaborate closely with artists, providing creative direction and technical guidance to help develop and realise their works.</p>
-                <p>We utilise advanced digital tools and 3D visualisations to define the atmosphere and flow of every exhibition long before it is built, ensuring a seamless integration of content and space.</p>
-
-                <div class="clients-section">
-                    <h3>Selected Clients</h3>
-                    <ul class="clients-list">
-                        <li>The Israel Museum, Jerusalem</li>
-                        <li>Tel Aviv Museum of Art</li>
-                        <li>Haifa Museum of Art</li>
-                        <li>Herzliya Museum of Contemporary Art</li>
-                        <li>Hecht Museum Haifa</li>
-                        <li>Design Museum Holon</li>
-                        <li>Nahum Gutman Museum Tel Aviv</li>
-                        <li>Agam Museum Rishon Lezion</li>
-                    </ul>
+            <div class="about-text" id="about-text-container">
                 </div>
-            </div>
             <div class="about-image">
                 <img src="images/profile.jpg" alt="Ariel Armoni">
             </div>
         </main>
     </div>
+
     <script src="sidebar.js"></script>
+    <script>
+        async function loadAboutContent() {
+            const container = document.getElementById('about-text-container');
+            try {
+                // משיכת הקובץ מהשרת (עם v כדי למנוע Cache)
+                const res = await fetch(`about_content.txt?v=${Date.now()}`);
+                if (!res.ok) throw new Error("Could not load about_content.txt");
+                
+                const fullText = await res.text();
+                
+                // הפרדה בין פסקאות הטקסט לרשימת הלקוחות
+                const parts = fullText.split("CLIENTS:");
+                const paragraphs = parts[0].trim().split(/\r?\n\r?\n/);
+                const clients = parts[1] ? parts[1].trim().split(/\r?\n/) : [];
+
+                let htmlContent = "";
+
+                // יצירת פסקאות הטקסט
+                paragraphs.forEach(p => {
+                    if (p.trim()) htmlContent += `<p>${p.trim()}</p>`;
+                });
+
+                // יצירת רשימת הלקוחות (אם קיימת)
+                if (clients.length > 0) {
+                    htmlContent += `
+                        <div class="clients-section">
+                            <h3>Selected Clients</h3>
+                            <ul class="clients-list">
+                                ${clients.map(c => `<li>${c.trim()}</li>`).join('')}
+                            </ul>
+                        </div>`;
+                }
+
+                container.innerHTML = htmlContent;
+            } catch (e) {
+                console.error(e);
+                container.innerHTML = "<p>Error loading content. Please ensure about_content.txt exists.</p>";
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', loadAboutContent);
+    </script>
 </body>
 </html>
