@@ -1,12 +1,13 @@
-const baseURL = "https://arielarmoni-ux.github.io/My-portfolio-2";
+// הגדרה דינמית שמוודאת שהתמונות ייטענו מהדומיין שבו הגולש נמצא כרגע
+const baseURL = window.location.origin;
 
 async function injectSidebar() {
     if (document.getElementById('side-nav')) return;
 
     const navHTML = `
-    <nav id="side-nav">
-        <div class="project-index-title">Project Index</div>
-        <div id="side-project-list" class="project-list-nav"></div>
+    <nav id=\"side-nav\">
+        <div class=\"project-index-title\">Project Index</div>
+        <div id=\"side-project-list\" class=\"project-list-nav\"></div>
     </nav>`;
 
     document.body.insertAdjacentHTML('afterbegin', navHTML);
@@ -43,7 +44,7 @@ async function injectSidebar() {
                 sideList.innerHTML += `<a href="project.html?folder=${f}">${title}</a>`;
             }
         }
-    } catch (e) { console.error("Sidebar load failed", e); }
+    } catch (e) { console.error("Sidebar error:", e); }
 }
 
 injectSidebar();
