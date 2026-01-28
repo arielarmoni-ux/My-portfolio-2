@@ -1,59 +1,70 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ariel Armoni | Exhibition Architecture</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    <div id="site-wrapper">
-        <header>
-            <div class="nav-wrapper">
-                <div class="main-nav-links">
-                    <span class="nav-label" id="projects-trigger">Projects</span>
-                    <a href="about.html" class="nav-label">About</a>
-                    <a href="contact.html" class="nav-label">Contact</a>
-                </div>
+<div id="preloader">
+    <div class="loader-spinner"></div>
+</div>
+
+<div id="site-wrapper" style="opacity: 0; transition: opacity 0.8s ease;">
+    <header>
+        <div class="nav-wrapper">
+            <div class="main-nav-links">
+                <span class="nav-label" id="projects-trigger">Projects</span>
+                <a href="about.html" class="nav-label">About</a>
+                <a href="contact.html" class="nav-label">Contact</a>
             </div>
-            <a href="index.html" class="logo">ARIEL ARMONI</a>
-            <div class="sub-logo" style="font-size: 13px; letter-spacing: 2px; color: #888; text-transform: uppercase; margin-top: 8px;">Exhibition Architecture</div>
-        </header>
+        </div>
+        <a href="index.html" class="logo">ARIEL ARMONI</a>
+        <div class="sub-logo" style="font-size: 13px; letter-spacing: 2px; color: #888; text-transform: uppercase; margin-top: 8px;">Exhibition Architecture</div>
+    </header>
 
-        <main class="portfolio-grid" id="portfolio-grid"></main>
-    </div>
+    <main class="portfolio-grid" id="portfolio-grid"></main>
+</div>
 
-    <script src="sidebar.js"></script>
-    <script>
-        async function loadGrid() {
-            const grid = document.getElementById('portfolio-grid');
-            try {
-                const res = await fetch(`${baseURL}/list.txt?v=${Date.now()}`);
-                const folders = (await res.text()).split(/\r?\n/).filter(f => f.trim() !== "");
-                
-                for (const f of folders) {
-                    const iR = await fetch(`${baseURL}/images/${f}/info.txt`);
-                    const title = iR.ok ? (await iR.text()).split('\n')[0].trim() : f;
-                    
-                    const card = document.createElement('a');
-                    card.href = `project.html?folder=${f}`;
-                    card.className = 'project-card';
-                    card.innerHTML = `
-                        <div class="img-container">
-                            <img src="${baseURL}/images/${f}/cover.webp" 
-                                 alt="${title}" 
-                                 onload="this.classList.add('loaded')"
-                                 loading="lazy">
-                        </div>
-                        <div class="project-info">
-                            <div class="project-title">${title}</div>
-                        </div>
-                    `;
-                    grid.appendChild(card);
+<script src="sidebar.js"></script>
+<script>
+    async function loadGrid() {
+        const grid = document.getElementById('portfolio-grid');
+        const siteWrapper = document.getElementById('site-wrapper');
+        const preloader = document.getElementById('preloader');
+
+        try {
+            const res = await fetch(`${baseURL}/list.txt?v=${Date.now()}`);
+            const folders = (await res.text()).split(/\r?\n/).filter(f => f.trim() !== "");
+            
+            let imagesToLoad = folders.length;
+            let loadedCount = 0;
+
+            const checkAllLoaded = () => {
+                loadedCount++;
+                if (loadedCount >= imagesToLoad) {
+                    preloader.style.opacity = '0';
+                    setTimeout(() => {
+                        preloader.style.display = 'none';
+                        siteWrapper.style.opacity = '1';
+                    }, 600);
                 }
-            } catch (e) { console.error("Load error:", e); }
-        }
-        loadGrid();
-    </script>
-</body>
-</html>
+            };
+
+            for (const f of folders) {
+                const iR = await fetch(`${baseURL}/images/${f}/info.txt`);
+                const title = iR.ok ? (await iR.text()).split('\n')[0].trim() : f;
+                
+                const card = document.createElement('a');
+                card.href = `project.html?folder=${f}`;
+                card.className = 'project-card';
+                card.innerHTML = `
+                    <div class="img-container">
+                        <img src="${baseURL}/images/${f}/cover.webp" alt="${title}">
+                    </div>
+                    <div class="project-info"><div class="project-title">${title}</div></div>
+                `;
+                
+                const img = card.querySelector('img');
+                if (img.complete) checkAllLoaded();
+                else img.onload = checkAllLoaded;
+                img.onerror = checkAllLoaded;
+
+                grid.appendChild(card);
+            }
+        } catch (e) { console.error(e); }
+    }
+    loadGrid();
+</script>
