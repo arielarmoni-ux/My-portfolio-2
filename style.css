@@ -1,4 +1,4 @@
-/* style.css - Restoration of Original Project Design + Home Flicker Fix */
+/* style.css - Restoration of Original Layout & Menu + Flicker Fix */
 
 :root { 
     --bg: #fff; 
@@ -11,7 +11,8 @@
 * { box-sizing: border-box; }
 
 html, body { 
-    margin: 0; padding: 0; 
+    margin: 0; 
+    padding: 0; 
     font-family: 'Inter', sans-serif; 
     background: var(--bg); 
     overflow-x: hidden; 
@@ -25,6 +26,7 @@ html, body {
     transition: all 0.9s cubic-bezier(0.23, 1, 0.32, 1); 
     background: var(--bg); 
     min-height: 100vh; 
+    z-index: 1000; 
 }
 
 body.nav-open #site-wrapper { 
@@ -34,34 +36,102 @@ body.nav-open #site-wrapper {
 
 #side-nav { 
     position: fixed; 
-    top: 0; left: calc(-1 * var(--nav-width)); 
-    width: var(--nav-width); height: 100vh; 
-    background: var(--bg); z-index: 3000; 
-    padding: 40px 30px; overflow-y: auto; 
+    top: 0; 
+    left: calc(-1 * var(--nav-width)); 
+    width: var(--nav-width); 
+    height: 100vh; 
+    background: var(--bg); 
+    z-index: 3000; 
+    padding: 40px 30px; 
+    overflow-y: auto; 
     transition: left 0.9s cubic-bezier(0.23, 1, 0.32, 1); 
+    text-align: left; 
     border-right: 1px solid #f0f0f0; 
+    direction: ltr; 
 }
 
-body.nav-open #side-nav { left: 0; }
+body.nav-open #side-nav { 
+    left: 0; 
+}
+
+/* --- ניווט טקסטואלי עליון (שחזור מיקום מדויק) --- */
+.nav-wrapper { 
+    position: absolute; 
+    left: 5%; 
+    top: 52px; 
+    z-index: 4000; 
+}
+
+.main-nav-links { 
+    display: flex; 
+    align-items: center; 
+    gap: 30px; 
+    direction: ltr; 
+}
+
+.nav-label { 
+    font-size: 13px; 
+    text-transform: uppercase; 
+    letter-spacing: 1.5px; 
+    text-decoration: none; 
+    color: var(--main); 
+    font-weight: 500; 
+    transition: 0.3s; 
+    cursor: pointer; 
+}
+
+.nav-label:hover { 
+    color: var(--muted); 
+}
+
+/* --- הגדרות סיידבר --- */
+.project-index-title { 
+    font-size: 11px; 
+    text-transform: uppercase; 
+    color: var(--muted); 
+    margin-bottom: 15px; 
+    border-top: 1px solid #eee; 
+    padding-top: 20px; 
+    letter-spacing: 2px; 
+}
+
+.project-list-nav a { 
+    font-size: 15px; 
+    text-decoration: none; 
+    color: var(--main); 
+    display: block; 
+    margin-bottom: 10px; 
+    font-weight: 400; 
+    line-height: 1.2; 
+    transition: 0.3s; 
+}
+
+.project-list-nav a:hover { 
+    color: var(--muted); 
+    transform: translateX(8px); 
+}
 
 /* --- Header & Logo --- */
 header { 
     position: relative; 
-    min-height: 100px; padding: 40px 5% 20px; 
-    display: flex; flex-direction: column; 
-    justify-content: center; align-items: center; 
+    min-height: 100px; 
+    padding: 40px 5% 20px; 
+    display: flex; 
+    flex-direction: column; 
+    justify-content: center; 
+    align-items: center; 
     border-bottom: 1px solid #f0f0f0; 
 }
 
-.logo { font-size: 29px; letter-spacing: 5px; text-transform: uppercase; text-decoration: none; color: #000; }
+.logo { 
+    font-size: 29px; 
+    letter-spacing: 5px; 
+    text-transform: uppercase; 
+    text-decoration: none; 
+    color: #000; 
+}
 
-/* --- ניווט עליון --- */
-.nav-wrapper { position: absolute; left: 5%; top: 52px; z-index: 4000; }
-.main-nav-links { display: flex; gap: 30px; }
-.nav-label { font-size: 13px; text-transform: uppercase; letter-spacing: 1.5px; text-decoration: none; color: var(--main); cursor: pointer; transition: 0.3s; }
-.nav-label:hover { color: var(--muted); }
-
-/* --- דף הבית (גריד פרויקטים) - תיקון הבהוב בלבד --- */
+/* --- דף הבית (גריד פרויקטים) - תיקון הבהוב סופי --- */
 .portfolio-grid { 
     display: grid; 
     grid-template-columns: repeat(5, 1fr); 
@@ -75,15 +145,17 @@ header {
     display: flex; 
     flex-direction: column; 
     text-decoration: none; 
+    position: relative; 
+    z-index: 1; 
 }
 
 .img-container { 
     width: 100%; 
-    aspect-ratio: 4 / 3; 
+    aspect-ratio: 4/3; 
     overflow: hidden; 
     background: #f7f7f7; 
     position: relative;
-    contain: layout size; 
+    contain: layout size; /* מונע מהדפדפן "לרעוד" בזמן הטעינה */
 }
 
 .img-container img { 
@@ -91,12 +163,15 @@ header {
     height: 100%; 
     object-fit: cover; 
     display: block; 
-    opacity: 0; 
-    transition: opacity 0.6s ease-in-out; 
+    opacity: 0;
+    transition: opacity 0.6s ease-in-out;
 }
 
-.img-container img.loaded { opacity: 1; }
+.img-container img.loaded {
+    opacity: 1;
+}
 
+/* שכבת התכהות */
 .img-container::after {
     content: '';
     position: absolute;
@@ -105,12 +180,26 @@ header {
     opacity: 0;
     transition: opacity 0.4s ease;
 }
-.project-card:hover .img-container::after { opacity: 1; }
 
-.project-info { padding: 12px 0; opacity: 1; text-align: left; direction: ltr; }
-.project-title { font-size: 11px; letter-spacing: 1.2px; text-transform: uppercase; color: var(--main); }
+.project-card:hover .img-container::after { 
+    opacity: 1; 
+}
 
-/* --- החזרת עיצוב דפי פרויקט לקדמותו (Original Design) --- */
+.project-info { 
+    padding: 12px 0; 
+    text-align: left; 
+    direction: ltr; 
+}
+
+.project-title { 
+    font-size: 11px; 
+    letter-spacing: 1.2px; 
+    text-transform: uppercase; 
+    color: var(--main); 
+    font-weight: 500; 
+}
+
+/* --- דף פרויקט פנימי (שחזור עיצוב מקורי) --- */
 .project-meta { 
     max-width: 1200px; 
     margin: 30px auto 20px; 
@@ -137,17 +226,6 @@ header {
     white-space: pre-wrap; 
 }
 
-.project-description a {
-    color: inherit;
-    text-decoration: none;
-    transition: all 0.3s ease;
-    border-bottom: 1px solid transparent;
-}
-.project-description a:hover {
-    color: var(--muted);
-    border-bottom: 1px solid var(--muted);
-}
-
 .gallery { 
     max-width: 1200px; 
     margin: 0 auto; 
@@ -161,23 +239,10 @@ header {
     display: block; 
 }
 
-/* --- ניווט חצים (ללא שינוי) --- */
-.nav-arrow { 
-    position: fixed; 
-    top: 50%; 
-    transform: translateY(-50%); 
-    z-index: 2500; 
-    text-decoration: none; 
-    color: var(--main); 
-    font-size: 30px; 
-    opacity: 0.2; 
-    padding: 20px; 
-    transition: all 0.3s ease; 
-}
-.nav-arrow:hover { opacity: 1; color: var(--muted); transform: translateY(-50%) scale(1.1); }
-
+/* --- התאמות מובייל --- */
 @media (max-width: 768px) {
-    header { padding-top: 30px; }
-    .nav-wrapper { position: relative; left: auto; top: auto; margin-bottom: 25px; display: flex; justify-content: center; }
+    header { padding-top: 30px; min-height: auto; align-items: center; }
+    .nav-wrapper { position: relative; left: auto; top: auto; transform: none; margin-bottom: 25px; width: 100%; display: flex; justify-content: center; }
     .portfolio-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
+    body.nav-open #site-wrapper { transform: translateX(var(--nav-width)); margin-left: 0; width: 100%; }
 }
