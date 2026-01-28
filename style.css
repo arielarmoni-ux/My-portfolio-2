@@ -1,4 +1,4 @@
-/* style.css - Restoration of Original Layout & Functionality */
+/* style.css - Original Layout Restored */
 
 :root { 
     --bg: #fff; 
@@ -18,15 +18,13 @@ html, body {
     -webkit-font-smoothing: antialiased; 
 }
 
-/* --- מבנה האתר --- */
 #site-wrapper { 
     position: relative; 
     width: 100%; 
-    transition: opacity 0.8s ease, margin-left 0.9s cubic-bezier(0.23, 1, 0.32, 1); 
+    transition: margin-left 0.9s cubic-bezier(0.23, 1, 0.32, 1); 
     background: var(--bg); 
     min-height: 100vh; 
     z-index: 1000; 
-    opacity: 0; /* נשלט ע"י ה-JS בסיום הטעינה */
 }
 
 body.nav-open #site-wrapper { 
@@ -41,14 +39,13 @@ body.nav-open #site-wrapper {
     background: var(--bg); z-index: 3000; 
     padding: 40px 30px; overflow-y: auto; 
     transition: left 0.9s cubic-bezier(0.23, 1, 0.32, 1); 
-    border-right: 1px solid #f0f0f0; 
+    text-align: left; border-right: 1px solid #f0f0f0; 
     direction: ltr; 
-    text-align: left;
 }
 
 body.nav-open #side-nav { left: 0; }
 
-/* --- ניווט עליון - שחזור מקורי --- */
+/* --- מיקומי תפריט מקוריים --- */
 .nav-wrapper { 
     position: absolute; 
     left: 5%; 
@@ -57,71 +54,46 @@ body.nav-open #side-nav { left: 0; }
 }
 
 .main-nav-links { 
-    display: flex; 
-    align-items: center; 
-    gap: 30px; 
-    direction: ltr; 
+    display: flex; align-items: center; gap: 30px; direction: ltr; 
 }
 
 .nav-label { 
-    font-size: 13px; 
-    text-transform: uppercase; 
-    letter-spacing: 1.5px; 
-    text-decoration: none; 
-    color: var(--main); 
-    font-weight: 500; 
-    transition: 0.3s; 
-    cursor: pointer; 
+    font-size: 13px; text-transform: uppercase; letter-spacing: 1.5px; 
+    text-decoration: none; color: var(--main); font-weight: 500; 
+    transition: 0.3s; cursor: pointer; 
 }
-
 .nav-label:hover { color: var(--muted); }
 
-/* --- Header & Logo --- */
 header { 
-    position: relative; 
-    min-height: 100px; padding: 40px 5% 20px; 
-    display: flex; flex-direction: column; 
-    justify-content: center; align-items: center; 
+    position: relative; min-height: 100px; padding: 40px 5% 20px; 
+    display: flex; flex-direction: column; justify-content: center; align-items: center; 
     border-bottom: 1px solid #f0f0f0; 
 }
 
 .logo { font-size: 29px; letter-spacing: 5px; text-transform: uppercase; text-decoration: none; color: #000; }
 
-/* --- דף הבית (גריד פרויקטים) --- */
+/* --- גריד דף הבית --- */
 .portfolio-grid { 
-    display: grid; 
-    grid-template-columns: repeat(5, 1fr); 
-    gap: var(--grid-gap); 
-    padding: 60px 5% 100px; 
-    max-width: 1800px; 
-    margin: 0 auto; 
+    display: grid; grid-template-columns: repeat(5, 1fr); gap: var(--grid-gap); 
+    padding: 60px 5% 100px; max-width: 1800px; margin: 0 auto; 
 }
 
 .project-card { display: flex; flex-direction: column; text-decoration: none; }
-
-.img-container { 
-    width: 100%; 
-    aspect-ratio: 4/3; 
-    overflow: hidden; 
-    background: #f7f7f7; 
-    position: relative;
-}
-
+.img-container { width: 100%; aspect-ratio: 4/3; overflow: hidden; background: #f7f7f7; position: relative; }
 .img-container img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
+/* התכהות ב-Hover */
 .img-container::after {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background-color: rgba(0, 0, 0, 0.15); 
-    opacity: 0; transition: opacity 0.4s ease;
+    content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    background-color: rgba(0, 0, 0, 0.15); opacity: 0; transition: opacity 0.4s ease;
 }
 .project-card:hover .img-container::after { opacity: 1; }
 
-.project-info { padding: 12px 0; text-align: left; direction: ltr; }
+.project-info { padding: 12px 0; opacity: 0; transition: opacity 0.4s ease; text-align: left; direction: ltr; }
+.project-card:hover .project-info { opacity: 1; }
 .project-title { font-size: 11px; letter-spacing: 1.2px; text-transform: uppercase; color: var(--main); font-weight: 500; }
 
-/* --- סיידבר פרויקטים --- */
+/* --- סגנונות סיידבר --- */
 .project-index-title { font-size: 11px; text-transform: uppercase; color: var(--muted); margin-bottom: 15px; border-top: 1px solid #eee; padding-top: 20px; letter-spacing: 2px; }
 .project-list-nav a { font-size: 15px; text-decoration: none; color: var(--main); display: block; margin-bottom: 10px; transition: 0.3s; }
 .project-list-nav a:hover { color: var(--muted); transform: translateX(8px); }
@@ -136,30 +108,20 @@ header {
 
 /* --- Preloader & Spinner --- */
 #preloader {
-    position: fixed;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background: #fff;
-    display: flex; justify-content: center; align-items: center;
-    z-index: 9999;
-    transition: opacity 0.6s ease;
-    pointer-events: none; /* מאפשר לחיצות דרכו כשהוא נעלם */
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: #fff; display: flex; justify-content: center; align-items: center;
+    z-index: 9999; transition: opacity 0.6s ease;
 }
-
 .loader-spinner {
-    width: 30px; height: 30px;
-    border: 2px solid #f3f3f3;
-    border-top: 2px solid #000;
-    border-radius: 50%;
+    width: 30px; height: 30px; border: 2px solid #f3f3f3;
+    border-top: 2px solid #000; border-radius: 50%;
     animation: spin 1s linear infinite;
 }
-
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
+@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
 @media (max-width: 768px) {
     header { padding-top: 30px; }
     .nav-wrapper { position: relative; left: auto; top: auto; margin-bottom: 25px; display: flex; justify-content: center; }
     .portfolio-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
+    body.nav-open #site-wrapper { transform: translateX(var(--nav-width)); }
 }
