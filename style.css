@@ -1,29 +1,79 @@
-/* --- ניווט חצים (פרויקט קודם/בא) --- */
-.nav-arrow { 
-    position: fixed; 
-    top: 50%; 
-    transform: translateY(-50%); 
-    z-index: 5000; /* העליתי את ה-z-index כדי שיהיה מעל ה-site-wrapper */
-    text-decoration: none; 
-    color: var(--main); 
-    font-size: 30px; 
-    opacity: 0.2; 
-    padding: 30px; /* הגדלתי מעט את אזור הלחיצה */
-    transition: all 0.3s ease; 
-    cursor: pointer;
-}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ariel Armoni | Exhibition Architecture</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="preloader">
+        <div class="loader-spinner"></div>
+    </div>
 
-.nav-arrow:hover { 
-    opacity: 1; 
-    color: var(--muted); 
-    transform: translateY(-50%) scale(1.1); 
-}
+    <div id="site-wrapper" style="opacity: 0;">
+        <header>
+            <div class="nav-wrapper">
+                <div class="main-nav-links">
+                    <span class="nav-label" id="projects-trigger">Projects</span>
+                    <a href="about.html" class="nav-label">About</a>
+                    <a href="contact.html" class="nav-label">Contact</a>
+                </div>
+            </div>
+            <a href="index.html" class="logo">ARIEL ARMONI</a>
+            <div class="sub-logo" style="font-size: 13px; letter-spacing: 2px; color: #888; text-transform: uppercase; margin-top: 8px;">Exhibition Architecture</div>
+        </header>
+        <main class="portfolio-grid" id="portfolio-grid"></main>
+    </div>
 
-/* מיקום ספציפי לכל חץ */
-.nav-arrow.left { left: 20px; }
-.nav-arrow.right { right: 20px; }
+    <script src="sidebar.js"></script>
+    <script>
+        async function loadGrid() {
+            const grid = document.getElementById('portfolio-grid');
+            const siteWrapper = document.getElementById('site-wrapper');
+            const preloader = document.getElementById('preloader');
 
-/* הסתרה במובייל כדי שלא יפריעו לתוכן */
-@media (max-width: 768px) {
-    .nav-arrow { display: none; }
-}
+            try {
+                const res = await fetch(`${baseURL}/list.txt?v=${Date.now()}`);
+                const folders = (await res.text()).split(/\r?\n/).filter(f => f.trim() !== "");
+                
+                let loadedCount = 0;
+                const total = folders.length;
+
+                const checkDone = () => {
+                    loadedCount++;
+                    if (loadedCount >= total) {
+                        preloader.style.opacity = '0';
+                        preloader.style.pointerEvents = 'none';
+                        setTimeout(() => {
+                            preloader.style.display = 'none';
+                            siteWrapper.style.opacity = '1';
+                        }, 600);
+                    }
+                };
+
+                if (total === 0) checkDone();
+
+                for (const f of folders) {
+                    const iR = await fetch(`${baseURL}/images/${f}/info.txt`);
+                    const title = iR.ok ? (await iR.text()).split('\n')[0].trim() : f;
+                    
+                    const card = document.createElement('a');
+                    card.href = `project.html?folder=${f}`;
+                    card.className = 'project-card';
+                    card.innerHTML = `
+                        <div class="img-container"><img src="${baseURL}/images/${f}/cover.webp" alt="${title}"></div>
+                        <div class="project-info"><div class="project-title">${title}</div></div>
+                    `;
+                    
+                    const img = card.querySelector('img');
+                    if (img.complete) checkDone();
+                    else { img.onload = checkDone; img.onerror = checkDone; }
+                    grid.appendChild(card);
+                }
+            } catch (e) { preloader.style.display = 'none'; siteWrapper.style.opacity = '1'; }
+        }
+        loadGrid();
+    </script>
+</body>
+</html>
