@@ -11,7 +11,7 @@
         <div class="loader-spinner"></div>
     </div>
 
-    <div id="site-wrapper">
+    <div id="site-wrapper" style="opacity: 0;">
         <header>
             <div class="nav-wrapper">
                 <div class="main-nav-links">
@@ -35,26 +35,25 @@
             const preloader = document.getElementById('preloader');
 
             try {
-                // שימוש ב-baseURL שמוגדר ב-sidebar.js
+                // baseURL מגיע מ-sidebar.js
                 const res = await fetch(`${baseURL}/list.txt?v=${Date.now()}`);
                 const folders = (await res.text()).split(/\r?\n/).filter(f => f.trim() !== "");
                 
-                let imagesToLoad = folders.length;
                 let loadedCount = 0;
+                const total = folders.length;
 
-                const checkAllLoaded = () => {
-                    loadedCount++;
-                    if (loadedCount >= imagesToLoad) {
-                        preloader.style.opacity = '0';
-                        setTimeout(() => {
-                            preloader.style.display = 'none';
-                            siteWrapper.style.opacity = '1';
-                        }, 600);
-                    }
+                // פונקציה לחשיפת האתר
+                const revealSite = () => {
+                    preloader.style.opacity = '0';
+                    preloader.style.pointerEvents = 'none'; // מאפשר לחיצות דרכו מיד
+                    setTimeout(() => {
+                        preloader.style.display = 'none';
+                        siteWrapper.style.transition = 'opacity 0.8s ease';
+                        siteWrapper.style.opacity = '1';
+                    }, 500);
                 };
 
-                // אם אין פרויקטים, שחרר את המסך מיד
-                if (imagesToLoad === 0) checkAllLoaded();
+                if (total === 0) { revealSite(); return; }
 
                 for (const f of folders) {
                     const iR = await fetch(`${baseURL}/images/${f}/info.txt`);
@@ -67,23 +66,30 @@
                         <div class="img-container">
                             <img src="${baseURL}/images/${f}/cover.webp" alt="${title}">
                         </div>
-                        <div class="project-info"><div class="project-title">${title}</div></div>
+                        <div class="project-info">
+                            <div class="project-title">${title}</div>
+                        </div>
                     `;
                     
                     const img = card.querySelector('img');
-                    if (img.complete) checkAllLoaded();
-                    else {
-                        img.onload = checkAllLoaded;
-                        img.onerror = checkAllLoaded;
-                    }
+                    img.onload = () => {
+                        loadedCount++;
+                        if (loadedCount >= total) revealSite();
+                    };
+                    img.onerror = () => { // טיפול בתמונה חסרה כדי שלא יתקע
+                        loadedCount++;
+                        if (loadedCount >= total) revealSite();
+                    };
+
                     grid.appendChild(card);
                 }
             } catch (e) { 
                 console.error(e);
-                preloader.style.display = 'none';
-                siteWrapper.style.opacity = '1';
+                revealSite();
             }
         }
+        
+        // מפעילים את הטעינה
         loadGrid();
     </script>
 </body>
