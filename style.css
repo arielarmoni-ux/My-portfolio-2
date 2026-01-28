@@ -50,9 +50,7 @@ body.nav-open #site-wrapper {
     direction: ltr; 
 }
 
-body.nav-open #side-nav { 
-    left: 0; 
-}
+body.nav-open #side-nav { left: 0; }
 
 /* --- ניווט טקסטואלי עליון --- */
 .nav-wrapper { 
@@ -80,9 +78,7 @@ body.nav-open #side-nav {
     cursor: pointer; 
 }
 
-.nav-label:hover { 
-    color: var(--muted); 
-}
+.nav-label:hover { color: var(--muted); }
 
 /* --- הגדרות סיידבר --- */
 .project-index-title { 
@@ -106,10 +102,7 @@ body.nav-open #side-nav {
     transition: 0.3s; 
 }
 
-.project-list-nav a:hover { 
-    color: var(--muted); 
-    transform: translateX(8px); 
-}
+.project-list-nav a:hover { color: var(--muted); transform: translateX(8px); }
 
 /* --- Header & Logo --- */
 header { 
@@ -131,7 +124,7 @@ header {
     color: #000; 
 }
 
-/* --- דף הבית (גריד פרויקטים) --- */
+/* --- דף הבית (גריד פרויקטים) - תיקון הבהוב והתכהות --- */
 .portfolio-grid { 
     display: grid; 
     grid-template-columns: repeat(5, 1fr); 
@@ -156,12 +149,11 @@ header {
     overflow: hidden; 
     background: #f7f7f7; 
     position: relative;
-    /* תיקון למניעת רעידות ורינדור חלק */
     backface-visibility: hidden;
     transform: translateZ(0);
 }
 
-/* שכבת התכהות (במקום גדילה) */
+/* שכבת התכהות בהובר */
 .img-container::after {
     content: '';
     position: absolute;
@@ -190,9 +182,7 @@ header {
     direction: ltr; 
 }
 
-.project-card:hover .project-info { 
-    opacity: 1; 
-}
+.project-card:hover .project-info { opacity: 1; }
 
 .project-title { 
     font-size: 11px; 
@@ -202,7 +192,7 @@ header {
     font-weight: 500; 
 }
 
-/* --- שאר הסגנונות (פרויקט פנימי ומובייל) --- */
+/* --- דף פרויקט פנימי ומובייל --- */
 .project-meta { max-width: 1200px; margin: 30px auto 20px; padding: 0 5%; display: flex; flex-direction: column; gap: 5px; direction: ltr; text-align: left; }
 .meta-item { line-height: 1.3; }
 .meta-item .label { font-weight: 400; color: var(--muted); margin-right: 8px; }
