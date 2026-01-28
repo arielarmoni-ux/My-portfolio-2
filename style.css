@@ -1,79 +1,271 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ariel Armoni | Exhibition Architecture</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    <div id="preloader">
-        <div class="loader-spinner"></div>
-    </div>
+/* style.css - Final Stable Version */
 
-    <div id="site-wrapper" style="opacity: 0;">
-        <header>
-            <div class="nav-wrapper">
-                <div class="main-nav-links">
-                    <span class="nav-label" id="projects-trigger">Projects</span>
-                    <a href="about.html" class="nav-label">About</a>
-                    <a href="contact.html" class="nav-label">Contact</a>
-                </div>
-            </div>
-            <a href="index.html" class="logo">ARIEL ARMONI</a>
-            <div class="sub-logo" style="font-size: 13px; letter-spacing: 2px; color: #888; text-transform: uppercase; margin-top: 8px;">Exhibition Architecture</div>
-        </header>
-        <main class="portfolio-grid" id="portfolio-grid"></main>
-    </div>
+:root { 
+    --bg: #fff; 
+    --main: #000; 
+    --muted: #888; 
+    --nav-width: 320px; 
+    --grid-gap: 35px;
+}
 
-    <script src="sidebar.js"></script>
-    <script>
-        async function loadGrid() {
-            const grid = document.getElementById('portfolio-grid');
-            const siteWrapper = document.getElementById('site-wrapper');
-            const preloader = document.getElementById('preloader');
+* { box-sizing: border-box; }
 
-            try {
-                const res = await fetch(`${baseURL}/list.txt?v=${Date.now()}`);
-                const folders = (await res.text()).split(/\r?\n/).filter(f => f.trim() !== "");
-                
-                let loadedCount = 0;
-                const total = folders.length;
+html, body { 
+    margin: 0; 
+    padding: 0; 
+    font-family: 'Inter', sans-serif; 
+    background: var(--bg); 
+    overflow-x: hidden; 
+    -webkit-font-smoothing: antialiased; 
+}
 
-                const checkDone = () => {
-                    loadedCount++;
-                    if (loadedCount >= total) {
-                        preloader.style.opacity = '0';
-                        preloader.style.pointerEvents = 'none';
-                        setTimeout(() => {
-                            preloader.style.display = 'none';
-                            siteWrapper.style.opacity = '1';
-                        }, 600);
-                    }
-                };
+/* --- מבנה האתר ותנועת הסיידבר --- */
+#site-wrapper { 
+    position: relative; 
+    width: 100%; 
+    transition: opacity 0.8s ease, margin-left 0.9s cubic-bezier(0.23, 1, 0.32, 1); 
+    background: var(--bg); 
+    min-height: 100vh; 
+    z-index: 1000; 
+    opacity: 0; /* נשלט ע"י ה-JS בסיום הטעינה */
+}
 
-                if (total === 0) checkDone();
+body.nav-open #site-wrapper { 
+    margin-left: var(--nav-width); 
+    width: calc(100% - var(--nav-width)); 
+}
 
-                for (const f of folders) {
-                    const iR = await fetch(`${baseURL}/images/${f}/info.txt`);
-                    const title = iR.ok ? (await iR.text()).split('\n')[0].trim() : f;
-                    
-                    const card = document.createElement('a');
-                    card.href = `project.html?folder=${f}`;
-                    card.className = 'project-card';
-                    card.innerHTML = `
-                        <div class="img-container"><img src="${baseURL}/images/${f}/cover.webp" alt="${title}"></div>
-                        <div class="project-info"><div class="project-title">${title}</div></div>
-                    `;
-                    
-                    const img = card.querySelector('img');
-                    if (img.complete) checkDone();
-                    else { img.onload = checkDone; img.onerror = checkDone; }
-                    grid.appendChild(card);
-                }
-            } catch (e) { preloader.style.display = 'none'; siteWrapper.style.opacity = '1'; }
-        }
-        loadGrid();
-    </script>
-</body>
-</html>
+#side-nav { 
+    position: fixed; 
+    top: 0; 
+    left: calc(-1 * var(--nav-width)); 
+    width: var(--nav-width); 
+    height: 100vh; 
+    background: var(--bg); 
+    z-index: 3000; 
+    padding: 40px 30px; 
+    overflow-y: auto; 
+    transition: left 0.9s cubic-bezier(0.23, 1, 0.32, 1); 
+    text-align: left; 
+    border-right: 1px solid #f0f0f0; 
+    direction: ltr; 
+}
+
+body.nav-open #side-nav { 
+    left: 0; 
+}
+
+/* --- ניווט טקסטואלי עליון (מיקום מקורי) --- */
+.nav-wrapper { 
+    position: absolute; 
+    left: 5%; 
+    top: 52px; 
+    z-index: 4000; 
+}
+
+.main-nav-links { 
+    display: flex; 
+    align-items: center; 
+    gap: 30px; 
+    direction: ltr; 
+}
+
+.nav-label { 
+    font-size: 13px; 
+    text-transform: uppercase; 
+    letter-spacing: 1.5px; 
+    text-decoration: none; 
+    color: var(--main); 
+    font-weight: 500; 
+    transition: 0.3s; 
+    cursor: pointer; 
+}
+
+.nav-label:hover { 
+    color: var(--muted); 
+}
+
+/* --- Header & Logo --- */
+header { 
+    position: relative; 
+    min-height: 100px; 
+    padding: 40px 5% 20px; 
+    display: flex; 
+    flex-direction: column; 
+    justify-content: center; 
+    align-items: center; 
+    border-bottom: 1px solid #f0f0f0; 
+}
+
+.logo { 
+    font-size: 29px; 
+    letter-spacing: 5px; 
+    text-transform: uppercase; 
+    text-decoration: none; 
+    color: #000; 
+}
+
+/* --- דף הבית (גריד פרויקטים) --- */
+.portfolio-grid { 
+    display: grid; 
+    grid-template-columns: repeat(5, 1fr); 
+    gap: var(--grid-gap); 
+    padding: 60px 5% 100px; 
+    max-width: 1800px; 
+    margin: 0 auto; 
+}
+
+.project-card { 
+    display: flex; 
+    flex-direction: column; 
+    text-decoration: none; 
+    position: relative; 
+    z-index: 1; 
+}
+
+.img-container { 
+    width: 100%; 
+    aspect-ratio: 4/3; 
+    overflow: hidden; 
+    background: #f7f7f7; 
+    position: relative;
+}
+
+.img-container img { 
+    width: 100%; 
+    height: 100%; 
+    object-fit: cover; 
+    display: block; 
+}
+
+/* אפקט הובר: התכהות במקום גדילה */
+.img-container::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background-color: rgba(0, 0, 0, 0.15); 
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.project-card:hover .img-container::after { 
+    opacity: 1; 
+}
+
+.project-info { 
+    padding: 12px 0; 
+    opacity: 0; 
+    transition: opacity 0.4s ease; 
+    text-align: left; 
+    direction: ltr; 
+}
+
+.project-card:hover .project-info { 
+    opacity: 1; 
+}
+
+.project-title { 
+    font-size: 11px; 
+    letter-spacing: 1.2px; 
+    text-transform: uppercase; 
+    color: var(--main); 
+    font-weight: 500; 
+}
+
+/* --- ניווט חצים (תיקון מיקום ו-z-index) --- */
+.nav-arrow { 
+    position: fixed; 
+    top: 50%; 
+    transform: translateY(-50%); 
+    z-index: 5000; 
+    text-decoration: none; 
+    color: var(--main); 
+    font-size: 30px; 
+    opacity: 0.2; 
+    padding: 20px; 
+    transition: all 0.3s ease; 
+    cursor: pointer;
+}
+
+.nav-arrow:hover { 
+    opacity: 1; 
+    color: var(--muted); 
+    transform: translateY(-50%) scale(1.1); 
+}
+
+.nav-arrow.left { left: 20px; }
+.nav-arrow.right { right: 20px; }
+
+/* --- דף פרויקט פנימי (מבנה מקורי) --- */
+.project-meta { 
+    max-width: 1200px; 
+    margin: 30px auto 20px; 
+    padding: 0 5%; 
+    display: flex; 
+    flex-direction: column; 
+    gap: 5px; 
+    direction: ltr; 
+    text-align: left; 
+}
+
+.meta-item .label { color: var(--muted); margin-right: 8px; }
+.meta-item .value { font-weight: 600; color: var(--main); }
+
+.project-description { 
+    max-width: 1200px; 
+    margin: 0 auto 50px; 
+    padding: 0 5%; 
+    font-size: 18px; 
+    line-height: 1.55; 
+    text-align: left; 
+    direction: ltr; 
+    white-space: pre-wrap; 
+}
+
+.gallery { 
+    max-width: 1200px; 
+    margin: 0 auto; 
+    padding: 0 5%; 
+}
+
+.gallery img { 
+    width: 100%; 
+    height: auto; 
+    margin-bottom: 40px; 
+    display: block; 
+}
+
+/* --- Preloader & Spinner --- */
+#preloader {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    transition: opacity 0.6s ease;
+}
+
+.loader-spinner {
+    width: 30px;
+    height: 30px;
+    border: 2px solid #f3f3f3;
+    border-top: 2px solid #000;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* --- התאמות מובייל --- */
+@media (max-width: 768px) {
+    header { padding-top: 30px; min-height: auto; align-items: center; }
+    .nav-wrapper { position: relative; left: auto; top: auto; margin-bottom: 25px; width: 100%; display: flex; justify-content: center; }
+    .portfolio-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
+    .nav-arrow { display: none; }
+    body.nav-open #site-wrapper { transform: translateX(var(--nav-width)); margin-left: 0; width: 100%; }
+}
