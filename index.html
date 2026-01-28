@@ -3,10 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <title>Ariel Armoni | Exhibition Architecture & Design</title>
-    <meta name="description" content="Ariel Armoni is an architect and exhibition designer specializing in complex art installations, children's exhibitions, and interactive exhibits.">
-    
+    <title>Ariel Armoni | Exhibition Architecture</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -23,54 +20,39 @@
             <div class="sub-logo" style="font-size: 13px; letter-spacing: 2px; color: #888; text-transform: uppercase; margin-top: 8px;">Exhibition Architecture</div>
         </header>
 
-        <main class="portfolio-grid" id="portfolio-grid">
-            </main>
+        <main class="portfolio-grid" id="portfolio-grid"></main>
     </div>
 
     <script src="sidebar.js"></script>
-
     <script>
         async function loadGrid() {
             const grid = document.getElementById('portfolio-grid');
-            
             try {
-                // baseURL מוגדר בתוך sidebar.js
                 const res = await fetch(`${baseURL}/list.txt?v=${Date.now()}`);
-                if (!res.ok) throw new Error('Could not load project list');
-                
                 const folders = (await res.text()).split(/\r?\n/).filter(f => f.trim() !== "");
                 
-                // ניקוי הגריד לפני טעינה (למקרה של טעינה חוזרת)
-                grid.innerHTML = '';
-
                 for (const f of folders) {
-                    try {
-                        const iR = await fetch(`${baseURL}/images/${f}/info.txt`);
-                        const title = iR.ok ? (await iR.text()).split('\n')[0].trim() : f;
-                        
-                        // יצירת כרטיס הפרויקט - שימוש ב-cover.webp
-                        grid.innerHTML += `
-                        <a href="project.html?folder=${f}" class="project-card">
-                            <div class="img-container">
-                                <img src="${baseURL}/images/${f}/cover.webp" 
-                                     alt="${title} - Exhibition Design by Ariel Armoni"
-                                     loading="lazy"
-                                     decoding="async">
-                            </div>
-                            <div class="project-info">
-                                <div class="project-title">${title}</div>
-                            </div>
-                        </a>`;
-                    } catch (err) {
-                        console.error(`Error loading project ${f}:`, err);
-                    }
+                    const iR = await fetch(`${baseURL}/images/${f}/info.txt`);
+                    const title = iR.ok ? (await iR.text()).split('\n')[0].trim() : f;
+                    
+                    const card = document.createElement('a');
+                    card.href = `project.html?folder=${f}`;
+                    card.className = 'project-card';
+                    card.innerHTML = `
+                        <div class="img-container">
+                            <img src="${baseURL}/images/${f}/cover.webp" 
+                                 alt="${title}" 
+                                 onload="this.classList.add('loaded')"
+                                 loading="lazy">
+                        </div>
+                        <div class="project-info">
+                            <div class="project-title">${title}</div>
+                        </div>
+                    `;
+                    grid.appendChild(card);
                 }
-            } catch (err) {
-                console.error('Error loading grid:', err);
-            }
+            } catch (e) { console.error("Load error:", e); }
         }
-
-        // הפעלת הפונקציה בטעינת הדף
         loadGrid();
     </script>
 </body>
