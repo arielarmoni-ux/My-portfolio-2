@@ -30,7 +30,6 @@
                 const res = await fetch(`${baseURL}/list.txt?v=${Date.now()}`);
                 const folders = (await res.text()).split(/\r?\n/).filter(f => f.trim() !== "");
                 
-                // התיקון: מוסיפים כל כרטיס בנפרד מבלי לרענן את כל הגריד
                 for (const f of folders) {
                     const iR = await fetch(`${baseURL}/images/${f}/info.txt`);
                     const title = iR.ok ? (await iR.text()).split('\n')[0].trim() : f;
@@ -46,7 +45,7 @@
                             <div class="project-title">${title}</div>
                         </div>
                     `;
-                    grid.appendChild(card);
+                    grid.appendChild(card); // תיקון: הוספה ללא רענון הגריד
                 }
             } catch (err) { console.error(err); }
         }
