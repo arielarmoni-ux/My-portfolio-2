@@ -61,17 +61,33 @@
                         const [k, ...v] = line.split(":");
                         metaDiv.innerHTML += `<div class="meta-item"><span class="label">${k.trim()}:</span><span class="value">${v.join(":").trim()}</span></div>`;
                     } else { 
-                        // שימוש ב-innerHTML מאפשר לזהות את הקישור שכתבת ב-info.txt
                         descDiv.innerHTML += (descDiv.innerHTML ? "<br><br>" : "") + line; 
                     }
                 });
 
+                // --- תיקון סדר התמונות ללא השפעה על עיצוב או חצים ---
                 const gallery = document.getElementById('gallery');
+                const imagePromises = [];
+
                 for(let i=1; i<=30; i++) {
-                    const img = new Image();
-                    img.src = `${baseURL}/images/${folder}/${i.toString().padStart(2, '0')}.jpg`;
-                    img.onload = () => { img.style.display="block"; gallery.appendChild(img); };
+                    const imgNum = i.toString().padStart(2, '0');
+                    const p = new Promise((resolve) => {
+                        const img = new Image();
+                        img.src = `${baseURL}/images/${folder}/${imgNum}.jpg`;
+                        img.onload = () => resolve(img);
+                        img.onerror = () => resolve(null);
+                    });
+                    imagePromises.push(p);
                 }
+
+                const results = await Promise.all(imagePromises);
+                results.forEach(img => {
+                    if (img) {
+                        img.style.display = "block";
+                        gallery.appendChild(img);
+                    }
+                });
+
             } catch(e) { console.error(e); }
         }
         initProject();
