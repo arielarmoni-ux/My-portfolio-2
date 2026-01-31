@@ -36,49 +36,53 @@
             const grid = document.getElementById('portfolio-grid');
             
             try {
-                // baseURL מוגדר בתוך sidebar.js
                 const res = await fetch(`${baseURL}/list.txt?v=${Date.now()}`);
                 if (!res.ok) throw new Error('Could not load project list');
                 
                 const folders = (await res.text()).split(/\r?\n/).filter(f => f.trim() !== "");
                 
-                // ניקוי הגריד לפני טעינה
-                grid.innerHTML = '';
-
-                for (const f of folders) {
+                // שלב 1: יצירת רשימה של הבטחות (Promises) כדי לטעון את המידע במקביל
+                const projectDataPromises = folders.map(async (f) => {
                     try {
                         const iR = await fetch(`${baseURL}/images/${f}/info.txt`);
                         const title = iR.ok ? (await iR.text()).split('\n')[0].trim() : f;
-                        
-                        // יצירת אלמנט הכרטיס
-                        const card = document.createElement('a');
-                        card.href = `project.html?folder=${f}`;
-                        card.className = 'project-card';
-                        
-                        // שימוש ב-cover.webp כפי שביקשת
-                        card.innerHTML = `
-                            <div class="img-container">
-                                <img src="${baseURL}/images/${f}/cover.webp" 
-                                     alt="${title} - Exhibition Design by Ariel Armoni"
-                                     loading="lazy">
-                            </div>
-                            <div class="project-info">
-                                <div class="project-title">${title}</div>
-                            </div>`;
-                        
-                        // הוספה לגריד מבלי לרענן את כל הדף (מונע הבהוב)
-                        grid.appendChild(card);
-                        
+                        return { folder: f, title: title, success: true };
                     } catch (err) {
-                        console.error(`Error loading project ${f}:`, err);
+                        console.error(`Error fetching info for ${f}:`, err);
+                        return { folder: f, title: f, success: false };
                     }
-                }
+                });
+
+                // שלב 2: המתנה לכל הנתונים שיחזרו (הסדר נשמר כאן!)
+                const allProjects = await Promise.all(projectDataPromises);
+
+                // שלב 3: ניקוי והזרקה לגריד לפי הסדר המדויק
+                grid.innerHTML = '';
+
+                allProjects.forEach(project => {
+                    const card = document.createElement('a');
+                    card.href = `project.html?folder=${project.folder}`;
+                    card.className = 'project-card';
+                    
+                    card.innerHTML = `
+                        <div class="img-container">
+                            <img src="${baseURL}/images/${project.folder}/cover.webp" 
+                                 alt="${project.title} - Exhibition Design by Ariel Armoni"
+                                 loading="lazy"
+                                 decoding="async">
+                        </div>
+                        <div class="project-info">
+                            <div class="project-title">${project.title}</div>
+                        </div>`;
+                    
+                    grid.appendChild(card);
+                });
+                
             } catch (err) {
                 console.error('Error loading grid:', err);
             }
         }
 
-        // הפעלת הפונקציה בטעינת הדף
         loadGrid();
     </script>
 </body>
