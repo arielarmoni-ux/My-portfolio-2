@@ -7,8 +7,8 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <a href="#" id="prev-project" class="nav-arrow" style="left: 2%;">&#8592;</a>
-    <a href="#" id="next-project" class="nav-arrow" style="right: 2%;">&#8594;</a>
+    <a href="#" id="prev-project" class="nav-arrow left">&#8592;</a>
+    <a href="#" id="next-project" class="nav-arrow right">&#8594;</a>
 
     <div id="site-wrapper">
         <header>
@@ -25,30 +25,40 @@
 
         <main>
             <div style="text-align: center; padding: 60px 5% 20px;">
-                <h1 id="project-title" style="font-size: 20px; letter-spacing: 4px; text-transform: uppercase; font-weight: 400; margin-bottom: 25px;"></h1>
-                <div id="project-meta" class="project-meta"></div>
-                <div id="project-desc" class="project-description"></div>
+                <h1 id="project-title" style="font-size: 20px; letter-spacing: 3px; text-transform: uppercase; font-weight: 500;"></h1>
             </div>
-            <div id="gallery" class="gallery"></div>
+
+            <div id="project-meta" class="project-meta"></div>
+            <div id="project-desc" class="project-description"></div>
+
+            <div id="gallery" class="gallery">
+                </div>
         </main>
     </div>
 
     <script src="sidebar.js"></script>
     <script>
         async function initProject() {
-            const folder = new URLSearchParams(window.location.search).get('folder');
-            if(!folder) return;
+            const params = new URLSearchParams(window.location.search);
+            const folder = params.get('folder');
+            if (!folder) return;
 
             try {
-                const resList = await fetch(`${baseURL}/list.txt?v=${Date.now()}`);
-                const folders = (await resList.text()).split(/\r?\n/).map(f => f.trim()).filter(f => f !== "");
+                // טעינת רשימת פרויקטים לניווט
+                const listRes = await fetch(`${baseURL}/list.txt?v=${Date.now()}`);
+                const folders = (await listRes.text()).split(/\r?\n/).filter(l => l.trim() !== "");
                 const idx = folders.indexOf(folder);
-                
+
                 if (idx !== -1) {
-                    document.getElementById('prev-project').href = `project.html?folder=${folders[idx <= 0 ? folders.length-1 : idx-1]}`;
-                    document.getElementById('next-project').href = `project.html?folder=${folders[idx >= folders.length-1 ? 0 : idx+1]}`;
+                    const prevA = document.getElementById('prev-project');
+                    const nextA = document.getElementById('next-project');
+                    if (idx > 0) prevA.href = `project.html?folder=${folders[idx - 1]}`;
+                    else prevA.style.display = 'none';
+                    if (idx < folders.length - 1) nextA.href = `project.html?folder=${folders[idx + 1]}`;
+                    else nextA.style.display = 'none';
                 }
 
+                // טעינת טקסטים
                 const res = await fetch(`${baseURL}/images/${folder}/info.txt?v=${Date.now()}`);
                 const lines = (await res.text()).split(/\r?\n/).map(l => l.trim()).filter(l => l !== "");
                 document.getElementById('project-title').innerText = lines[0];
@@ -61,17 +71,39 @@
                         const [k, ...v] = line.split(":");
                         metaDiv.innerHTML += `<div class="meta-item"><span class="label">${k.trim()}:</span><span class="value">${v.join(":").trim()}</span></div>`;
                     } else { 
-                        // שימוש ב-innerHTML מאפשר לזהות את הקישור שכתבת ב-info.txt
                         descDiv.innerHTML += (descDiv.innerHTML ? "<br><br>" : "") + line; 
                     }
                 });
 
+                // --- תיקון סדר התמונות (עבור JPG) ---
                 const gallery = document.getElementById('gallery');
-                for(let i=1; i<=30; i++) {
-                    const img = new Image();
-                    img.src = `${baseURL}/images/${folder}/${i.toString().padStart(2, '0')}.jpg`;
-                    img.onload = () => { img.style.display="block"; gallery.appendChild(img); };
+                const imagePromises = [];
+
+                // בדיקת 30 תמונות פוטנציאליות
+                for(let i = 1; i <= 30; i++) {
+                    const imgNum = i.toString().padStart(2, '0');
+                    const imgPath = `${baseURL}/images/${folder}/${imgNum}.jpg`; // חזרה ל-JPG
+                    
+                    const checkImage = new Promise((resolve) => {
+                        const img = new Image();
+                        img.onload = () => resolve({ img, index: i });
+                        img.onerror = () => resolve(null);
+                        img.src = imgPath;
+                    });
+                    imagePromises.push(checkImage);
                 }
+
+                // המתנה לכל התמונות שיסיימו להיבדק
+                const results = await Promise.all(imagePromises);
+
+                // הזרקה לדף לפי הסדר המקורי של הלולאה
+                results.forEach(result => {
+                    if (result && result.img) {
+                        result.img.style.display = "block";
+                        gallery.appendChild(result.img);
+                    }
+                });
+
             } catch(e) { console.error(e); }
         }
         initProject();
