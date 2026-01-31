@@ -1,4 +1,4 @@
-/* style.css - Full Version with Performance Fixes */
+/* style.css - Full Restored Layout */
 
 :root { 
     --bg: #fff; 
@@ -50,11 +50,9 @@ body.nav-open #site-wrapper {
     direction: ltr; 
 }
 
-body.nav-open #side-nav { 
-    left: 0; 
-}
+body.nav-open #side-nav { left: 0; }
 
-/* --- ניווט טקסטואלי עליון --- */
+/* --- ניווט טקסטואלי עליון - שחזור מקורי --- */
 .nav-wrapper { 
     position: absolute; 
     left: 5%; 
@@ -80,9 +78,7 @@ body.nav-open #side-nav {
     cursor: pointer; 
 }
 
-.nav-label:hover { 
-    color: var(--muted); 
-}
+.nav-label:hover { color: var(--muted); }
 
 /* --- הגדרות סיידבר --- */
 .project-index-title { 
@@ -100,16 +96,13 @@ body.nav-open #side-nav {
     text-decoration: none; 
     color: var(--main); 
     display: block; 
-    margin-bottom: 10px; 
+    margin-bottom: 25px; 
     font-weight: 400; 
     line-height: 1.2; 
     transition: 0.3s; 
 }
 
-.project-list-nav a:hover { 
-    color: var(--muted); 
-    transform: translateX(8px); 
-}
+.project-list-nav a:hover { color: var(--muted); transform: translateX(8px); }
 
 /* --- Header & Logo --- */
 header { 
@@ -156,19 +149,8 @@ header {
     overflow: hidden; 
     background: #f7f7f7; 
     position: relative;
-    /* תיקון למניעת רעידות ורינדור חלק */
-    backface-visibility: hidden;
+    /* תיקון להבהוב: ייצוב רינדור */
     transform: translateZ(0);
-}
-
-/* שכבת התכהות (במקום גדילה) */
-.img-container::after {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background-color: rgba(0, 0, 0, 0.2); 
-    opacity: 0;
-    transition: opacity 0.4s ease;
 }
 
 .img-container img { 
@@ -176,11 +158,21 @@ header {
     height: 100%; 
     object-fit: cover; 
     display: block; 
+    backface-visibility: hidden;
 }
 
-.project-card:hover .img-container::after { 
-    opacity: 1; 
+/* שכבת התכהות בהובר */
+.img-container::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background-color: rgba(0, 0, 0, 0.2); 
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    pointer-events: none; /* מונע הבהוב ב-Hover */
 }
+
+.project-card:hover .img-container::after { opacity: 1; }
 
 .project-info { 
     padding: 12px 0; 
@@ -190,9 +182,7 @@ header {
     direction: ltr; 
 }
 
-.project-card:hover .project-info { 
-    opacity: 1; 
-}
+.project-card:hover .project-info { opacity: 1; }
 
 .project-title { 
     font-size: 11px; 
@@ -202,17 +192,48 @@ header {
     font-weight: 500; 
 }
 
-/* --- שאר הסגנונות (פרויקט פנימי ומובייל) --- */
+/* --- חצים --- */
+.nav-arrow { 
+    position: fixed; 
+    top: 50%; 
+    transform: translateY(-50%); 
+    z-index: 2500; 
+    text-decoration: none; 
+    color: var(--main); 
+    font-size: 30px; 
+    opacity: 0.2; 
+    padding: 20px; 
+    transition: all 0.3s ease; 
+}
+
+.nav-arrow:hover { 
+    opacity: 1; 
+    color: var(--muted); 
+    transform: translateY(-50%) scale(1.1); 
+}
+
+/* --- דף פרויקט פנימי - שחזור גודל תמונות --- */
 .project-meta { max-width: 1200px; margin: 30px auto 20px; padding: 0 5%; display: flex; flex-direction: column; gap: 5px; direction: ltr; text-align: left; }
-.meta-item { line-height: 1.3; }
 .meta-item .label { font-weight: 400; color: var(--muted); margin-right: 8px; }
 .meta-item .value { font-weight: 600; color: var(--main); }
 .project-description { max-width: 1200px; margin: 0 auto 50px; padding: 0 5%; font-size: 18px; line-height: 1.55; text-align: left; direction: ltr; white-space: pre-wrap; }
 .project-description a { color: inherit; text-decoration: none; transition: all 0.3s ease; border-bottom: 1px solid transparent; }
 .project-description a:hover { color: var(--muted); border-bottom: 1px solid var(--muted); }
-.gallery { max-width: 1200px; margin: 0 auto; padding: 0 5%; }
-.gallery img { width: 100%; height: auto; margin-bottom: 40px; display: block; }
 
+.gallery { 
+    max-width: 1200px; 
+    margin: 0 auto; 
+    padding: 0 5%; 
+}
+
+.gallery img { 
+    width: 100%; 
+    height: auto; 
+    margin-bottom: 40px; 
+    display: block; 
+}
+
+/* --- מובייל --- */
 @media (max-width: 768px) {
     header { padding-top: 30px; min-height: auto; align-items: center; }
     .nav-wrapper { position: relative; left: auto; top: auto; margin-bottom: 25px; width: 100%; display: flex; justify-content: center; }
