@@ -4,6 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About | Ariel Armoni</title>
+    <meta name="description" content="Ariel Armoni - architect and exhibition designer specializing in art installations, children's exhibitions, and interactive exhibits.">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Ariel Armoni | Exhibition Architecture">
+    <meta property="og:title" content="About | Ariel Armoni">
+    <meta property="og:description" content="Ariel Armoni - architect and exhibition designer specializing in art installations and interactive exhibits.">
+    <meta property="og:url" content="https://arielarmoni.com/about.html">
+    <meta name="twitter:card" content="summary">
+
+    <link rel="canonical" href="https://arielarmoni.com/about.html">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>A</text></svg>">
     <link rel="stylesheet" href="style.css">
     <style>
         .about-content { 
@@ -59,25 +71,21 @@
         async function loadAboutContent() {
             const container = document.getElementById('about-text-container');
             try {
-                // משיכת הקובץ מהשרת (עם v כדי למנוע Cache)
-                const res = await fetch(`about_content.txt?v=${Date.now()}`);
+                const res = await fetch(`about_content.txt?v=${cacheBuster}`);
                 if (!res.ok) throw new Error("Could not load about_content.txt");
                 
                 const fullText = await res.text();
                 
-                // הפרדה בין פסקאות הטקסט לרשימת הלקוחות
                 const parts = fullText.split("CLIENTS:");
                 const paragraphs = parts[0].trim().split(/\r?\n\r?\n/);
                 const clients = parts[1] ? parts[1].trim().split(/\r?\n/) : [];
 
                 let htmlContent = "";
 
-                // יצירת פסקאות הטקסט
                 paragraphs.forEach(p => {
                     if (p.trim()) htmlContent += `<p>${p.trim()}</p>`;
                 });
 
-                // יצירת רשימת הלקוחות (אם קיימת)
                 if (clients.length > 0) {
                     htmlContent += `
                         <div class="clients-section">
