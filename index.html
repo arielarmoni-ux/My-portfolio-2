@@ -48,30 +48,12 @@
     <script>
         async function loadGrid() {
             const grid = document.getElementById('portfolio-grid');
-
             try {
-                const res = await fetch(`${baseURL}/list.txt?v=${cacheBuster}`);
-                if (!res.ok) throw new Error('Could not load project list');
-
-                const folders = (await res.text()).split(/\r?\n/).filter(f => f.trim() !== "");
-
-                const projectDataPromises = folders.map(async (f) => {
-                    try {
-                        const iR = await fetch(`${baseURL}/images/${f}/info.txt?v=${cacheBuster}`);
-                        const title = iR.ok ? (await iR.text()).split('\n')[0].trim() : f;
-                        return { folder: f, title, success: true };
-                    } catch (err) {
-                        console.error(`Error fetching info for ${f}:`, err);
-                        return { folder: f, title: f, success: false };
-                    }
-                });
-
-                const allProjects = await Promise.all(projectDataPromises);
-
-                grid.innerHTML = '';
+                // שימוש בנתונים שכבר נטענו על ידי sidebar.js - ללא בקשות כפולות
+                const { projects } = await window.portfolioData;
 
                 const fragment = document.createDocumentFragment();
-                allProjects.forEach(project => {
+                projects.forEach(project => {
                     const card = document.createElement('a');
                     card.href = `project.html?folder=${project.folder}`;
                     card.className = 'project-card';
@@ -84,6 +66,8 @@
                     img.alt = `${project.title} - Exhibition Design by Ariel Armoni`;
                     img.loading = 'lazy';
                     img.decoding = 'async';
+                    img.width = 400;
+                    img.height = 300;
 
                     imgContainer.appendChild(img);
 
