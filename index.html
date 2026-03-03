@@ -3,12 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
+
     <title>Ariel Armoni | Exhibition Architecture & Design | אריאל ערמוני אדריכל</title>
-    <meta name="description" content="Ariel Armoni is an architect and exhibition designer specializing in art installations, children's exhibitions, and interactive exhibits. אריאל ערמוני - אדריכל ומעצב תערוכות .">
+    <meta name="description" content="Ariel Armoni is an architect and exhibition designer specializing in art installations, children's exhibitions, and interactive exhibits. אריאל ערמוני - אדריכל ומעצב תערוכות.">
     <meta name="keywords" content="Ariel Armoni, Architect, Exhibition Design, Art Installations, Children Exhibitions, Museum Design, אריאל ערמוני, אדריכלות, עיצוב תערוכות, תערוכות אמנות, תערוכות ילדים, עיצוב מוזיאונים">
     <meta name="author" content="Ariel Armoni">
 
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Ariel Armoni | Exhibition Architecture">
+    <meta property="og:title" content="Ariel Armoni | Exhibition Architecture & Design">
+    <meta property="og:description" content="Ariel Armoni is an architect and exhibition designer specializing in art installations, children's exhibitions, and interactive exhibits.">
+    <meta property="og:url" content="https://arielarmoni.com/">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Ariel Armoni | Exhibition Architecture & Design">
+    <meta name="twitter:description" content="Ariel Armoni is an architect and exhibition designer specializing in art installations and interactive exhibits.">
+
+    <link rel="canonical" href="https://arielarmoni.com/">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>A</text></svg>">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -21,12 +33,14 @@
                     <a href="contact.html" class="nav-label">Contact</a>
                 </div>
             </div>
-            <a href="index.html" class="logo">ARIEL ARMONI</a>
+            <a href="index.html" class="logo">
+                <h1 class="logo-h1">ARIEL ARMONI</h1>
+            </a>
             <div class="sub-logo" style="font-size: 13px; letter-spacing: 2px; color: #888; text-transform: uppercase; margin-top: 8px;">Exhibition Architecture</div>
         </header>
 
         <main class="portfolio-grid" id="portfolio-grid">
-            </main>
+        </main>
     </div>
 
     <script src="sidebar.js"></script>
@@ -34,50 +48,60 @@
     <script>
         async function loadGrid() {
             const grid = document.getElementById('portfolio-grid');
-            
+
             try {
-                const res = await fetch(`${baseURL}/list.txt?v=${Date.now()}`);
+                const res = await fetch(`${baseURL}/list.txt?v=${cacheBuster}`);
                 if (!res.ok) throw new Error('Could not load project list');
-                
+
                 const folders = (await res.text()).split(/\r?\n/).filter(f => f.trim() !== "");
-                
-                // שלב 1: יצירת רשימה של הבטחות (Promises) כדי לטעון את המידע במקביל
+
                 const projectDataPromises = folders.map(async (f) => {
                     try {
-                        const iR = await fetch(`${baseURL}/images/${f}/info.txt`);
+                        const iR = await fetch(`${baseURL}/images/${f}/info.txt?v=${cacheBuster}`);
                         const title = iR.ok ? (await iR.text()).split('\n')[0].trim() : f;
-                        return { folder: f, title: title, success: true };
+                        return { folder: f, title, success: true };
                     } catch (err) {
                         console.error(`Error fetching info for ${f}:`, err);
                         return { folder: f, title: f, success: false };
                     }
                 });
 
-                // שלב 2: המתנה לכל הנתונים שיחזרו (הסדר נשמר כאן!)
                 const allProjects = await Promise.all(projectDataPromises);
 
-                // שלב 3: ניקוי והזרקה לגריד לפי הסדר המדויק
                 grid.innerHTML = '';
 
+                const fragment = document.createDocumentFragment();
                 allProjects.forEach(project => {
                     const card = document.createElement('a');
                     card.href = `project.html?folder=${project.folder}`;
                     card.className = 'project-card';
-                    
-                    card.innerHTML = `
-                        <div class="img-container">
-                            <img src="${baseURL}/images/${project.folder}/cover.webp" 
-                                 alt="${project.title} - Exhibition Design by Ariel Armoni"
-                                 loading="lazy"
-                                 decoding="async">
-                        </div>
-                        <div class="project-info">
-                            <div class="project-title">${project.title}</div>
-                        </div>`;
-                    
-                    grid.appendChild(card);
+
+                    const imgContainer = document.createElement('div');
+                    imgContainer.className = 'img-container';
+
+                    const img = document.createElement('img');
+                    img.src = `${baseURL}/images/${project.folder}/cover.webp`;
+                    img.alt = `${project.title} - Exhibition Design by Ariel Armoni`;
+                    img.loading = 'lazy';
+                    img.decoding = 'async';
+
+                    imgContainer.appendChild(img);
+
+                    const info = document.createElement('div');
+                    info.className = 'project-info';
+
+                    const title = document.createElement('div');
+                    title.className = 'project-title';
+                    title.textContent = project.title;
+
+                    info.appendChild(title);
+                    card.appendChild(imgContainer);
+                    card.appendChild(info);
+                    fragment.appendChild(card);
                 });
-                
+
+                grid.appendChild(fragment);
+
             } catch (err) {
                 console.error('Error loading grid:', err);
             }
