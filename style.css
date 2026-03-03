@@ -1,6 +1,8 @@
 /* style.css - Full Restored Layout */
 
-:root { 
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+
+:root {
     --bg: #fff; 
     --main: #000; 
     --muted: #888; 
@@ -52,7 +54,7 @@ body.nav-open #site-wrapper {
 
 body.nav-open #side-nav { left: 0; }
 
-/* --- ניווט טקסטואלי עליון - שחזור מקורי --- */
+/* --- ניווט טקסטואלי עליון --- */
 .nav-wrapper { 
     position: absolute; 
     left: 5%; 
@@ -116,12 +118,21 @@ header {
     border-bottom: 1px solid #f0f0f0; 
 }
 
-.logo { 
-    font-size: 29px; 
-    letter-spacing: 5px; 
-    text-transform: uppercase; 
-    text-decoration: none; 
-    color: #000; 
+.logo {
+    font-size: 29px;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: #000;
+}
+
+.logo-h1 {
+    font-size: inherit;
+    letter-spacing: inherit;
+    font-weight: inherit;
+    margin: 0;
+    padding: 0;
+    color: inherit;
 }
 
 /* --- דף הבית (גריד פרויקטים) --- */
@@ -149,7 +160,6 @@ header {
     overflow: hidden; 
     background: #f7f7f7; 
     position: relative;
-    /* תיקון להבהוב: ייצוב רינדור */
     transform: translateZ(0);
 }
 
@@ -161,7 +171,6 @@ header {
     backface-visibility: hidden;
 }
 
-/* שכבת התכהות בהובר */
 .img-container::after {
     content: '';
     position: absolute;
@@ -169,7 +178,7 @@ header {
     background-color: rgba(0, 0, 0, 0.2); 
     opacity: 0;
     transition: opacity 0.4s ease;
-    pointer-events: none; /* מונע הבהוב ב-Hover */
+    pointer-events: none;
 }
 
 .project-card:hover .img-container::after { opacity: 1; }
@@ -212,7 +221,7 @@ header {
     transform: translateY(-50%) scale(1.1); 
 }
 
-/* --- דף פרויקט פנימי - שחזור גודל תמונות --- */
+/* --- דף פרויקט פנימי --- */
 .project-meta { max-width: 1200px; margin: 30px auto 20px; padding: 0 5%; display: flex; flex-direction: column; gap: 5px; direction: ltr; text-align: left; }
 .meta-item .label { font-weight: 400; color: var(--muted); margin-right: 8px; }
 .meta-item .value { font-weight: 600; color: var(--main); }
