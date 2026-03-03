@@ -51,8 +51,8 @@
             if (!folder) return;
 
             try {
-                const resList = await fetch(`${baseURL}/list.txt?v=${cacheBuster}`);
-                const folders = (await resList.text()).split(/\r?\n/).map(f => f.trim()).filter(f => f !== "");
+                // שימוש בנתונים שכבר נטענו על ידי sidebar.js - ללא בקשת list.txt נוספת
+                const { folders } = await window.portfolioData;
                 const idx = folders.indexOf(folder);
 
                 if (idx !== -1) {
