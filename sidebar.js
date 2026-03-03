@@ -1,19 +1,39 @@
-// הגדרה דינמית שמוודאת שהתמונות ייטענו מהדומיין שבו הגולש נמצא כרגע
 const baseURL = window.location.origin;
-
-// Cache buster יומי - משתנה פעם ביום בלבד
 const cacheBuster = Math.floor(Date.now() / 86400000);
+
+// נתונים נטענים פעם אחת ומשותפים בין הסיידבר לדף
+window.portfolioData = (async () => {
+    try {
+        const res = await fetch(`${baseURL}/list.txt?v=${cacheBuster}`);
+        if (!res.ok) return { folders: [], projects: [] };
+
+        const folders = (await res.text()).split(/\r?\n/).filter(f => f.trim() !== "");
+
+        const projects = await Promise.all(folders.map(async (f) => {
+            try {
+                const iR = await fetch(`${baseURL}/images/${f}/info.txt?v=${cacheBuster}`);
+                const title = iR.ok ? (await iR.text()).split('\n')[0].trim() : f;
+                return { folder: f, title };
+            } catch {
+                return { folder: f, title: f };
+            }
+        }));
+
+        return { folders, projects };
+    } catch (e) {
+        console.error("Portfolio data error:", e);
+        return { folders: [], projects: [] };
+    }
+})();
 
 async function injectSidebar() {
     if (document.getElementById('side-nav')) return;
 
-    const navHTML = `
+    document.body.insertAdjacentHTML('afterbegin', `
     <nav id="side-nav">
         <div class="project-index-title">Project Index</div>
         <div id="side-project-list" class="project-list-nav"></div>
-    </nav>`;
-
-    document.body.insertAdjacentHTML('afterbegin', navHTML);
+    </nav>`);
 
     const projectsBtn = document.getElementById('projects-trigger');
     if (projectsBtn) {
@@ -30,25 +50,10 @@ async function injectSidebar() {
     });
 
     try {
-        const res = await fetch(`${baseURL}/list.txt?v=${cacheBuster}`);
-        const folders = (await res.text()).split(/\r?\n/).filter(f => f.trim() !== "");
+        const { projects } = await window.portfolioData;
         const sideList = document.getElementById('side-project-list');
         if (!sideList) return;
 
-        // טעינה מקבילית של כל כותרות הפרויקטים
-        const titlePromises = folders.map(async (f) => {
-            try {
-                const iR = await fetch(`${baseURL}/images/${f}/info.txt?v=${cacheBuster}`);
-                const title = iR.ok ? (await iR.text()).split('\n')[0].trim() : f;
-                return { folder: f, title };
-            } catch {
-                return { folder: f, title: f };
-            }
-        });
-
-        const projects = await Promise.all(titlePromises);
-
-        // הוספה לDOM פעם אחת בלבד - יעיל יותר מ-innerHTML += בלולאה
         const fragment = document.createDocumentFragment();
         projects.forEach(({ folder, title }) => {
             const a = document.createElement('a');
