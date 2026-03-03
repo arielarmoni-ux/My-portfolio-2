@@ -66,7 +66,6 @@
                 const projectTitle = lines[0];
                 document.getElementById('project-title').textContent = projectTitle;
 
-                // עדכון כותרת הדפדפן וה-OG tags באופן דינמי
                 document.title = `${projectTitle} | Ariel Armoni`;
                 document.querySelector('meta[property="og:title"]').setAttribute('content', `${projectTitle} | Ariel Armoni`);
 
@@ -89,23 +88,21 @@
                     }
                 });
 
-                // טעינת תמונות גלריה - עצירה בתמונה הראשונה שלא נמצאה
                 const gallery = document.getElementById('gallery');
                 for (let i = 1; i <= 50; i++) {
                     const imgNum = i.toString().padStart(2, '0');
-                    const loaded = await new Promise((resolve) => {
-                        const img = new Image();
-                        img.src = `${baseURL}/images/${folder}/${imgNum}.jpg`;
-                        img.loading = 'lazy';
-                        img.decoding = 'async';
-                        img.alt = `${projectTitle} - image ${i}`;
-                        img.style.display = 'block';
-                        img.onload = () => resolve(img);
-                        img.onerror = () => resolve(null);
+                    const img = document.createElement('img');
+                    img.src = `${baseURL}/images/${folder}/${imgNum}.jpg`;
+                    img.alt = `${projectTitle} - image ${i}`;
+                    img.style.display = 'block';
+                    gallery.appendChild(img);
+
+                    const ok = await new Promise((resolve) => {
+                        img.onload = () => resolve(true);
+                        img.onerror = () => { img.remove(); resolve(false); };
                     });
 
-                    if (!loaded) break;
-                    gallery.appendChild(loaded);
+                    if (!ok) break;
                 }
 
             } catch (e) { console.error(e); }
