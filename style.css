@@ -60,6 +60,13 @@ body.nav-open #side-nav { left: 0; }
     left: 5%; 
     top: 52px; 
     z-index: 4000; 
+    /* מוסיף תנועה חלקה שתואמת בדיוק למהירות של הסיידבר */
+    transition: left 0.9s cubic-bezier(0.23, 1, 0.32, 1); 
+}
+
+/* כשהסיידבר פתוח, נדחוף את התפריט העליון ימינה כדי שלא יתנגש בלוגו ובסיידבר */
+body.nav-open .nav-wrapper {
+    left: calc(var(--nav-width) + 3%); 
 }
 
 .main-nav-links { 
