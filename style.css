@@ -60,6 +60,8 @@ body.nav-open #side-nav { left: 0; }
     left: 5%; 
     top: 52px; 
     z-index: 4000; 
+    /* הוספת האנימציה החלקה */
+    transition: opacity 0.5s cubic-bezier(0.23, 1, 0.32, 1), visibility 0.5s;
 }
 
 .main-nav-links { 
