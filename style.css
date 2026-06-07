@@ -251,3 +251,9 @@ header {
     .portfolio-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
     body.nav-open #site-wrapper { transform: translateX(var(--nav-width)); margin-left: 0; width: 100%; }
 }
+/* הסתרת הניווט העליון בצורה חלקה כאשר הסיידבר פתוח */
+body.nav-open .nav-wrapper {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none; /* מונע אפשרות ללחוץ על הקישורים כשהם בלתי נראים */
+}
