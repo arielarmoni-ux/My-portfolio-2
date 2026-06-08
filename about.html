@@ -4,18 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About | Ariel Armoni</title>
-    <meta name="description" content="Ariel Armoni - architect and exhibition designer specializing in art installations, children's exhibitions, and interactive exhibits.">
-
-    <meta property="og:type" content="website">
-    <meta property="og:site_name" content="Ariel Armoni | Exhibition Architecture">
-    <meta property="og:title" content="About | Ariel Armoni">
-    <meta property="og:description" content="Ariel Armoni - architect and exhibition designer specializing in art installations and interactive exhibits.">
-    <meta property="og:url" content="https://arielarmoni.com/about.html">
-    <meta name="twitter:card" content="summary">
-
-    <link rel="canonical" href="https://arielarmoni.com/about.html">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>A</text></svg>">
-    
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -32,72 +20,38 @@
             <div class="sub-logo">Exhibition Architecture</div>
         </header>
 
-        <main class="about-container-fixed">
-            <div class="about-text-column" id="about-text-container">
-                <p style="color: #666;">Loading content...</p>
+        <main class="about-content">
+            
+            <div class="about-text" id="about-text-container">
+                </div>
+
+            <div class="about-right-column">
+                
+                <div class="about-image">
+                    <img src="images/profile.jpg" alt="Ariel Armoni">
+                </div>
+                
+                <div class="clients-section">
+                    <h3>Selected Clients</h3>
+                    <ul class="clients-list">
+                        <li>The Israel Museum, Jerusalem</li>
+                        <li>Tel Aviv Museum of Art</li>
+                        <li>Haifa Museum of Art</li>
+                        <li>Herzliya Museum of Contemporary Art</li>
+                        <li>Hecht Museum Haifa</li>
+                        <li>Design Museum Holon</li>
+                        <li>Nahum Gutman Museum Tel Aviv</li>
+                        <li>Agam Museum Rishon Lezion</li>
+                        <li>Hansen House - Jerusalem</li>
+                        <li>Mamuta art & research center</li>
+                    </ul>
+                </div>
+
             </div>
-            <div class="about-image-column">
-                <img src="images/profile.jpg" alt="Ariel Armoni">
-            </div>
+
         </main>
     </div>
 
     <script src="sidebar.js"></script>
-    <script>
-        async function loadAboutContent() {
-            const container = document.getElementById('about-text-container');
-            if (!container) return;
-            
-            // יצירת חותמת זמן ייחודית בכל הרצה כדי לעקוף את ה-Cache של השרת והדפדפן
-            const forceRefreshKey = new Date().getTime();
-            
-            try {
-                // קריאת הקובץ עם חותמת זמן ייחודית בכוח
-                const res = await fetch('about_content.txt?v=' + forceRefreshKey);
-                
-                if (!res.ok) {
-                    throw new Error("קובץ הטקסט about_content.txt לא נמצא בשרת או שגיאת טעינה");
-                }
-                
-                const fullText = await res.text();
-                
-                const parts = fullText.split("CLIENTS:");
-                const paragraphs = parts[0].trim().split(/\r?\n\r?\n/);
-                const clients = parts[1] ? parts[1].trim().split(/\r?\n/) : [];
-
-                let htmlContent = "";
-
-                paragraphs.forEach(p => {
-                    if (p.trim()) {
-                        htmlContent += `<p>${p.trim()}</p>`;
-                    }
-                });
-
-                if (clients.length > 0) {
-                    htmlContent += `
-                        <div class="clients-section">
-                            <h3>Selected Clients</h3>
-                            <ul class="clients-list">
-                                ${clients.map(c => `<li>${c.trim()}</li>`).join('')}
-                            </ul>
-                        </div>`;
-                }
-
-                container.innerHTML = htmlContent;
-            } catch (e) {
-                console.error(e);
-                container.innerHTML = `
-                    <p style="color: #cc0000 !important; font-weight: 500;">
-                        שגיאה בטעינת התוכן.<br>
-                        אנא ודא שקיים קובץ בשם <strong>about_content.txt</strong> בדיוק באותה תיקייה של דף האודות בשרת.
-                    </p>`;
-            }
-        }
-
-        // הפעלה מיידית של הפונקציה ב-3 שכבות הגנה שונות כדי להבטיח ריצה בכל מצב
-        loadAboutContent();
-        document.addEventListener('DOMContentLoaded', loadAboutContent);
-        window.onload = loadAboutContent;
-    </script>
 </body>
 </html>
