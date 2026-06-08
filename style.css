@@ -206,76 +206,59 @@ header {
     position: fixed; 
     top: 50%; 
     transform: translateY(-50%); 
-    font-size: clamp(24px, 2.5vw, 40px); /* גודל החץ ישתנה בהתאמה לגודל המסך */
-    color: var(--main); 
-    text-decoration: none; 
     z-index: 2500; 
-    opacity: 0.3; 
-    padding: 15px;
+    text-decoration: none; 
+    color: var(--main); 
+    font-size: clamp(24px, 2.5vw, 40px); 
+    opacity: 0.2; 
+    padding: 20px; 
     transition: all 0.3s ease; 
 }
 
-/* חץ שמאלי - מוצמד לקצה השמאלי של התמונה (שמתחילה ב-10% מהמסך) */
-#prev-project {
-    left: calc(10% - 50px); 
+/* החצים נוסעים פנימה/החוצה בהתאם לרוחב ה-80vw של הגלריה */
+#prev-project { 
+    left: calc(50% - 40vw - 60px); 
 }
 
-/* חץ ימני - מוצמד לקצה הימני של התמונה (שמסתיימת ב-90% מהמסך) */
-#next-project {
-    right: calc(10% - 50px); 
+#next-project { 
+    right: calc(50% - 40vw - 60px); 
 }
 
-/* אפקט הובר נקי */
 .nav-arrow:hover { 
     opacity: 1; 
     color: var(--muted); 
     transform: translateY(-50%) scale(1.1); 
 }
 
-/* --- יישור טקסט הפרויקט לקו התמונות (80%) --- */
+/* --- דף פרויקט פנימי - יישור טקסט ותמונות (80vw וממורכז) --- */
 
-/* האלמנט העוטף של כל הטקסטים בראש הדף */
+/* יישור כל כותרי ופרטי הפרויקט בקו ישר אחד עם דופן התמונה */
+.project-meta,
+.project-description,
+header + main > div h1,
 header + main > div:first-child {
-    width: 80% !important;
-    max-width: 1000px;   /* תואם בדיוק ל-max-width של התמונות */
-    margin: 0 auto !important;
-    padding: 60px 0 20px !important; /* איפוס ה-padding הצידי כדי שיתיישר פיקסל לקצה */
-    text-align: left !important;     /* משנה את היישור הכללי לשמאל, כמו התמונות והגלריה */
+    width: 80vw !important;
+    max-width: 1100px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    text-align: left !important; 
+    padding-left: 0 !important;
+    padding-right: 0 !important;
 }
 
-/* כותרת הפרויקט הראשי */
-#project-title {
-    font-size: 20px;
-    letter-spacing: 4px;
-    text-transform: uppercase;
-    font-weight: 400;
-    margin-bottom: 25px;
-    text-align: left; /* יישור הכותרת לשמאל, בקו אחד עם התמונה */
-}
-
-/* בלוק המטא-דאטה (אוצר, שנה, מיקום) */
 .project-meta { 
-    width: 100%;
-    margin: 0 0 20px 0; 
-    padding: 0; 
     display: flex; 
     flex-direction: column; 
     gap: 5px; 
     direction: ltr; 
-    text-align: left; 
 }
 
 .meta-item .label { font-weight: 400; color: var(--muted); margin-right: 8px; }
 .meta-item .value { font-weight: 600; color: var(--main); }
 
-/* תיאור הפרויקט */
 .project-description { 
-    width: 100%;
-    margin: 0 auto 50px 0; 
-    padding: 0; 
     font-size: 18px; 
     line-height: 1.55; 
-    text-align: left; 
     direction: ltr; 
     white-space: pre-wrap; 
 }
@@ -283,19 +266,19 @@ header + main > div:first-child {
 .project-description a { color: inherit; text-decoration: none; transition: all 0.3s ease; border-bottom: 1px solid transparent; }
 .project-description a:hover { color: var(--muted); border-bottom: 1px solid var(--muted); }
 
+/* --- גלריית תמונות - מוקטנת ב-20% וממורכזת --- */
 .gallery { 
-    max-width: 1200px; 
+    max-width: 100%; 
     margin: 0 auto; 
-    padding: 0 5%; 
-    /* שימוש ב-flex כדי לוודא שכל התוכן בפנים תמיד ממורכז אופקית */
+    padding: 0; 
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: center; /* ממרכז את התמונות במסך */
 }
 
 .gallery img { 
-    width: 80%;          /* הקטנה ב-20 אחוז מהרוחב המלא */
-    max-width: 1000px;   /* מונע מהתמונות לגדול מדי במסכי ענק */
+    width: 80vw;         /* הקטנה של 20% מהרוחב המלא */
+    max-width: 1100px;   /* מונע מהתמונות להיות עצומות במסכי 2K/4K */
     height: auto; 
     margin-bottom: 40px; 
     display: block; 
@@ -307,4 +290,17 @@ header + main > div:first-child {
     .nav-wrapper { position: relative; left: auto; top: auto; margin-bottom: 25px; width: 100%; display: flex; justify-content: center; }
     .portfolio-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
     body.nav-open #site-wrapper { transform: translateX(var(--nav-width)); margin-left: 0; width: 100%; }
+    
+    /* במובייל נחזיר את התמונות והטקסטים לרוחב מלא בשביל נוחות קריאה */
+    .gallery img,
+    .project-meta,
+    .project-description,
+    header + main > div h1,
+    header + main > div:first-child {
+        width: 100% !important;
+        padding-left: 5% !important;
+        padding-right: 5% !important;
+    }
+    
+    #prev-project, #next-project { display: none; } /* הסתרת חצים במובייל */
 }
