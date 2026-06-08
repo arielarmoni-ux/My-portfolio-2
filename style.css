@@ -1,4 +1,4 @@
-/* style.css - Full Premium Aligned Portfolio Layout (v5 - Absolute Mobile Fix) */
+/* style.css - Full Premium Aligned Portfolio Layout (v6 - Final Production with Mobile Project Names & About Image Fix) */
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
 
@@ -342,14 +342,14 @@ header + main > div:first-child {
     margin-bottom: 60px !important;
 }
 
-/* --- דף אודות (About Page) - תיקון הצגת התמונה בדסקטופ ובמובייל --- */
+/* --- דף אודות (About Page) --- */
 .about-content {
     width: 80vw !important;
     max-width: 1100px !important;
     margin: 0 auto;
     padding: 60px 0 100px !important; 
     display: grid; 
-    grid-template-columns: 1.2fr 0.8fr; /* חלוקה פרופורציונלית: הטקסט מעט רחב יותר מהתמונה */
+    grid-template-columns: 1.2fr 0.8fr; /* יחס אלגנטי לטובת הטקסט */
     gap: 80px; 
     align-items: start; 
     direction: ltr;
@@ -362,19 +362,18 @@ header + main > div:first-child {
     color: #333; 
 }
 
-/* אלמנט עוטף לתמונת הפרופיל באודות */
+/* קופסה עוטפת ותיקון התמונה בדסקטופ */
 .about-image-container {
     width: 100%;
     display: block;
 }
 
-/* !!! תיקון שורש הבעיה: הגדרת התמונה עצמה בדסקטופ !!! */
 .about-image-container img {
     width: 100%;
     height: auto;
     display: block;
     object-fit: cover;
-    background: #f7f7f7; /* רקע עדין בזמן שהתמונה נטענת */
+    background: #f7f7f7;
 }
 
 /* רשימת לקוחות נבחרים (Selected Clients) */
@@ -415,7 +414,7 @@ header + main > div:first-child {
     direction: ltr;
 }
 
-/* --- מובייל והתאמות רספונסיביות - נעילת מירכוז מוחלטת ואטומה לשינויי דפים --- */
+/* --- מובייל והתאמות רספונסיביות - נעילת מירכוז מוחלטת והצגת שמות פרויקטים --- */
 @media (max-width: 1024px) {
     .portfolio-grid { grid-template-columns: repeat(3, 1fr); }
     .about-content { grid-template-columns: 1fr; gap: 40px; }
@@ -431,7 +430,7 @@ header + main > div:first-child {
         align-items: center !important; 
     }
     
-    /* פתרון שורש הבעיה: כפיית איפוס מוחלטת שדורסת את חוקי ה-not(:has) של הדפים הפנימיים במובייל */
+    /* מירכוז אטומה לכל דפי האתר במובייל */
     .nav-wrapper,
     body .nav-wrapper,
     body:not(:has(.portfolio-grid)) .nav-wrapper { 
@@ -454,6 +453,17 @@ header + main > div:first-child {
         align-items: center !important;
         gap: 20px !important; 
         width: auto !important;
+    }
+    
+    /* הצגת שמות הפרויקטים בצורה קבועה במובייל בזמן גלילה */
+    .project-info { 
+        opacity: 1 !important; 
+        padding: 10px 0 20px 0 !important; 
+    }
+    
+    /* ביטול שכבת ההחשכה הכהה על צילום הפרויקט במובייל */
+    .project-card:hover .img-container::after { 
+        opacity: 0 !important; 
     }
     
     .portfolio-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
