@@ -233,41 +233,54 @@ header {
 }
 
 /* --- דף פרויקט פנימי - יישור טקסט ותמונות (80vw וממורכז) --- */
+/* --- יישור מוחלט של טקסט הפרויקט לקו התמונה השמאלי --- */
 
-/* יישור כל כותרי ופרטי הפרויקט בקו ישר אחד עם דופן התמונה */
-.project-meta,
-.project-description,
-header + main > div h1,
+/* 1. הקופסה הראשית שעוטפת את כל בלוק הטקסטים (הכותרת, המטא והתיאור) */
 header + main > div:first-child {
-    width: 80vw !important;
-    max-width: 1100px !important;
-    margin-left: auto !important;
-    margin-right: auto !important;
-    text-align: left !important; 
+    width: 80vw !important;         /* אותו רוחב מדויק כמו התמונה */
+    max-width: 1100px !important;  /* תואם ל-max-width של התמונה במסכי ענק */
+    margin-left: auto !important;  /* שילוב של left ו-right auto ממרכז */
+    margin-right: auto !important; /* את הקופסה כולה למרכז המסך, כמו התמונה */
+    padding-left: 0 !important;    /* מאפס כל פדינג ישן שדוחף את הטקסט פנימה */
+    padding-right: 0 !important;
+    text-align: left !important;   /* גורם לכל השורות להתחיל מהצד השמאלי של הקופסה */
+    box-sizing: border-box !important;
+}
+
+/* 2. כותרת הפרויקט (למשל AFRICA CALLING) */
+#project-title {
+    text-align: left !important;   
+    margin-left: 0 !important;
+    margin-right: 0 !important;
     padding-left: 0 !important;
     padding-right: 0 !important;
+    width: 100% !important;
+    display: block !important;
 }
 
+/* 3. בלוק המטא-דאטה (Role, For, Date...) */
 .project-meta { 
-    display: flex; 
-    flex-direction: column; 
-    gap: 5px; 
-    direction: ltr; 
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 0 25px 0 !important; 
+    padding: 0 !important; 
+    display: flex !important; 
+    flex-direction: column !important; 
+    gap: 5px !important; 
+    direction: ltr !important; 
+    text-align: left !important;   /* יישור שורות הפרטים לשמאל */
 }
 
-.meta-item .label { font-weight: 400; color: var(--muted); margin-right: 8px; }
-.meta-item .value { font-weight: 600; color: var(--main); }
-
+/* 4. תיאור הפרויקט החופשי */
 .project-description { 
-    font-size: 18px; 
-    line-height: 1.55; 
-    direction: ltr; 
-    white-space: pre-wrap; 
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 0 50px 0 !important; 
+    padding: 0 !important; 
+    text-align: left !important; 
+    direction: ltr !important; 
+    white-space: pre-wrap !important; 
 }
-
-.project-description a { color: inherit; text-decoration: none; transition: all 0.3s ease; border-bottom: 1px solid transparent; }
-.project-description a:hover { color: var(--muted); border-bottom: 1px solid var(--muted); }
-
 /* --- גלריית תמונות - מוקטנת ב-20% וממורכזת --- */
 .gallery { 
     max-width: 100%; 
