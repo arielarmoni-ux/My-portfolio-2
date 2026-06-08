@@ -334,26 +334,24 @@ header + main > div:first-child {
 }
 
 .gallery img:last-child { margin-bottom: 60px !important; }
-
-/* --- דף אודות (About Page) - סידור קסטום אסימטרי חדש --- */
+/* --- דף אודות (About Page) - קומפוזיציה אסימטרית סופית --- */
 .about-content {
     width: 80vw !important;
     max-width: 1100px !important;
     margin: 0 auto !important;
     padding: 60px 0 100px !important; 
     display: grid !important; 
-    /* יחס פרופורציונלי שמשאיר את התמונה ב-30%+ ויוצר איזון מושלם */
+    /* חלוקה מדויקת המגדילה את התמונה ב-30% ושומרת על פרופורציה מעודנת */
     grid-template-columns: 1.12fr 0.88fr !important;
     gap: 80px !important; 
     align-items: start !important; 
     direction: ltr !important;
 }
 
-/* הטור השמאלי: טקסט אודות בלוק */
+/* טור שמאל: טקסט מיושר כבלוק */
 .about-text { 
-    grid-column: 1 !important; /* נעילה לטור שמאל */
     text-align: justify !important; 
-    text-align-last: left !important; 
+    text-align-last: left !important; /* מונע מתיחה מכוערת של השורה האחרונה בפסקה */
     direction: ltr !important;
     display: block !important;
 }
@@ -367,9 +365,15 @@ header + main > div:first-child {
     text-align-last: left !important;
 }
 
-/* הטור הימני: תמונה למעלה */
+/* טור ימין: מחזיק את התמונה והלקוחות יחד */
+.about-right-column {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 45px !important; /* מרחק אלגנטי בין תחתית התמונה לראש רשימת הלקוחות */
+    width: 100% !important;
+}
+
 .about-image {
-    grid-column: 2 !important; /* נעילה לטור ימין */
     width: 100% !important;
     display: block !important;
 }
@@ -379,13 +383,10 @@ header + main > div:first-child {
     height: auto !important;
     display: block !important;
     object-fit: cover !important;
-    margin-bottom: 40px !important; /* מרווח אלגנטי בין התמונה לרשימת הלקוחות שמתחתיה */
 }
 
-/* רשימת לקוחות נבחרים - נעילה לטור הימני מתחת לתמונה */
+/* רשימת לקוחות בטור הימני */
 .clients-section { 
-    grid-column: 2 !important; /* מעביר את הלקוחות אוטומטית לטור הימני בדסקטופ */
-    margin-top: 0 !important; 
     text-align: left !important;
     display: block !important;
 }
@@ -397,7 +398,6 @@ header + main > div:first-child {
     color: #888 !important; 
     margin-bottom: 25px !important; 
     font-weight: 500 !important;
-    text-align: left !important;
 }
 
 .clients-list { 
@@ -412,12 +412,29 @@ header + main > div:first-child {
 .clients-list li { 
     font-size: 13px !important; 
     color: #444 !important; 
-    border-bottom: none !important; 
-    padding-bottom: 0 !important; 
-    max-width: 100% !important;
     text-align: left !important;
 }
 
+/* --- התאמות מובייל רספונסיביות למבנה החדש --- */
+@media (max-width: 1024px) {
+    .about-content { grid-template-columns: 1fr !important; gap: 40px !important; }
+}
+
+@media (max-width: 768px) {
+    .about-content {
+        width: 100% !important;
+        max-width: 100% !important;
+        padding-left: 5% !important;
+        padding-right: 5% !important;
+        display: flex !important;
+        flex-direction: column !important; /* מסדר אותם אנכית במובייל */
+    }
+
+    /* סדר מובייל: תמונה ראשונה, טקסט שני, לקוחות בסוף */
+    .about-right-column { order: 1 !important; gap: 35px !important; }
+    .about-text { order: 2 !important; margin-top: 35px !important; }
+    .clients-section { order: 3 !important; }
+}
 /* --- דף קשר (Contact Page) --- */
 .contact-content {
     width: 80vw !important;
