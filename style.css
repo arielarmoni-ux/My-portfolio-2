@@ -340,40 +340,45 @@ header + main > div:first-child {
 
 .gallery img:last-child {
     margin-bottom: 60px !important;
-}
-/* --- דף אודות (About Page) - דריסה סופית וחסינת חסימות שרת --- */
+}/* --- דף אודות (About Page) - תיקון תצוגה, יישור בלוק והגדלת תמונה --- */
 .about-content {
+    display: grid !important;
+    grid-template-columns: 1.1fr 0.9fr !important; /* הגדלה מדויקת של התמונה ב-30% לעומת המצב המקורי, תוך שמירה על פרופורציה */
+    gap: 80px !important;
+    align-items: start !important;
+    direction: ltr !important;
     width: 80vw !important;
     max-width: 1100px !important;
     margin: 0 auto !important;
-    padding: 60px 0 100px !important; 
-    display: grid !important; 
-    /* נעילת הגדלה מדויקת של 30% לתמונה (1.12 לטקסט ו-0.88 לתמונה) */
-    grid-template-columns: 1.12fr 0.88fr !important;
-    gap: 80px !important; 
-    align-items: start !important; 
-    direction: ltr !important;
+    padding: 60px 0 100px 0 !important;
+    box-sizing: border-box !important;
+    visibility: visible !important;
+    opacity: 1 !important;
 }
 
-.about-text { 
-    text-align: justify !important; /* יישור בלוק יוקרתי */
-    text-align-last: left !important; /* הגנה מפני מתיחת השורה האחרונה בפסקה */
-    direction: ltr !important;
+.about-text {
     display: block !important;
+    width: 100% !important;
+    text-align: justify !important; /* יישור פסקאות כבלוק מהודק */
+    text-align-last: left !important; /* מונע מהשורה האחרונה של הפסקה להימתח עם רווחים מכוערים */
+    direction: ltr !important;
+    visibility: visible !important;
+    opacity: 1 !important;
 }
 
-.about-text p { 
-    font-size: 15px !important; 
-    line-height: 1.7 !important; 
-    margin-bottom: 30px !important; 
-    color: #333 !important; 
-    text-align: justify !important; /* יישור בלוק קשיח לפסקאות התוכן */
+.about-text p {
+    font-size: 15px !important;
+    line-height: 1.7 !important;
+    margin-bottom: 30px !important;
+    color: #333333 !important; /* אפור כהה עמוק קבוע למניעת היעלמות או הפיכה ללבן */
+    text-align: justify !important;
     text-align-last: left !important;
+    display: block !important;
 }
 
 .about-image {
-    width: 100% !important;
     display: block !important;
+    width: 100% !important;
 }
 
 .about-image img {
@@ -383,39 +388,40 @@ header + main > div:first-child {
     object-fit: cover !important;
 }
 
-/* הגנה על רשימת הלקוחות הנבחרים שלא תושפע מהבלוק */
-.clients-section { 
-    margin-top: 40px !important; 
+/* הגנה על אזור הלקוחות הנבחרים שלא יושפע מיישור הבלוק */
+.clients-section {
+    margin-top: 40px !important;
     text-align: left !important;
+    display: block !important;
 }
 
-.clients-section h3 { 
-    font-size: 11px !important; 
-    text-transform: uppercase !important; 
-    letter-spacing: 2px !important; 
-    color: #888 !important; 
-    margin-bottom: 25px !important; 
+.clients-section h3 {
+    font-size: 11px !important;
+    text-transform: uppercase !important;
+    letter-spacing: 2px !important;
+    color: #888888 !important;
+    margin-bottom: 25px !important;
     font-weight: 500 !important;
     text-align: left !important;
 }
 
-.clients-list { 
-    list-style: none !important; 
-    padding: 0 !important; 
+.clients-list {
+    list-style: none !important;
+    padding: 0 !important;
     margin: 0 !important;
-    display: flex !important; 
-    flex-direction: column !important; 
-    gap: 14px !important; 
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 14px !important;
 }
 
-.clients-list li { 
-    font-size: 13px !important; 
-    color: #444 !important; 
-    border-bottom: none !important; 
-    padding-bottom: 0 !important; 
-    max-width: 100% !important;
+.clients-list li {
+    font-size: 13px !important;
+    color: #444444 !important;
     text-align: left !important;
-}
+    border-bottom: none !important;
+    padding-bottom: 0 !important;
+    max-width: 100% !important;
+}}
 /* --- דף קשר (Contact Page) --- */
 .contact-content {
     width: 80vw !important;
