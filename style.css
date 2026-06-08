@@ -53,31 +53,36 @@ body.nav-open #site-wrapper {
 }
 
 body.nav-open #side-nav { left: 0; }
-
-/* --- ניווט טקסטואלי עליון --- */
+/* --- ניווט טקסטואלי עליון - מתואם לשורת התיאור התחתונה --- */
 .nav-wrapper { 
     position: absolute; 
     left: 5%; 
-    top: 52px; 
+    /* הסטה למטה כדי להתיישב בדיוק על אותו קו גובה (Baseline) של ה-sub-logo */
+    top: 93px; 
     z-index: 4000; 
+    margin: 0;
+    padding: 0;
+    line-height: 1; /* מאפס גבהים מיותרים מסביב לטקסט */
 }
 
 .main-nav-links { 
     display: flex; 
     align-items: center; 
-    gap: 30px; 
+    gap: 20px; /* מרווח מעודן בין הקישורים */
     direction: ltr; 
 }
 
 .nav-label { 
-    font-size: 13px; 
+    font-size: 13px; /* גודל זהה לחלוטין לזה של ה-sub-logo שלך */
     text-transform: uppercase; 
-    letter-spacing: 1.5px; 
+    letter-spacing: 2px; /* תואם בדיוק ל-letter-spacing של ה-sub-logo */
     text-decoration: none; 
     color: var(--main); 
-    font-weight: 500; 
+    font-weight: 400; /* משקל קל ונקי שתואם לשורת התיאור */
     transition: 0.3s; 
     cursor: pointer; 
+    line-height: 1;
+    display: inline-block;
 }
 
 .nav-label:hover { color: var(--muted); }
