@@ -1,4 +1,4 @@
-/* style.css - Full Premium Aligned Portfolio Layout (Final Production Version) */
+/* style.css - Full Premium Aligned Portfolio Layout (v3 - Final Production with About Upgrades) */
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
 
@@ -95,7 +95,7 @@ body.nav-open .nav-wrapper {
     pointer-events: none !important;
 }
 
-/* --- התאמת הניווט העליון לדפים פנימיים (כדי שיינעל על קו ה-80vw של התמונות) --- */
+/* --- התאמת הניווט העליון לדפים פנימיים (כדי שיינעל על קו ה-80vw של התמונות והתוכן) --- */
 body:not(:has(.portfolio-grid)) .nav-wrapper {
     left: calc(50% - 40vw) !important;
 }
@@ -353,12 +353,63 @@ header + main > div:first-child {
     margin-bottom: 60px !important;
 }
 
-/* --- דף אודות ודף קשר --- */
-.about-content, .contact-content {
+/* --- דף אודות (About Page) - טיפוגרפיה ומקצב פרימיום --- */
+.about-content {
     max-width: 80vw !important;
     max-width: 1100px !important;
     margin: 0 auto;
-    padding: 80px 0 100px;
+    padding: 60px 0 100px !important; /* תואם בדיוק ליישור הגובה האנכי של דפי הפרויקט */
+    display: grid; 
+    grid-template-columns: 1.1fr 1fr; 
+    gap: 80px; 
+    align-items: start; 
+    direction: ltr;
+}
+
+.about-text p { 
+    font-size: 15px; /* מעודן ומתואם לפסקאות הפרויקט */
+    line-height: 1.7; /* אווריריות וקריאות משופרת */
+    margin-bottom: 30px; 
+    color: #333; /* אפור כהה מאוד, רך לעין משחור מוחלט */
+}
+
+/* רשימת לקוחות נבחרים (Selected Clients) */
+.clients-section {
+    margin-top: 40px;
+}
+
+.clients-section h3 { 
+    font-size: 11px; 
+    text-transform: uppercase; 
+    letter-spacing: 2px; 
+    color: var(--muted); 
+    margin-bottom: 25px; 
+    font-weight: 500;
+}
+
+.clients-list { 
+    list-style: none; 
+    padding: 0; 
+    margin: 0;
+    display: flex; 
+    flex-direction: column; 
+    gap: 14px; /* מרווח קבוע ונקי ללא צפיפות */
+}
+
+.clients-list li { 
+    font-size: 13px; /* מדרג ויזואלי נכון ומאופק */
+    color: #444; 
+    border-bottom: none !important; /* ביטול הקווים התחתוניים המיושנים למראה גלריי נקי */
+    padding-bottom: 0 !important; 
+    max-width: 100%; 
+}
+
+/* --- דף קשר (Contact Page) --- */
+.contact-content {
+    max-width: 80vw !important;
+    max-width: 1100px !important;
+    margin: 0 auto;
+    padding: 60px 0 100px !important;
     text-align: left;
     direction: ltr;
 }
@@ -366,6 +417,7 @@ header + main > div:first-child {
 /* --- מובייל והתאמות רספונסיביות --- */
 @media (max-width: 1024px) {
     .portfolio-grid { grid-template-columns: repeat(3, 1fr); }
+    .about-content { grid-template-columns: 1fr; gap: 40px; }
 }
 
 @media (max-width: 768px) {
