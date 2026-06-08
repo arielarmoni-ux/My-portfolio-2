@@ -1,4 +1,4 @@
-/* style.css - Full Restored & Premium Aligned Portfolio Layout */
+/* style.css - Full Premium Restored Portfolio Layout (v2) */
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
 
@@ -254,7 +254,7 @@ header {
     transform: translateY(-50%) scale(1.1); 
 }
 
-/* --- דף פרויקט פנימי - יישור מושלם לקו התמונה משמאל --- */
+/* --- דף פרויקט פנימי - יישור מושלם לקו התמונה משמאל וריווחים מוקפדים --- */
 header + main > div:first-child {
     width: 80vw !important; 
     max-width: 1100px !important; 
@@ -264,45 +264,56 @@ header + main > div:first-child {
     padding-right: 0 !important;
     text-align: left !important; 
     box-sizing: border-box !important;
+    
+    /* מרווח עליון מתחת לקו ההאדר הציבורי */
+    padding-top: 60px !important;
 }
 
 #project-title {
     text-align: left !important;
     margin-left: 0 !important;
     padding-left: 0 !important;
+    margin-top: 0 !important;
     font-size: 20px;
     letter-spacing: 4px;
     text-transform: uppercase;
     font-weight: 400;
-    margin-bottom: 25px;
+    
+    /* מרווח תחתון עד תחילת הנתונים */
+    margin-bottom: 20px !important;
 }
 
 .project-meta { 
     width: 100% !important;
     max-width: 100% !important;
-    margin: 0 0 25px 0 !important; 
     padding: 0 !important; 
     display: flex !important; 
     flex-direction: column !important; 
-    gap: 5px !important; 
+    gap: 6px !important; /* מרווח קבוע ואחיד בין שורה לשורה במטא (למשל Role ל-Date) */
     direction: ltr !important; 
     text-align: left !important; 
+    
+    /* מרווח תחתון עד לתחילת פסקת התיאור */
+    margin: 0 0 30px 0 !important;
 }
 
 .meta-item .label { font-weight: 400; color: var(--muted); margin-right: 8px; }
-.meta-item .value { font-weight: 500; color: var(--main); } /* עידון משקל הגופן מ-600 ל-500 */
+.meta-item .value { font-weight: 500; color: var(--main); } 
 
 .project-description { 
     width: 100% !important;
     max-width: 100% !important;
-    margin: 0 0 50px 0 !important; 
     padding: 0 !important; 
-    font-size: 15px; /* עידון מ-18px לגודל מגזיני נקי ואלגנטי */
+    font-size: 15px; 
     line-height: 1.6; 
-    color: #333; /* אפור כהה מאוד, קריא ורך יותר משחור מוחלט */
+    color: #333; 
     text-align: left !important; 
     direction: ltr !important; 
     white-space: pre-wrap !important; 
+    
+    /* מרווח נשימה מכובד ומחושב בין סוף פסקת התיאור לתמונה הראשונה בגלריה */
+    margin-top: 0 !important;
+    margin-bottom: 70px !important; 
 }
 
 .project-description a { color: inherit; text-decoration: none; transition: all 0.3s ease; border-bottom: 1px solid transparent; }
@@ -322,8 +333,16 @@ header + main > div:first-child {
     width: 80vw; 
     max-width: 1100px; 
     height: auto; 
-    margin-bottom: 40px; 
     display: block; 
+    
+    /* המרווח האנכי הקבוע, הנקי והעקבי בין תמונה לתמונה */
+    margin-top: 0 !important;
+    margin-bottom: 35px !important; 
+}
+
+/* ביטול המרווח הכפול בתחתית המסך לתמונה האחרונה */
+.gallery img:last-child {
+    margin-bottom: 60px !important;
 }
 
 /* --- דף אודות ודף קשר --- */
@@ -356,6 +375,10 @@ header + main > div:first-child {
         padding-left: 5% !important;
         padding-right: 5% !important;
     }
+    
+    /* במובייל המרווח בין התיאור לתמונות יצטמצם קצת לטובת זרימת מסך קטן */
+    .project-description { margin-bottom: 40px !important; }
+    .gallery img { margin-bottom: 25px !important; }
     
     #prev-project, #next-project { display: none; }
 }
