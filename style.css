@@ -1,4 +1,4 @@
-/* style.css - Full Premium Aligned Portfolio Layout (v8 - Final Production with Justified About & Enlarged Profile Image) */
+/* style.css - Full Premium Aligned Portfolio Layout (v9 - Final Production with Precision 30% About Image & Justify) */
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
 
@@ -342,22 +342,23 @@ header + main > div:first-child {
     margin-bottom: 60px !important;
 }
 
-/* --- דף אודות (About Page) - יישור בלוק והגדלת תמונה ב-30% --- */
+/* --- דף אודות (About Page) - מידות מדויקות ויחס 30% מעודן לתמונה --- */
 .about-content {
     width: 80vw !important;
     max-width: 1100px !important;
     margin: 0 auto !important;
     padding: 60px 0 100px !important; 
     display: grid !important; 
-    /* יחס טורים של 1fr 1fr (חצי חצי) המגדיל את התמונה ב-30% ביחס לקודם ומאזן את העמוד */
-    grid-template-columns: 1fr 1fr !important;
+    /* יחס פרופורציונלי מדויק המגדיל את התמונה ב-30% בעדינות ושומר על איזון מגזיני קלאסי */
+    grid-template-columns: 1.12fr 0.88fr !important;
     gap: 80px !important; 
     align-items: start !important; 
     direction: ltr !important;
 }
 
 .about-text { 
-    text-align: justify !important; /* יישור פסקאות כבלוק */
+    text-align: justify !important; /* יישור בלוק יוקרתי */
+    text-align-last: left !important; /* דואג שהשורה האחרונה של הפסקה לא תימתח בכוח */
     direction: ltr !important;
     display: block !important;
 }
@@ -367,7 +368,8 @@ header + main > div:first-child {
     line-height: 1.7 !important; 
     margin-bottom: 30px !important; 
     color: #333 !important; 
-    text-align: justify !important; /* הגנה נוספת ליישור הבלוק ישירות בפסקה */
+    text-align: justify !important;
+    text-align-last: left !important;
 }
 
 .about-image {
@@ -382,7 +384,7 @@ header + main > div:first-child {
     object-fit: cover !important;
 }
 
-/* רשימת לקוחות נבחרים (Selected Clients) - שמירת יישור לשמאל נקי */
+/* רשימת לקוחות נבחרים (Selected Clients) */
 .clients-section { 
     margin-top: 40px !important; 
     text-align: left !important;
@@ -426,7 +428,7 @@ header + main > div:first-child {
     direction: ltr;
 }
 
-/* --- מובייל והתאמות רספונסיביות - נעילת מירכוז מוחלטת והצגת שמות פרויקטים --- */
+/* --- מובייל והתאמות רספונסיביות --- */
 @media (max-width: 1024px) {
     .portfolio-grid { grid-template-columns: repeat(3, 1fr); }
     .about-content { grid-template-columns: 1fr !important; gap: 40px !important; }
@@ -442,7 +444,6 @@ header + main > div:first-child {
         align-items: center !important; 
     }
     
-    /* מירכוז אטומה לכל דפי האתר במובייל */
     .nav-wrapper,
     body .nav-wrapper,
     body:not(:has(.portfolio-grid)) .nav-wrapper { 
@@ -464,21 +465,12 @@ header + main > div:first-child {
         justify-content: center !important;
         align-items: center !important;
         gap: 20px !important; 
-        width: auto !important;
     }
     
-    /* הצגת שמות הפרויקטים בצורה קבועה במובייל בזמן גלילה */
-    .project-info { 
-        opacity: 1 !important; 
-        padding: 10px 0 20px 0 !important; 
-    }
+    .project-info { opacity: 1 !important; padding: 10px 0 20px 0 !important; }
+    .project-card:hover .img-container::after { opacity: 0 !important; }
     
-    /* ביטול שכבת ההחשכה הכהה על צילום הפרויקט במובייל */
-    .project-card:hover .img-container::after { 
-        opacity: 0 !important; 
-    }
-    
-    /* מובייל אודות: תמונה עולה לראש העמוד והטקסט מתחתיה */
+    /* מובייל אודות: תמונה בראש העמוד */
     .about-image { 
         order: -1 !important; 
         margin-bottom: 35px !important; 
