@@ -1,4 +1,4 @@
-/* style.css - Full Premium Restored Portfolio Layout (v2) */
+/* style.css - Full Premium Aligned Portfolio Layout (Final Production Version) */
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
 
@@ -54,15 +54,16 @@ body.nav-open #site-wrapper {
 
 body.nav-open #side-nav { left: 0; }
 
-/* --- ניווט טקסטואלי עליון - טיפוגרפיה מעודנת ומיושרת פיקסל-פרפקט --- */
+/* --- ניווט טקסטואלי עליון - טיפוגרפיה מעודנת ומיקום מושלם מורד למטה --- */
 .nav-wrapper { 
     position: absolute; 
-    left: 5%; /* מיושר אוטומטית לקו הגריד בדף הבית */
-    top: 102px; /* יישור אופקי מדויק לאותה השורה של Exhibition Architecture */
+    left: 5%; /* מיושר אנכית לקו הגריד בדף הבית */
+    top: 102px; /* הורד ל-102px בהתאמה מושלמת למבנה ההאדר החדש */
     z-index: 4000; 
     margin: 0;
     padding: 0;
     line-height: 1;
+    transition: opacity 0.4s ease, visibility 0.4s ease;
 }
 
 .main-nav-links { 
@@ -87,7 +88,14 @@ body.nav-open #side-nav { left: 0; }
 
 .nav-label:hover { color: var(--muted); }
 
-/* --- התאמת הניווט העליון לדף פרויקט פנימי (כדי שיינעל על קו ה-80vw של התמונות) --- */
+/* --- הסתרת הניווט העליון באופן גלובלי בכל דפי האתר כאשר הסיידבר פתוח --- */
+body.nav-open .nav-wrapper {
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+}
+
+/* --- התאמת הניווט העליון לדפים פנימיים (כדי שיינעל על קו ה-80vw של התמונות) --- */
 body:not(:has(.portfolio-grid)) .nav-wrapper {
     left: calc(50% - 40vw) !important;
 }
@@ -122,11 +130,11 @@ body:not(:has(.portfolio-grid)) .nav-wrapper {
 
 .project-list-nav a:hover { color: var(--muted); transform: translateX(8px); }
 
-/* --- Header & Logo --- */
+/* --- Header & Logo - קו תחתון הועלה למעלה במיקום מהודק ויוקרתי --- */
 header { 
     position: relative; 
-    min-height: 125px; 
-    padding: 40px 5% 25px; 
+    min-height: 125px; /* צומצם מ-140px להעלאת הקו */
+    padding: 40px 5% 15px; /* פדינג תחתון צומצם מ-25px ל-15px לקירוב הקו למעלה */
     display: flex; 
     flex-direction: column; 
     justify-content: center; 
@@ -152,9 +160,9 @@ header {
 }
 
 .sub-logo {
-    font-size: 11px !important; /* מוקטן בהתאמה לניווט ליצירת מדרג אחיד */
+    font-size: 11px !important; 
     letter-spacing: 2px;
-    color: #999; /* גוון אפור מעודן, פחות קשיח */
+    color: #999; 
     text-transform: uppercase;
     margin-top: 10px;
     line-height: 1;
@@ -376,7 +384,6 @@ header + main > div:first-child {
         padding-right: 5% !important;
     }
     
-    /* במובייל המרווח בין התיאור לתמונות יצטמצם קצת לטובת זרימת מסך קטן */
     .project-description { margin-bottom: 40px !important; }
     .gallery img { margin-bottom: 25px !important; }
     
