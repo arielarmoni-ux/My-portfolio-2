@@ -344,7 +344,8 @@ header + main > div:first-child:not(.about-text-col) {
 
 .about-grid-container {
     display: grid !important;
-    grid-template-columns: 1fr 1fr !important;
+    /* עדכון היחס: הטקסט נשאר רחב (1.2fr) והתמונה קטנה ב-50% (0.4fr) */
+    grid-template-columns: 1.2fr 0.4fr !important;
     gap: 80px !important;
     width: 80vw !important;
     max-width: 1100px !important;
@@ -372,7 +373,7 @@ header + main > div:first-child:not(.about-text-col) {
 }
 
 .clients-section {
-    margin-top: auto !important; /* דוחף לתחתית הטור */
+    margin-top: auto !important;
     padding-top: 40px !important;
 }
 
@@ -405,7 +406,7 @@ header + main > div:first-child:not(.about-text-col) {
     width: 100% !important;
     height: 100% !important;
     min-height: 400px !important;
-    background-color: #f7f7f7 !important; /* רקע עדין למקרה שהתמונה חסרה */
+    background-color: #f7f7f7 !important;
     display: block !important;
 }
 
