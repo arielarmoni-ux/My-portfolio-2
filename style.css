@@ -381,8 +381,9 @@ header + main > div:first-child:not(.about-text-col) {
 }
 
 .clients-section {
-    margin-top: auto !important;
-    padding-top: 40px !important;
+    /* הריווח הוחלף מ-auto ל-120px שנותן בדיוק את הרווח של 5 שורות שביקשת */
+    margin-top: 120px !important; 
+    padding-top: 0 !important;
 }
 
 .clients-section h3 {
