@@ -434,6 +434,7 @@ header + main > div:first-child:not(.about-text-col) {
     display: flex !important;
     flex-direction: column !important;
     align-items: flex-start !important; 
+    direction: ltr !important; /* כפיית כיווניות משמאל לימין בשביל יישור הקרדיט */
 }
 
 .gallery-figure:last-child {
@@ -453,6 +454,8 @@ header + main > div:first-child:not(.about-text-col) {
     margin: 0 !important;
     font-weight: 400 !important;
     line-height: 1 !important;
+    text-align: left !important; /* נעילת יישור הטקסט לשמאל */
+    width: 100% !important;
 }
 
 /* --- מובייל והתאמות רספונסיביות --- */
