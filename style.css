@@ -1,4 +1,4 @@
-/* style.css - Full Premium Aligned Portfolio Layout (v5 - Centered Slider & Enhanced Nav) */
+/* style.css - Full Premium Aligned Portfolio Layout (v5 - Centered Slider & Bottom Nav) */
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
 
@@ -232,34 +232,35 @@ header {
     font-weight: 500; 
 }
 
-/* --- ניווט פרויקטים (טקסט מינימליסטי פרימיום מוגדל וכהה) --- */
-.nav-arrow { 
-    position: fixed; 
-    top: 50%; 
-    transform: translateY(-50%); 
-    z-index: 2500; 
-    text-decoration: none; 
-    color: var(--main); 
-    font-size: 12px; /* הוגדל מ-10px ל-12px (20% יותר) */
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    opacity: 0.6; /* הוכהה משמעותית (קודם היה 0.3) */
-    transition: all 0.3s ease; 
-    white-space: nowrap;
+/* --- ניווט פרויקטים תחתון --- */
+.project-nav-bottom {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    gap: 15px !important;
+    padding: 40px 0 80px 0 !important;
+    width: 100% !important;
+    direction: ltr !important;
 }
 
-#prev-project { left: calc(50% - 40vw - 150px) !important; }
-#next-project { right: calc(50% - 40vw - 150px) !important; }
-
-@media (max-width: 1300px) {
-    #prev-project { left: 2% !important; }
-    #next-project { right: 2% !important; }
+.project-nav-bottom a {
+    font-size: 12px !important;
+    text-transform: uppercase !important;
+    letter-spacing: 2px !important;
+    color: var(--main) !important;
+    text-decoration: none !important;
+    opacity: 0.6 !important;
+    transition: all 0.3s ease !important;
 }
 
-.nav-arrow:hover { 
-    opacity: 1; 
-    color: var(--main); 
-    transform: translateY(-50%) scale(1.02); 
+.project-nav-bottom a:hover {
+    opacity: 1 !important;
+}
+
+.nav-divider {
+    color: var(--muted) !important;
+    font-size: 12px !important;
+    opacity: 0.6 !important;
 }
 
 /* --- דף פרויקט פנימי --- */
@@ -438,7 +439,7 @@ header + main > div:first-child:not(.about-text-col) {
     height: 55vh !important; 
     min-height: 350px !important;
     display: flex !important;
-    justify-content: center !important; /* תוקן מ-flex-start חזרה ל-center */
+    justify-content: center !important; 
     align-items: flex-start !important; 
     box-sizing: border-box !important;
 }
@@ -486,7 +487,7 @@ header + main > div:first-child:not(.about-text-col) {
     width: 100% !important;
 }
 
-/* מיקום החצים מחוץ לגבולות התמונה */
+/* מיקום החצים של הסליידר מחוץ לגבולות התמונה */
 .carousel-arrow {
     position: absolute;
     top: 50%;
@@ -612,8 +613,6 @@ header + main > div:first-child:not(.about-text-col) {
     
     .carousel-arrow.prev { left: 10px; }
     .carousel-arrow.next { right: 10px; }
-    
-    #prev-project, #next-project { display: none; }
 }
 
 @media (max-width: 480px) {
