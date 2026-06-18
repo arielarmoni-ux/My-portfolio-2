@@ -6,7 +6,6 @@
     <title>Project | Ariel Armoni</title>
     <meta name="description" content="Exhibition design project by Ariel Armoni - architect and exhibition designer.">
 
-    <!-- Open Graph -->
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="Ariel Armoni | Exhibition Architecture">
     <meta property="og:title" content="Project | Ariel Armoni">
@@ -59,14 +58,13 @@
                     document.getElementById('next-project').href = `project.html?folder=${folders[idx >= folders.length - 1 ? 0 : idx + 1]}`;
                 }
 
-                // הגנת משתנים במקרה שהם לא מוגדרים ב-sidebar.js
                 const base = typeof baseURL !== 'undefined' ? baseURL : '';
                 const cb = typeof cacheBuster !== 'undefined' ? cacheBuster : Date.now();
 
                 const res = await fetch(`${base}/images/${folder}/info.txt?v=${cb}`);
                 const fullText = await res.text();
                 
-                // פיצול הקובץ בין המידע הרגיל לרשימת הקבצים (אם קיימת)
+                // פיצול הקובץ בין המידע של הפרויקט לרשימת ה-FILES
                 const parts = fullText.split("FILES:");
                 const lines = parts[0].split(/\r?\n/).map(l => l.trim()).filter(l => l !== "");
 
@@ -94,62 +92,65 @@
                     }
                 });
 
-                const gallery = document.getElementById('gallery');
-
-                // בדיקה איזו שיטה להפעיל
+                // יצירת מפת קרדיטים מתוך רשימת ה-FILES
+                const creditsMap = {};
                 if (parts[1]) {
-                    // ===== שיטה חדשה (עם קרדיטים) מתוך FILES: =====
-                    const fileNames = parts[1].split(/\r?\n/).map(l => l.trim()).filter(l => l !== "");
-
-                    for (const filename of fileNames) {
-                        const img = document.createElement('img');
-                        img.src = `${base}/images/${folder}/${filename}`;
-                        img.alt = `${projectTitle} image`;
-                        img.style.display = 'block';
-
-                        const nameWithoutExt = filename.substring(0, filename.lastIndexOf('.'));
-                        let creditText = "";
-                        if (nameWithoutExt.includes(' - ')) {
-                            creditText = nameWithoutExt.split(' - ').slice(1).join(' - ').trim();
+                    parts[1].split(/\r?\n/).forEach(line => {
+                        line = line.trim();
+                        if (!line) return;
+                        
+                        // לקיחת שתי האותיות הראשונות כמספר התמונה (למשל "01")
+                        const imgNum = line.substring(0, 2);
+                        
+                        if (line.includes(' - ')) {
+                            let creditText = line.split(' - ').slice(1).join(' - ').trim();
+                            
+                            // מנקה אוטומטית סיומות קבצים אם הן נשארו בטקסט כדי להציג רק את הקרדיט נקי
+                            if (creditText.toLowerCase().endsWith('.jpg')) creditText = creditText.slice(0, -4);
+                            if (creditText.toLowerCase().endsWith('.jpeg')) creditText = creditText.slice(0, -5);
+                            if (creditText.toLowerCase().endsWith('.png')) creditText = creditText.slice(0, -4);
+                            
+                            creditsMap[imgNum] = creditText.trim();
                         }
+                    });
+                }
 
-                        await new Promise((resolve) => {
-                            img.onload = () => {
-                                if (creditText) {
-                                    const figure = document.createElement('figure');
-                                    figure.className = 'gallery-figure';
-                                    
-                                    const figcaption = document.createElement('figcaption');
-                                    figcaption.className = 'photo-credit';
-                                    figcaption.textContent = creditText;
-                                    
-                                    figure.appendChild(img);
-                                    figure.appendChild(figcaption);
-                                    gallery.appendChild(figure);
-                                } else {
-                                    gallery.appendChild(img);
-                                }
-                                resolve(true);
-                            };
-                            img.onerror = () => resolve(false); 
-                        });
-                    }
-                } else {
-                    // ===== שיטה ישנה (ניחוש מ-1 עד 50) לפרויקטים ישנים =====
-                    for (let i = 1; i <= 50; i++) {
-                        const imgNum = i.toString().padStart(2, '0');
-                        const img = document.createElement('img');
-                        img.src = `${base}/images/${folder}/${imgNum}.jpg`;
-                        img.alt = `${projectTitle} - image ${i}`;
-                        img.style.display = 'block';
+                const gallery = document.getElementById('gallery');
+                
+                // הלולאה המקורית שרצה על קבצי 01.jpg, 02.jpg ועוצרת כשנגמרות התמונות בתיקייה
+                for (let i = 1; i <= 50; i++) {
+                    const imgNum = i.toString().padStart(2, '0');
+                    const img = document.createElement('img');
+                    img.src = `${base}/images/${folder}/${imgNum}.jpg`;
+                    img.alt = `${projectTitle} - image ${i}`;
+                    img.style.display = 'block';
 
-                        const ok = await new Promise((resolve) => {
-                            img.onload = () => { gallery.appendChild(img); resolve(true); };
-                            img.onerror = () => { img.remove(); resolve(false); };
-                        });
+                    const ok = await new Promise((resolve) => {
+                        img.onload = () => {
+                            // אם מצאנו ברשימה קרדיט שמתאים למספר התמונה הנוכחי
+                            if (creditsMap[imgNum]) {
+                                const figure = document.createElement('figure');
+                                figure.className = 'gallery-figure';
+                                
+                                const figcaption = document.createElement('figcaption');
+                                figcaption.className = 'photo-credit';
+                                figcaption.textContent = creditsMap[imgNum];
+                                
+                                gallery.appendChild(figure);
+                                figure.appendChild(img);
+                                figure.appendChild(figcaption);
+                            } else {
+                                gallery.appendChild(img);
+                            }
+                            resolve(true);
+                        };
+                        img.onerror = () => {
+                            img.remove();
+                            resolve(false);
+                        };
+                    });
 
-                        if (!ok) break;
-                    }
+                    if (!ok) break;
                 }
 
             } catch (e) { console.error(e); }
