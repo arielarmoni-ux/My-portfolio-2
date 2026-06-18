@@ -4,6 +4,6 @@ For: Israel Museum Jerusalem
 Date: 2018
 Curator: Aya Miron
 
-Files:
-01 - Photo by Elie Psoner
-02- 3D visualisation - Ariel Armoni
+FILES:
+01 - Photo by Elie Posner
+02 - 3D Visualisation by Ariel Armoni
