@@ -1,4 +1,4 @@
-/* style.css - Full Premium Aligned Portfolio Layout (v5 - Enlarged Slider) */
+/* style.css - Full Premium Aligned Portfolio Layout (v5 - Perfectly Aligned Slider) */
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
 
@@ -232,7 +232,7 @@ header {
     font-weight: 500; 
 }
 
-/* --- חצי ניווט פנימיים (עודכן לטקסט טיפוגרפי פרימיום) --- */
+/* --- ניווט פרויקטים (טקסט מינימליסטי פרימיום) --- */
 .nav-arrow { 
     position: fixed; 
     top: 50%; 
@@ -248,8 +248,8 @@ header {
     white-space: nowrap;
 }
 
-#prev-project { left: calc(50% - 40vw - 120px) !important; }
-#next-project { right: calc(50% - 40vw - 120px) !important; }
+#prev-project { left: calc(50% - 40vw - 150px) !important; }
+#next-project { right: calc(50% - 40vw - 150px) !important; }
 
 @media (max-width: 1300px) {
     #prev-project { left: 2% !important; }
@@ -313,7 +313,7 @@ header + main > div:first-child:not(.about-text-col) {
     direction: ltr !important; 
     white-space: pre-wrap !important; 
     margin-top: 0 !important;
-    margin-bottom: 15px !important; /* צומצם ל-15px כדי למשוך את הגלריה הכי קרוב לטקסט */
+    margin-bottom: 15px !important; 
 }
 
 .project-description a { color: inherit; text-decoration: none; transition: all 0.3s ease; border-bottom: 1px solid transparent; }
@@ -405,7 +405,7 @@ header + main > div:first-child:not(.about-text-col) {
 }
 
 /* =========================================
-   PROJECT SLIDER & DYNAMIC CREDITS (ENLARGED WINDOW)
+   PROJECT SLIDER & DYNAMIC CREDITS (PERFECTLY ALIGNED)
    ========================================= */
 
 .carousel-container {
@@ -413,7 +413,7 @@ header + main > div:first-child:not(.about-text-col) {
     width: 80vw !important;
     max-width: 1100px !important;
     margin: 0 auto 60px auto !important;
-    padding: 0 60px !important; 
+    padding: 0 !important; /* ריפוד בוטל כדי לאפשר לתמונות למלא את רוחב הטקסט המלא */
     direction: ltr !important;
     box-sizing: border-box !important;
 }
@@ -431,14 +431,13 @@ header + main > div:first-child:not(.about-text-col) {
     width: 100% !important;
 }
 
-/* גובה החלון הוגדל ל-75vh כדי שהקרוסלה תהיה גדולה משמעותית ותתקרב לטקסט */
+/* גובה קבוע בוטל לטובת גובה אוטומטי המונע רווחים ריקים */
 .carousel-slide {
     flex: 0 0 100% !important;
     width: 100% !important;
-    height: 75vh !important; 
-    min-height: 450px !important;
+    height: auto !important; 
     display: flex !important;
-    justify-content: center !important;
+    justify-content: flex-start !important; /* הצמדה לשמאל ליישור מושלם עם הטקסט מעל */
     align-items: flex-start !important; 
     box-sizing: border-box !important;
 }
@@ -448,7 +447,7 @@ header + main > div:first-child:not(.about-text-col) {
     flex-direction: column !important;
     align-items: flex-start !important; 
     justify-content: flex-start !important; 
-    height: 100% !important;
+    height: auto !important;
     width: auto !important;
     max-width: 100% !important;
     margin: 0 !important;
@@ -456,22 +455,20 @@ header + main > div:first-child:not(.about-text-col) {
     direction: ltr !important;
 }
 
+/* נעילת גובה מקסימלי ל-70vh המבטיח תצוגה מוגדלת אך פרופורציונלית של תמונות אנכיות */
+.carousel-slide img,
 .carousel-slide .gallery-figure img {
-    height: calc(100% - 22px) !important; 
+    height: auto !important;
+    max-height: 70vh !important; 
     width: auto !important;
     max-width: 100% !important;
     object-fit: contain !important;
     display: block !important;
-    margin: 0 0 8px 0 !important;
+    margin: 0 !important;
 }
 
-.carousel-slide > img {
-    height: 100% !important;
-    width: auto !important;
-    max-width: 100% !important;
-    object-fit: contain !important;
-    display: block !important;
-    margin: 0 auto !important;
+.carousel-slide .gallery-figure img {
+    margin-bottom: 8px !important; /* הצמדת הקרדיט לתחתית התמונה */
 }
 
 .photo-credit {
@@ -486,6 +483,7 @@ header + main > div:first-child:not(.about-text-col) {
     width: 100% !important;
 }
 
+/* מיקום חצי הניווט מחוץ לגבולות התמונה */
 .carousel-arrow {
     position: absolute;
     top: 50%;
@@ -513,9 +511,10 @@ header + main > div:first-child:not(.about-text-col) {
     transform: translateY(-50%) scale(1.05);
 }
 
-.carousel-arrow.prev { left: 5px; }
-.carousel-arrow.next { right: 5px; }
+.carousel-arrow.prev { left: -50px; } /* זז שמאלה אל מחוץ לגריד */
+.carousel-arrow.next { right: -50px; } /* זז ימינה אל מחוץ לגריד */
 
+/* נקודות הניווט - מודבקות קרוב לתחתית התמונה */
 .carousel-dots {
     display: flex;
     justify-content: center;
@@ -593,7 +592,10 @@ header + main > div:first-child:not(.about-text-col) {
     .portfolio-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
     body.nav-open #site-wrapper { transform: translateX(var(--nav-width)); margin-left: 0; width: 100%; }
     
-    .carousel-container,
+    .carousel-container {
+        padding: 0 40px !important; /* החזרת מרווח פנימי במובייל כדי שהחצים לא יצאו מהמסך */
+    }
+    
     header + main > div:first-child:not(.about-text-col),
     .contact-content,
     .about-grid-container {
@@ -614,8 +616,4 @@ header + main > div:first-child:not(.about-text-col) {
 @media (max-width: 480px) {
     .portfolio-grid { grid-template-columns: 1fr; }
     .logo { font-size: 24px; letter-spacing: 3px; }
-    
-    .carousel-slide {
-        height: 50vh !important;
-    }
 }
