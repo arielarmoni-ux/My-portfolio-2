@@ -6,7 +6,6 @@
     <title>Project | Ariel Armoni</title>
     <meta name="description" content="Exhibition design project by Ariel Armoni - architect and exhibition designer.">
 
-    <!-- Open Graph -->
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="Ariel Armoni | Exhibition Architecture">
     <meta property="og:title" content="Project | Ariel Armoni">
@@ -51,7 +50,6 @@
             if (!folder) return;
 
             try {
-                // שימוש בנתונים שכבר נטענו על ידי sidebar.js - ללא בקשת list.txt נוספת
                 const { folders } = await window.portfolioData;
                 const idx = folders.indexOf(folder);
 
@@ -61,11 +59,14 @@
                 }
 
                 const res = await fetch(`${baseURL}/images/${folder}/info.txt?v=${cacheBuster}`);
-                const lines = (await res.text()).split(/\r?\n/).map(l => l.trim()).filter(l => l !== "");
+                const fullText = await res.text();
+                
+                // פיצול הקובץ בין המידע הרגיל לרשימת הקבצים
+                const parts = fullText.split("FILES:");
+                const lines = parts[0].split(/\r?\n/).map(l => l.trim()).filter(l => l !== "");
 
                 const projectTitle = lines[0];
                 document.getElementById('project-title').textContent = projectTitle;
-
                 document.title = `${projectTitle} | Ariel Armoni`;
                 document.querySelector('meta[property="og:title"]').setAttribute('content', `${projectTitle} | Ariel Armoni`);
 
@@ -88,21 +89,46 @@
                     }
                 });
 
-                const gallery = document.getElementById('gallery');
-                for (let i = 1; i <= 50; i++) {
-                    const imgNum = i.toString().padStart(2, '0');
-                    const img = document.createElement('img');
-                    img.src = `${baseURL}/images/${folder}/${imgNum}.jpg`;
-                    img.alt = `${projectTitle} - image ${i}`;
-                    img.style.display = 'block';
-                    gallery.appendChild(img);
+                // טעינת התמונות והקרדיטים מתוך הרשימה בסוף ה-info.txt
+                if (parts[1]) {
+                    const fileNames = parts[1].split(/\r?\n/).map(l => l.trim()).filter(l => l !== "");
+                    const gallery = document.getElementById('gallery');
 
-                    const ok = await new Promise((resolve) => {
-                        img.onload = () => resolve(true);
-                        img.onerror = () => { img.remove(); resolve(false); };
-                    });
+                    for (const filename of fileNames) {
+                        const img = document.createElement('img');
+                        img.src = `${baseURL}/images/${folder}/${filename}`;
+                        img.alt = `${projectTitle} image`;
+                        img.style.display = 'block';
 
-                    if (!ok) break;
+                        // חילוץ הקרדיט משם הקובץ
+                        const nameWithoutExt = filename.substring(0, filename.lastIndexOf('.'));
+                        let creditText = "";
+                        if (nameWithoutExt.includes(' - ')) {
+                            creditText = nameWithoutExt.split(' - ').slice(1).join(' - ').trim();
+                        }
+
+                        // המתנה לטעינת התמונה לפני הכנסתה לדף
+                        await new Promise((resolve) => {
+                            img.onload = () => {
+                                if (creditText) {
+                                    const figure = document.createElement('figure');
+                                    figure.className = 'gallery-figure';
+                                    
+                                    const figcaption = document.createElement('figcaption');
+                                    figcaption.className = 'photo-credit';
+                                    figcaption.textContent = creditText;
+                                    
+                                    figure.appendChild(img);
+                                    figure.appendChild(figcaption);
+                                    gallery.appendChild(figure);
+                                } else {
+                                    gallery.appendChild(img);
+                                }
+                                resolve(true);
+                            };
+                            img.onerror = () => resolve(false); // מדלג אם הקובץ לא נמצא
+                        });
+                    }
                 }
 
             } catch (e) { console.error(e); }
