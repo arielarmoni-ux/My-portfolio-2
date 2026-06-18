@@ -17,9 +17,6 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <a href="#" id="prev-project" class="nav-arrow" style="left: 2%;">&#8592;</a>
-    <a href="#" id="next-project" class="nav-arrow" style="right: 2%;">&#8594;</a>
-
     <div id="site-wrapper">
         <header>
             <div class="nav-wrapper">
@@ -34,13 +31,19 @@
         </header>
 
         <main>
-            <div style="text-align: center; padding: 60px 5% 20px;">
+            <div style="text-align: center; padding: 60px 5% 5px;">
                 <h1 id="project-title" style="font-size: 20px; letter-spacing: 4px; text-transform: uppercase; font-weight: 400; margin-bottom: 25px;"></h1>
                 <div id="project-meta" class="project-meta"></div>
                 <div id="project-desc" class="project-description"></div>
             </div>
             
             <div id="gallery" class="gallery"></div>
+
+            <div class="project-nav-bottom">
+                <a href="#" id="prev-project">previous</a>
+                <span class="nav-divider">|</span>
+                <a href="#" id="next-project">next</a>
+            </div>
         </main>
     </div>
 
@@ -109,7 +112,6 @@
                     });
                 }
 
-                // בניית מבנה הקרוסלה
                 const gallery = document.getElementById('gallery');
                 
                 const carouselContainer = document.createElement('div');
@@ -165,7 +167,6 @@
                     }
                 });
 
-                // פונקציית הזרקה משודרגת העוטפת כל אלמנט בסלייד ייעודי אחיד
                 function addSlideToCarousel(element) {
                     const slide = document.createElement('div');
                     slide.className = 'carousel-slide';
@@ -196,7 +197,6 @@
                     }
                 }
 
-                // לולאת טעינת קבצי הדירוג
                 for (let i = 1; i <= 50; i++) {
                     const imgNum = i.toString().padStart(2, '0');
                     const img = document.createElement('img');
