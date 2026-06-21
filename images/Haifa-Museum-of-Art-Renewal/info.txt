@@ -1,5 +1,4 @@
 Haifa Museum of Art - Renewal
-Role: Architect
-For:  Hifa Museum of Art
-Date: 2022
+Client: Haifa Museum of Art
+Year: 2022
 Photography: Elie Posner
