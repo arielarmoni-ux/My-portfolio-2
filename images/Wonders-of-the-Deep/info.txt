@@ -4,5 +4,30 @@ Client: Israel Museum Jerusalem
 Year: 2023
 Curator: Michal Broshi Nahmani
 Associate Curator: Lia Lahav-Klein
-Photography: Elie Posner
+
+
+FILES:
+01 - Photo by Elie Posner
+02 - Photo by Elie Posner
+03 - Photo by Elie Posner
+04 - Photo by Elie Posner
+05 - Photo by Elie Posner
+06 - Photo by Elie Posner
+07 - Photo by Elie Posner
+08 - Photo by Elie Posner
+09 - Photo by Elie Posner
+10 - Photo by Elie Posner
+11 - Photo by Elie Posner
+12 - Photo by Elie Posner
+13 - Photo by Elie Posner
+14 - Photo by Elie Posner
+15 - Photo by Elie Posner
+16 - Photo by Elie Posner
+17 - Photo by Elie Posner
+18 - Photo by Elie Posner
+19 - Photo by Elie Posner
+20 - Photo by Elie Posner
+21 - Photo by Elie Posner
+22 - Photo by Elie Posner
+23 - 3D Visualisation Ariel Armoni
 
