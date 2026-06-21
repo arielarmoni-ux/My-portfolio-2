@@ -31,8 +31,8 @@
         </header>
 
         <main>
-            <div style="text-align: center; padding: 50px 5% 30px;">
-                <h1 id="project-title" style="font-size: 20px; letter-spacing: 4px; text-transform: uppercase; font-weight: 400; margin: 0;"></h1>
+            <div class="project-top-text">
+                <h1 id="project-title"></h1>
             </div>
             
             <div id="gallery" class="gallery"></div>
@@ -156,23 +156,131 @@
                 let currentIndex = 0;
                 let totalSlides = 0;
 
-                // --- פונקציה ליישור דינמי של הטקסט לתמונה ---
+                // עדכון: היישור הדינמי עובד עכשיו גם על הכותרת וגם על הטקסט התחתון!
                 function alignTextToImage() {
                     if (window.innerWidth <= 768) {
-                        const textBlock = document.querySelector('.project-bottom-text');
-                        if (textBlock) textBlock.style.maxWidth = '100%';
+                        document.querySelectorAll('.project-top-text, .project-bottom-text').forEach(el => {
+                            el.style.maxWidth = '100%';
+                        });
                         return;
                     }
                     setTimeout(() => {
                         const activeSlide = document.querySelectorAll('.carousel-slide')[currentIndex];
                         if (activeSlide) {
                             const img = activeSlide.querySelector('img');
-                            const textBlock = document.querySelector('.project-bottom-text');
-                            if (img && textBlock && img.offsetWidth > 0) {
-                                textBlock.style.maxWidth = img.offsetWidth + 'px';
+                            if (img && img.offsetWidth > 0) {
+                                document.querySelectorAll('.project-top-text, .project-bottom-text').forEach(el => {
+                                    el.style.maxWidth = img.offsetWidth + 'px';
+                                });
                             }
                         }
                     }, 50);
                 }
 
-                window.addEventListener('resize', align
+                window.addEventListener('resize', alignTextToImage);
+
+                function updateCarousel() {
+                    track.style.transform = `translateX(-${currentIndex * 100}%)`;
+                    document.querySelectorAll('.carousel-dot').forEach((dot, index) => {
+                        dot.classList.toggle('active', index === currentIndex);
+                    });
+                    alignTextToImage();
+                }
+
+                prevBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    if (currentIndex > 0) {
+                        currentIndex--;
+                        updateCarousel();
+                    }
+                });
+
+                nextBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    if (currentIndex < totalSlides - 1) {
+                        currentIndex++;
+                        updateCarousel();
+                    }
+                });
+
+                function addSlideToCarousel(element) {
+                    const slide = document.createElement('div');
+                    slide.className = 'carousel-slide';
+                    slide.appendChild(element);
+                    track.appendChild(slide);
+                    
+                    const dot = document.createElement('div');
+                    dot.className = 'carousel-dot';
+                    if (totalSlides === 0) dot.classList.add('active');
+                    
+                    const slideIndex = totalSlides;
+                    dot.addEventListener('click', () => {
+                        currentIndex = slideIndex;
+                        updateCarousel();
+                    });
+                    
+                    dotsContainer.appendChild(dot);
+                    totalSlides++;
+                    
+                    if (totalSlides <= 1) {
+                        prevBtn.style.display = 'none';
+                        nextBtn.style.display = 'none';
+                        dotsContainer.style.display = 'none';
+                    } else {
+                        prevBtn.style.display = 'flex';
+                        nextBtn.style.display = 'flex';
+                        dotsContainer.style.display = 'flex';
+                    }
+                }
+
+                for (let i = 1; i <= 50; i++) {
+                    const imgNum = i.toString().padStart(2, '0');
+                    const img = document.createElement('img');
+                    img.src = `${base}/images/${folder}/${imgNum}.jpg`;
+                    img.alt = `${projectTitle} - image ${i}`;
+
+                    const ok = await new Promise((resolve) => {
+                        img.onload = () => {
+                            let finalCredit = "";
+                            if (creditsMap[imgNum]) {
+                                finalCredit = creditsMap[imgNum]; 
+                            } else if (globalCredit) {
+                                finalCredit = `Photo by ${globalCredit}`; 
+                            }
+
+                            if (finalCredit !== "") {
+                                const figure = document.createElement('figure');
+                                figure.className = 'gallery-figure';
+                                
+                                const figcaption = document.createElement('figcaption');
+                                figcaption.className = 'photo-credit';
+                                figcaption.textContent = finalCredit;
+                                
+                                figure.appendChild(img);
+                                figure.appendChild(figcaption);
+                                addSlideToCarousel(figure);
+                            } else {
+                                addSlideToCarousel(img); 
+                            }
+                            
+                            // קריאה ראשונית ליישור הטקסט כשהתמונה הראשונה נטענת
+                            if (totalSlides === 1) {
+                                setTimeout(alignTextToImage, 100);
+                            }
+                            resolve(true);
+                        };
+                        img.onerror = () => {
+                            img.remove();
+                            resolve(false);
+                        };
+                    });
+
+                    if (!ok) break;
+                }
+
+            } catch (e) { console.error(e); }
+        }
+        initProject();
+    </script>
+</body>
+</html>
