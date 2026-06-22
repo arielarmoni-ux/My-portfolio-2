@@ -31,17 +31,21 @@
         </header>
 
         <main>
+            <!-- 1. כותרת הפרויקט (מיושרת שמאלה) -->
             <div class="project-top-text">
                 <h1 id="project-title"></h1>
             </div>
             
+            <!-- 2. גלריית התמונות (ממורכזת) -->
             <div id="gallery" class="gallery"></div>
 
+            <!-- 3. טקסט התערוכה (מיושר שמאלה) -->
             <div class="project-bottom-text">
                 <div id="project-meta" class="project-meta"></div>
                 <div id="project-desc" class="project-description"></div>
             </div>
 
+            <!-- 4. ניווט (הבא/הקודם) (מיושר למרכז) -->
             <div class="project-nav-bottom">
                 <a href="#" id="prev-project">previous</a>
                 <span class="nav-divider">|</span>
@@ -135,14 +139,13 @@
                 const track = document.createElement('div');
                 track.className = 'carousel-track';
                 
-                // הפיכת כיווני החצים: ימין לקודם, שמאל להבא
                 const prevBtn = document.createElement('button');
                 prevBtn.className = 'carousel-arrow prev';
-                prevBtn.innerHTML = '&#10095;'; // חץ ימינה
+                prevBtn.innerHTML = '&#10094;'; // החץ השמאלי חזר למקומו
                 
                 const nextBtn = document.createElement('button');
                 nextBtn.className = 'carousel-arrow next';
-                nextBtn.innerHTML = '&#10094;'; // חץ שמאלה
+                nextBtn.innerHTML = '&#10095;'; // החץ הימני חזר למקומו
                 
                 const dotsContainer = document.createElement('div');
                 dotsContainer.className = 'carousel-dots';
