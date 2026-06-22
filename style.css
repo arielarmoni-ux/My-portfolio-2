@@ -593,6 +593,7 @@ header {
         padding-right: 5% !important;
     }
     
+    /* REVERT TO VERTICAL SCROLL ON MOBILE */
     .carousel-container {
         padding: 0 !important; 
         margin-bottom: 40px !important;
