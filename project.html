@@ -17,6 +17,9 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <a href="#" id="prev-project" class="nav-arrow" style="left: 2%;">&#8592;</a>
+    <a href="#" id="next-project" class="nav-arrow" style="right: 2%;">&#8594;</a>
+
     <div id="site-wrapper">
         <header>
             <div class="nav-wrapper">
@@ -31,22 +34,13 @@
         </header>
 
         <main>
-            <div class="project-top-text">
-                <h1 id="project-title"></h1>
-            </div>
-            
-            <div id="gallery" class="gallery"></div>
-
-            <div class="project-bottom-text">
+            <div style="text-align: center; padding: 60px 5% 20px;">
+                <h1 id="project-title" style="font-size: 20px; letter-spacing: 4px; text-transform: uppercase; font-weight: 400; margin-bottom: 25px;"></h1>
                 <div id="project-meta" class="project-meta"></div>
                 <div id="project-desc" class="project-description"></div>
             </div>
-
-            <div class="project-nav-bottom">
-                <a href="#" id="prev-project">previous</a>
-                <span class="nav-divider">|</span>
-                <a href="#" id="next-project">next</a>
-            </div>
+            
+            <div id="gallery" class="gallery"></div>
         </main>
     </div>
 
@@ -84,23 +78,14 @@
 
                 const metaDiv = document.getElementById('project-meta');
                 const descDiv = document.getElementById('project-desc');
-                
-                let globalCredit = "";
 
                 lines.slice(1).forEach(line => {
                     if (line.includes(":")) {
                         const [k, ...v] = line.split(":");
-                        const keyString = k.trim();
-                        const valString = v.join(":").trim();
-                        
-                        if (keyString.toLowerCase() === 'photography' || keyString.toLowerCase() === 'photo') {
-                            globalCredit = valString;
-                        } else {
-                            const item = document.createElement('div');
-                            item.className = 'meta-item';
-                            item.innerHTML = `<span class="label">${keyString}:</span><span class="value">${valString}</span>`;
-                            metaDiv.appendChild(item);
-                        }
+                        const item = document.createElement('div');
+                        item.className = 'meta-item';
+                        item.innerHTML = `<span class="label">${k.trim()}:</span><span class="value">${v.join(":").trim()}</span>`;
+                        metaDiv.appendChild(item);
                     } else {
                         const br = descDiv.innerHTML ? '<br><br>' : '';
                         descDiv.innerHTML += br + line;
@@ -124,6 +109,7 @@
                     });
                 }
 
+                // בניית מבנה הקרוסלה
                 const gallery = document.getElementById('gallery');
                 
                 const carouselContainer = document.createElement('div');
@@ -156,35 +142,11 @@
                 let currentIndex = 0;
                 let totalSlides = 0;
 
-                // עדכון: היישור הדינמי עובד עכשיו גם על הכותרת וגם על הטקסט התחתון!
-                function alignTextToImage() {
-                    if (window.innerWidth <= 768) {
-                        document.querySelectorAll('.project-top-text, .project-bottom-text').forEach(el => {
-                            el.style.maxWidth = '100%';
-                        });
-                        return;
-                    }
-                    setTimeout(() => {
-                        const activeSlide = document.querySelectorAll('.carousel-slide')[currentIndex];
-                        if (activeSlide) {
-                            const img = activeSlide.querySelector('img');
-                            if (img && img.offsetWidth > 0) {
-                                document.querySelectorAll('.project-top-text, .project-bottom-text').forEach(el => {
-                                    el.style.maxWidth = img.offsetWidth + 'px';
-                                });
-                            }
-                        }
-                    }, 50);
-                }
-
-                window.addEventListener('resize', alignTextToImage);
-
                 function updateCarousel() {
                     track.style.transform = `translateX(-${currentIndex * 100}%)`;
                     document.querySelectorAll('.carousel-dot').forEach((dot, index) => {
                         dot.classList.toggle('active', index === currentIndex);
                     });
-                    alignTextToImage();
                 }
 
                 prevBtn.addEventListener('click', (e) => {
@@ -203,6 +165,22 @@
                     }
                 });
 
+                // הוספת ניווט מקלדת המיועד אך ורק למעבר בין התמונות בסליידר
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'ArrowRight') {
+                        if (currentIndex > 0) {
+                            currentIndex--;
+                            updateCarousel();
+                        }
+                    } else if (e.key === 'ArrowLeft') {
+                        if (currentIndex < totalSlides - 1) {
+                            currentIndex++;
+                            updateCarousel();
+                        }
+                    }
+                });
+
+                // פונקציית הזרקה משודרגת העוטפת כל אלמנט בסלייד ייעודי אחיד
                 function addSlideToCarousel(element) {
                     const slide = document.createElement('div');
                     slide.className = 'carousel-slide';
@@ -233,6 +211,7 @@
                     }
                 }
 
+                // לולאת טעינת קבצי הדירוג
                 for (let i = 1; i <= 50; i++) {
                     const imgNum = i.toString().padStart(2, '0');
                     const img = document.createElement('img');
@@ -241,31 +220,19 @@
 
                     const ok = await new Promise((resolve) => {
                         img.onload = () => {
-                            let finalCredit = "";
                             if (creditsMap[imgNum]) {
-                                finalCredit = creditsMap[imgNum]; 
-                            } else if (globalCredit) {
-                                finalCredit = `Photo by ${globalCredit}`; 
-                            }
-
-                            if (finalCredit !== "") {
                                 const figure = document.createElement('figure');
                                 figure.className = 'gallery-figure';
                                 
                                 const figcaption = document.createElement('figcaption');
                                 figcaption.className = 'photo-credit';
-                                figcaption.textContent = finalCredit;
+                                figcaption.textContent = creditsMap[imgNum];
                                 
                                 figure.appendChild(img);
                                 figure.appendChild(figcaption);
                                 addSlideToCarousel(figure);
                             } else {
-                                addSlideToCarousel(img); 
-                            }
-                            
-                            // קריאה ראשונית ליישור הטקסט כשהתמונה הראשונה נטענת
-                            if (totalSlides === 1) {
-                                setTimeout(alignTextToImage, 100);
+                                addSlideToCarousel(img);
                             }
                             resolve(true);
                         };
