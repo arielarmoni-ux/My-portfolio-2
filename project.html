@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project | Ariel Armoni</title>
+    <meta name="description" content="Exhibition design project by Ariel Armoni - architect and exhibition designer.">
+
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Ariel Armoni | Exhibition Architecture">
+    <meta property="og:title" content="Project | Ariel Armoni">
+    <meta property="og:description" content="Exhibition design project by Ariel Armoni.">
+    <meta property="og:image" content="">
+    <meta name="twitter:card" content="summary_large_image">
+
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>A</text></svg>">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="site-wrapper">
+        <header>
+            <div class="nav-wrapper">
+                <div class="main-nav-links">
+                    <span class="nav-label" id="projects-trigger">Projects</span>
+                    <a href="about.html" class="nav-label">About</a>
+                    <a href="contact.html" class="nav-label">Contact</a>
+                </div>
+            </div>
+            <a href="index.html" class="logo">ARIEL ARMONI</a>
+            <div class="sub-logo" style="font-size: 13px; letter-spacing: 2px; color: #888; text-transform: uppercase; margin-top: 8px;">Exhibition Architecture</div>
+        </header>
+
+        <main>
+            <div class="project-top-text">
+                <h1 id="project-title"></h1>
+            </div>
+            
+            <div id="gallery" class="gallery"></div>
+
+            <div class="project-bottom-text">
+                <div id="project-meta" class="project-meta"></div>
+                <div id="project-desc" class="project-description"></div>
+            </div>
+
+            <div class="project-nav-bottom">
+                <a href="#" id="prev-project">previous</a>
+                <span class="nav-divider">|</span>
+                <a href="#" id="next-project">next</a>
+            </div>
+        </main>
+    </div>
+
+    <script src="sidebar.js"></script>
+    <script>
+        async function initProject() {
+            const folder = new URLSearchParams(window.location.search).get('folder');
+            if (!folder) return;
+
+            try {
+                const { folders } = await window.portfolioData;
+                const idx = folders.indexOf(folder);
+
+                if (idx !== -1) {
+                    document.getElementById('prev-project').href = `project.html?folder=${folders[idx <= 0 ? folders.length - 1 : idx - 1]}`;
+                    document.getElementById('next-project').href = `project.html?folder=${folders[idx >= folders.length - 1 ? 0 : idx + 1]}`;
+                }
+
+                const base = typeof baseURL !== 'undefined' ? baseURL : '';
+                const cb = typeof cacheBuster !== 'undefined' ? cacheBuster : Date.now();
+
+                const res = await fetch(`${base}/images/${folder}/info.txt?v=${cb}`);
+                const fullText = await res.text();
+                
+                const parts = fullText.split("FILES:");
+                const lines = parts[0].split(/\r?\n/).map(l => l.trim()).filter(l => l !== "");
+
+                const projectTitle = lines[0];
+                document.getElementById('project-title').textContent = projectTitle;
+                document.title = `${projectTitle} | Ariel Armoni`;
+                document.querySelector('meta[property="og:title"]').setAttribute('content', `${projectTitle} | Ariel Armoni`);
+
+                const coverURL = `${base}/images/${folder}/cover.webp`;
+                document.querySelector('meta[property="og:image"]').setAttribute('content', coverURL);
+
+                const metaDiv = document.getElementById('project-meta');
+                const descDiv = document.getElementById('project-desc');
+                
+                let globalCredit = "";
+
+                lines.slice(1).forEach(line => {
+                    if (line.includes(":")) {
+                        const [k, ...v] = line.split(":");
+                        const keyString = k.trim();
+                        const valString = v.join(":").trim();
+                        
+                        if (keyString.toLowerCase() === 'photography' || keyString.toLowerCase() === 'photo') {
+                            globalCredit = valString;
+                        } else {
+                            const item = document.createElement('div');
+                            item.className = 'meta-item';
+                            item.innerHTML = `<span class="label">${keyString}:</span><span class="value">${valString}</span>`;
+                            metaDiv.appendChild(item);
+                        }
+                    } else {
+                        const br = descDiv.innerHTML ? '<br><br>' : '';
+                        descDiv.innerHTML += br + line;
+                    }
+                });
+
+                const creditsMap = {};
+                if (parts[1]) {
+                    parts[1].split(/\r?\n/).forEach(line => {
+                        line = line.trim();
+                        if (!line) return;
+                        
+                        const imgNum = line.substring(0, 2);
+                        if (line.includes(' - ')) {
+                            let creditText = line.split(' - ').slice(1).join(' - ').trim();
+                            if (creditText.toLowerCase().endsWith('.jpg')) creditText = creditText.slice(0, -4);
+                            if (creditText.toLowerCase().endsWith('.jpeg')) creditText = creditText.slice(0, -5);
+                            if (creditText.toLowerCase().endsWith('.png')) creditText = creditText.slice(0, -4);
+                            creditsMap[imgNum] = creditText.trim();
+                        }
+                    });
+                }
+
+                const gallery = document.getElementById('gallery');
+                
+                const carouselContainer = document.createElement('div');
+                carouselContainer.className = 'carousel-container';
+                
+                const trackWrapper = document.createElement('div');
+                trackWrapper.className = 'carousel-track-wrapper';
+                
+                const track = document.createElement('div');
+                track.className = 'carousel-track';
+                
+                const prevBtn = document.createElement('button');
+                prevBtn.className = 'carousel-arrow prev';
+                prevBtn.innerHTML = '&#10094;';
+                
+                const nextBtn = document.createElement('button');
+                nextBtn.className = 'carousel-arrow next';
+                nextBtn.innerHTML = '&#10095;';
+                
+                const dotsContainer = document.createElement('div');
+                dotsContainer.className = 'carousel-dots';
+                
+                trackWrapper.appendChild(track);
+                carouselContainer.appendChild(prevBtn);
+                carouselContainer.appendChild(trackWrapper);
+                carouselContainer.appendChild(nextBtn);
+                carouselContainer.appendChild(dotsContainer);
+                gallery.appendChild(carouselContainer);
+
+                let currentIndex = 0;
+                let totalSlides = 0;
+
+                // עדכון: היישור הדינמי עובד עכשיו גם על הכותרת וגם על הטקסט התחתון!
+                function alignTextToImage() {
+                    if (window.innerWidth <= 768) {
+                        document.querySelectorAll('.project-top-text, .project-bottom-text').forEach(el => {
+                            el.style.maxWidth = '100%';
+                        });
+                        return;
+                    }
+                    setTimeout(() => {
+                        const activeSlide = document.querySelectorAll('.carousel-slide')[currentIndex];
+                        if (activeSlide) {
+                            const img = activeSlide.querySelector('img');
+                            if (img && img.offsetWidth > 0) {
+                                document.querySelectorAll('.project-top-text, .project-bottom-text').forEach(el => {
+                                    el.style.maxWidth = img.offsetWidth + 'px';
+                                });
+                            }
+                        }
+                    }, 50);
+                }
+
+                window.addEventListener('resize', alignTextToImage);
+
+                function updateCarousel() {
+                    track.style.transform = `translateX(-${currentIndex * 100}%)`;
+                    document.querySelectorAll('.carousel-dot').forEach((dot, index) => {
+                        dot.classList.toggle('active', index === currentIndex);
+                    });
+                    alignTextToImage();
+                }
+
+                prevBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    if (currentIndex > 0) {
+                        currentIndex--;
+                        updateCarousel();
+                    }
+                });
+
+                nextBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    if (currentIndex < totalSlides - 1) {
+                        currentIndex++;
+                        updateCarousel();
+                    }
+                });
+
+                function addSlideToCarousel(element) {
+                    const slide = document.createElement('div');
+                    slide.className = 'carousel-slide';
+                    slide.appendChild(element);
+                    track.appendChild(slide);
+                    
+                    const dot = document.createElement('div');
+                    dot.className = 'carousel-dot';
+                    if (totalSlides === 0) dot.classList.add('active');
+                    
+                    const slideIndex = totalSlides;
+                    dot.addEventListener('click', () => {
+                        currentIndex = slideIndex;
+                        updateCarousel();
+                    });
+                    
+                    dotsContainer.appendChild(dot);
+                    totalSlides++;
+                    
+                    if (totalSlides <= 1) {
+                        prevBtn.style.display = 'none';
+                        nextBtn.style.display = 'none';
+                        dotsContainer.style.display = 'none';
+                    } else {
+                        prevBtn.style.display = 'flex';
+                        nextBtn.style.display = 'flex';
+                        dotsContainer.style.display = 'flex';
+                    }
+                }
+
+                for (let i = 1; i <= 50; i++) {
+                    const imgNum = i.toString().padStart(2, '0');
+                    const img = document.createElement('img');
+                    img.src = `${base}/images/${folder}/${imgNum}.jpg`;
+                    img.alt = `${projectTitle} - image ${i}`;
+
+                    const ok = await new Promise((resolve) => {
+                        img.onload = () => {
+                            let finalCredit = "";
+                            if (creditsMap[imgNum]) {
+                                finalCredit = creditsMap[imgNum]; 
+                            } else if (globalCredit) {
+                                finalCredit = `Photo by ${globalCredit}`; 
+                            }
+
+                            if (finalCredit !== "") {
+                                const figure = document.createElement('figure');
+                                figure.className = 'gallery-figure';
+                                
+                                const figcaption = document.createElement('figcaption');
+                                figcaption.className = 'photo-credit';
+                                figcaption.textContent = finalCredit;
+                                
+                                figure.appendChild(img);
+                                figure.appendChild(figcaption);
+                                addSlideToCarousel(figure);
+                            } else {
+                                addSlideToCarousel(img); 
+                            }
+                            
+                            // קריאה ראשונית ליישור הטקסט כשהתמונה הראשונה נטענת
+                            if (totalSlides === 1) {
+                                setTimeout(alignTextToImage, 100);
+                            }
+                            resolve(true);
+                        };
+                        img.onerror = () => {
+                            img.remove();
+                            resolve(false);
+                        };
+                    });
+
+                    if (!ok) break;
+                }
+
+            } catch (e) { console.error(e); }
+        }
+        initProject();
+    </script>
+</body>
+</html>
