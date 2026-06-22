@@ -1,4 +1,4 @@
-/* style.css - Full Premium Aligned Portfolio Layout (v5 - Centered Images + Left Aligned Text) */
+/* style.css - Full Premium Aligned Portfolio Layout (v5 - Centered Bottom Nav, Left Aligned Text) */
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
 
@@ -223,7 +223,7 @@ header {
 }
 
 /* =========================================
-   דף פרויקט פנימי - הפרדה בין תמונה לטקסטים
+   דף פרויקט פנימי
    ========================================= */
 
 /* 1. התמונה נשארת ממורכזת באמצע! */
@@ -329,8 +329,9 @@ header {
     transform: translateY(-50%) scale(1.05);
 }
 
-.carousel-arrow.prev { left: -15px; }
-.carousel-arrow.next { right: -15px; }
+/* היפוך מיקומי החצים שיתאימו לזרימה הטבעית */
+.carousel-arrow.next { left: -15px; right: auto; }
+.carousel-arrow.prev { right: -15px; left: auto; }
 
 .carousel-dots {
     display: flex;
@@ -355,12 +356,11 @@ header {
     transform: scale(1.3);
 }
 
-/* 2. הטקסטים (כותרת, תיאור, ניווט) מיושרים לקו המילה Projects */
+/* 2. הטקסטים (כותרת, תיאור) מיושרים לקו המילה Projects */
 .project-top-text,
-.project-bottom-text,
-.project-nav-bottom {
+.project-bottom-text {
     width: 100% !important; 
-    padding-left: 5% !important; /* בדיוק כמו ה- left: 5% של ההדר */
+    padding-left: 5% !important; /* יישור לקו השמאלי של Projects */
     padding-right: 5% !important; 
     box-sizing: border-box !important;
     text-align: left !important; 
@@ -371,8 +371,7 @@ header {
 @media (min-width: 1375px) {
     .nav-wrapper { left: calc(50% - 550px) !important; }
     .project-top-text,
-    .project-bottom-text,
-    .project-nav-bottom {
+    .project-bottom-text {
         padding-left: calc(50% - 550px) !important;
         padding-right: calc(50% - 550px) !important;
     }
@@ -420,238 +419,19 @@ header {
 .project-description a { color: inherit; text-decoration: none; transition: all 0.3s ease; border-bottom: 1px solid transparent; }
 .project-description a:hover { color: var(--muted); border-bottom: 1px solid var(--muted); }
 
+/* --- ניווט פרויקטים תחתון (ממורכז!) --- */
 .project-nav-bottom {
     display: flex !important;
-    justify-content: flex-start !important; 
+    justify-content: center !important; /* מרכוז */
     align-items: center !important;
     gap: 15px !important;
-    padding-top: 30px !important;
+    padding-top: 40px !important;
     padding-bottom: 80px !important;
+    width: 100% !important;
+    direction: ltr !important;
+    margin: 0 auto !important;
 }
 
 .project-nav-bottom a {
     font-size: 12px;
     text-transform: uppercase;
-    letter-spacing: 2px;
-    color: var(--main);
-    text-decoration: none;
-    opacity: 0.6;
-    transition: all 0.3s ease;
-}
-
-.project-nav-bottom a:hover {
-    opacity: 1;
-}
-
-.nav-divider {
-    color: var(--muted);
-    font-size: 12px;
-    opacity: 0.6;
-}
-
-/* --- דף קשר (Contact Page) --- */
-.contact-content {
-    width: 80vw !important;
-    max-width: 1100px !important;
-    margin: 0 auto;
-    padding: 60px 0 100px !important;
-    text-align: left;
-    direction: ltr;
-}
-
-/* =========================================
-   NEW ABOUT PAGE LAYOUT (FIXED IMAGE SIZE)
-   ========================================= */
-
-.about-grid-container {
-    display: grid !important;
-    grid-template-columns: 1fr 300px !important; 
-    gap: 80px !important;
-    width: 80vw !important;
-    max-width: 1100px !important;
-    margin: 0 auto !important;
-    padding: 80px 0 100px !important;
-    align-items: start !important;
-    direction: ltr !important;
-    box-sizing: border-box !important;
-}
-
-.about-text-col {
-    display: flex !important;
-    flex-direction: column !important;
-    justify-content: flex-start !important;
-    text-align: left !important;
-    height: auto !important; 
-}
-
-.about-text-col p {
-    font-size: 15px !important;
-    line-height: 1.7 !important;
-    margin-top: 0 !important;
-    margin-bottom: 25px !important;
-    color: #333 !important;
-}
-
-.clients-section {
-    margin-top: 120px !important; 
-    padding-top: 0 !important;
-}
-
-.clients-section h3 {
-    font-size: 11px !important;
-    text-transform: uppercase !important;
-    letter-spacing: 2px !important;
-    color: var(--muted) !important;
-    margin-bottom: 20px !important;
-    font-weight: 500 !important;
-}
-
-.clients-list {
-    list-style: none !important;
-    padding: 0 !important;
-    margin: 0 !important;
-    display: flex !important;
-    flex-direction: column !important;
-    gap: 12px !important;
-}
-
-.clients-list li {
-    font-size: 14px !important;
-    color: #444 !important;
-    border-bottom: 1px solid #f0f0f0 !important;
-    padding-bottom: 8px !important;
-}
-
-.about-image-col {
-    width: 100% !important;
-    height: auto !important; 
-    display: block !important;
-}
-
-.about-image-col img {
-    width: 100% !important;
-    height: auto !important; 
-    display: block !important;
-}
-
-
-/* --- מובייל והתאמות רספונסיביות --- */
-@media (max-width: 1024px) {
-    .portfolio-grid { grid-template-columns: repeat(3, 1fr); }
-}
-
-@media (max-width: 900px) {
-    .about-grid-container { 
-        grid-template-columns: 1fr !important; 
-        gap: 40px !important; 
-    }
-    .about-image-col { 
-        order: -1 !important; 
-        width: 100% !important;
-        height: auto !important; 
-    }
-}
-
-@media (max-width: 768px) {
-    header { 
-        padding-top: 30px !important; 
-        min-height: auto !important; 
-        padding-bottom: 15px !important;
-        display: flex !important;
-        flex-direction: column !important;
-        align-items: center !important; 
-    }
-    
-    .nav-wrapper,
-    body .nav-wrapper,
-    body:not(:has(.portfolio-grid)) .nav-wrapper { 
-        position: relative !important; 
-        left: auto !important; 
-        right: auto !important;
-        top: auto !important; 
-        bottom: auto !important;
-        margin: 15px auto 20px auto !important; 
-        width: 100% !important; 
-        max-width: 100% !important;
-        display: flex !important; 
-        justify-content: center !important; 
-        align-items: center !important;
-        transform: none !important;
-    }
-    
-    .main-nav-links { 
-        display: flex !important;
-        justify-content: center !important;
-        align-items: center !important;
-        gap: 20px !important; 
-        width: auto !important;
-    }
-    
-    .portfolio-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
-    body.nav-open #site-wrapper { transform: translateX(var(--nav-width)); margin-left: 0; width: 100%; }
-    
-    .contact-content,
-    .about-grid-container {
-        width: 100% !important;
-        max-width: 100% !important;
-        padding-left: 5% !important;
-        padding-right: 5% !important;
-    }
-    
-    /* REVERT TO VERTICAL SCROLL ON MOBILE */
-    .carousel-container {
-        width: 100% !important;
-        max-width: 100% !important;
-        padding: 0 !important; 
-        margin: 0 !important; 
-        margin-bottom: 40px !important;
-    }
-
-    .carousel-track-wrapper {
-        overflow: visible !important;
-        height: auto !important;
-    }
-
-    .carousel-track {
-        flex-direction: column !important; 
-        transform: none !important; 
-        gap: 35px !important; 
-    }
-
-    .carousel-slide {
-        height: auto !important;
-        min-height: auto !important;
-        flex: none !important;
-        display: block !important;
-        width: 100% !important;
-    }
-
-    .carousel-slide > img,
-    .carousel-slide .gallery-figure img {
-        width: 100% !important;
-        max-width: 100% !important;
-        height: auto !important;
-        max-height: none !important; 
-        margin-bottom: 12px !important; 
-        padding-left: 5% !important;
-        padding-right: 5% !important;
-    }
-
-    .carousel-slide .gallery-figure {
-        width: 100% !important;
-        height: auto !important;
-    }
-
-    .photo-credit {
-        padding-left: 5% !important;
-    }
-
-    .carousel-arrow, .carousel-dots {
-        display: none !important;
-    }
-}
-
-@media (max-width: 480px) {
-    .portfolio-grid { grid-template-columns: 1fr; }
-    .logo { font-size: 24px; letter-spacing: 3px; }
-}
