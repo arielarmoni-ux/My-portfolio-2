@@ -1,4 +1,4 @@
-/* style.css - Full Premium Aligned Portfolio Layout (v5 - Left "Projects" Grid Alignment) */
+/* style.css - Full Premium Aligned Portfolio Layout (v5 - Centered Images, Left-Aligned Text) */
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
 
@@ -54,7 +54,7 @@ body.nav-open #site-wrapper {
 
 body.nav-open #side-nav { left: 0; }
 
-/* --- ניווט טקסטואלי עליון - יושב על קו ה-5% --- */
+/* --- ניווט טקסטואלי עליון - קבוע באותו מקום בכל הדפים ומוצמד לתחתית ההדר --- */
 .nav-wrapper { 
     position: absolute; 
     left: 5%; 
@@ -222,45 +222,24 @@ header {
     font-weight: 500; 
 }
 
-/* --- ניווט פרויקטים תחתון (Previous | Next) מיושר לגריד השמאלי --- */
-.project-nav-bottom {
-    display: flex;
-    justify-content: flex-start; /* הצמדה לשמאל במקום לאמצע */
-    align-items: center;
-    gap: 15px;
-    padding: 30px 0 80px 5%; /* ה-5% מציב את הניווט בדיוק מתחת למילה Projects */
-    width: 100%;
-    direction: ltr;
+/* =========================================
+   דף פרויקט - פיצול בין התמונה (מרכז) לטקסטים (שמאל)
+   ========================================= */
+
+/* התמונה ממורכזת לאמצע המסך */
+.carousel-container {
+    width: 80vw !important; 
+    max-width: 1100px !important; 
+    margin: 0 auto !important; 
+    padding: 0 !important;
 }
 
-.project-nav-bottom a {
-    font-size: 12px;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    color: var(--main);
-    text-decoration: none;
-    opacity: 0.6;
-    transition: all 0.3s ease;
-}
-
-.project-nav-bottom a:hover {
-    opacity: 1;
-}
-
-.nav-divider {
-    color: var(--muted);
-    font-size: 12px;
-    opacity: 0.6;
-}
-
-/* --- עיצוב משותף לכותרת, לתמונה, ולטקסט תחתון (הצמדה למילה Projects בהדר) --- */
+/* הטקסטים (כותרת עליונה ופירוט תחתון) מיושרים לשמאל, קו ה-Projects */
 .project-top-text,
-.carousel-container,
 .project-bottom-text {
-    width: 85vw !important; /* הגדלתי מעט את הרוחב כדי למלא את המסך בגלל ההצמדה לשמאל */
-    max-width: 1400px !important; 
-    margin-left: 5% !important; /* זה הסוד! מיושר בול לקו של ה-nav-wrapper */
-    margin-right: auto !important; 
+    width: auto !important; 
+    margin-left: 5% !important; /* הצמדה לציר השמאלי המרכזי של האתר */
+    margin-right: 5% !important; 
     text-align: left !important; 
     direction: ltr !important; 
     padding: 0 !important;
@@ -272,7 +251,7 @@ header {
 }
 
 .project-bottom-text {
-    margin-top: 30px !important;
+    margin-top: 40px !important;
 }
 
 #project-title {
@@ -308,344 +287,35 @@ header {
 .project-description a { color: inherit; text-decoration: none; transition: all 0.3s ease; border-bottom: 1px solid transparent; }
 .project-description a:hover { color: var(--muted); border-bottom: 1px solid var(--muted); }
 
-/* --- דף קשר (Contact Page) --- */
-.contact-content {
-    width: 80vw !important;
-    max-width: 1100px !important;
-    margin: 0 auto;
-    padding: 60px 0 100px !important;
-    text-align: left;
+/* --- ניווט פרויקטים תחתון (Previous | Next) מיושר שמאלה --- */
+.project-nav-bottom {
+    display: flex;
+    justify-content: flex-start; /* הצמדה לשמאל */
+    align-items: center;
+    gap: 15px;
+    padding: 30px 0 80px 5%; /* ה-5% מציב את הניווט בדיוק מתחת למילה Projects */
+    width: 100%;
     direction: ltr;
 }
 
-/* =========================================
-   NEW ABOUT PAGE LAYOUT (FIXED IMAGE SIZE)
-   ========================================= */
-
-.about-grid-container {
-    display: grid !important;
-    grid-template-columns: 1fr 300px !important; 
-    gap: 80px !important;
-    width: 80vw !important;
-    max-width: 1100px !important;
-    margin: 0 auto !important;
-    padding: 80px 0 100px !important;
-    align-items: start !important;
-    direction: ltr !important;
-    box-sizing: border-box !important;
-}
-
-.about-text-col {
-    display: flex !important;
-    flex-direction: column !important;
-    justify-content: flex-start !important;
-    text-align: left !important;
-    height: auto !important; 
-}
-
-.about-text-col p {
-    font-size: 15px !important;
-    line-height: 1.7 !important;
-    margin-top: 0 !important;
-    margin-bottom: 25px !important;
-    color: #333 !important;
-}
-
-.clients-section {
-    margin-top: 120px !important; 
-    padding-top: 0 !important;
-}
-
-.clients-section h3 {
-    font-size: 11px !important;
-    text-transform: uppercase !important;
-    letter-spacing: 2px !important;
-    color: var(--muted) !important;
-    margin-bottom: 20px !important;
-    font-weight: 500 !important;
-}
-
-.clients-list {
-    list-style: none !important;
-    padding: 0 !important;
-    margin: 0 !important;
-    display: flex !important;
-    flex-direction: column !important;
-    gap: 12px !important;
-}
-
-.clients-list li {
-    font-size: 14px !important;
-    color: #444 !important;
-    border-bottom: 1px solid #f0f0f0 !important;
-    padding-bottom: 8px !important;
-}
-
-.about-image-col {
-    width: 100% !important;
-    height: auto !important; 
-    display: block !important;
-}
-
-.about-image-col img {
-    width: 100% !important;
-    height: auto !important; 
-    display: block !important;
-}
-
-/* =========================================
-   PROJECT SLIDER & DYNAMIC CREDITS
-   ========================================= */
-
-.carousel-container {
-    position: relative;
-}
-
-.carousel-track-wrapper {
-    overflow: hidden;
-    width: 100%;
-    position: relative;
-}
-
-.carousel-track {
-    display: flex !important;
-    flex-direction: row !important;
-    transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1) !important;
-    width: 100% !important;
-}
-
-.carousel-slide {
-    flex: 0 0 100% !important;
-    width: 100% !important;
-    height: 55vh !important; 
-    min-height: 350px !important;
-    display: flex !important;
-    justify-content: flex-start !important; /* מצמיד את התמונה לקצה השמאלי */
-    align-items: flex-start !important; 
-    box-sizing: border-box !important;
-}
-
-.carousel-slide .gallery-figure {
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: flex-start !important; 
-    justify-content: flex-start !important; 
-    height: 100% !important;
-    width: auto !important;
-    max-width: 100% !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    direction: ltr !important;
-}
-
-.carousel-slide > img {
-    height: 100% !important;
-    width: auto !important;
-    max-width: 100% !important;
-    object-fit: contain !important;
-    display: block !important;
-    margin: 0 !important;
-}
-
-.carousel-slide .gallery-figure img {
-    height: calc(100% - 22px) !important; 
-    width: auto !important;
-    max-width: 100% !important;
-    object-fit: contain !important;
-    display: block !important;
-    margin: 0 0 8px 0 !important;
-}
-
-.photo-credit {
-    font-size: 10px !important;
-    color: var(--muted) !important;
-    text-transform: uppercase !important;
-    letter-spacing: 1.5px !important;
-    margin: 0 !important;
-    font-weight: 400 !important;
-    line-height: 1 !important;
-    text-align: left !important; 
-    width: 100% !important;
-}
-
-/* החצים של הסליידר מיושרים לקצה השמאלי וימינה */
-.carousel-arrow {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background: rgba(255, 255, 255, 0.9);
-    border: 1px solid #eee;
+.project-nav-bottom a {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
     color: var(--main);
-    font-size: 16px;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    cursor: pointer;
-    z-index: 20;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    text-decoration: none;
+    opacity: 0.6;
     transition: all 0.3s ease;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
 }
 
-.carousel-arrow:hover {
-    background: #fff;
+.project-nav-bottom a:hover {
+    opacity: 1;
+}
+
+.nav-divider {
     color: var(--muted);
-    box-shadow: 0 4px 10px rgba(0,0,0,0.12);
-    transform: translateY(-50%) scale(1.05);
+    font-size: 12px;
+    opacity: 0.6;
 }
 
-.carousel-arrow.prev { left: -15px; }
-.carousel-arrow.next { right: -15px; }
-
-.carousel-dots {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 12px;
-    margin-top: 15px !important; 
-    width: 100%;
-}
-
-.carousel-dot {
-    width: 6px;
-    height: 6px;
-    background-color: #ddd;
-    border-radius: 50%;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.carousel-dot.active {
-    background-color: var(--muted);
-    transform: scale(1.3);
-}
-
-/* --- מובייל והתאמות רספונסיביות --- */
-@media (max-width: 1024px) {
-    .portfolio-grid { grid-template-columns: repeat(3, 1fr); }
-}
-
-@media (max-width: 900px) {
-    .about-grid-container { 
-        grid-template-columns: 1fr !important; 
-        gap: 40px !important; 
-    }
-    .about-image-col { 
-        order: -1 !important; 
-        width: 100% !important;
-        height: auto !important; 
-    }
-}
-
-@media (max-width: 768px) {
-    header { 
-        padding-top: 30px !important; 
-        min-height: auto !important; 
-        padding-bottom: 15px !important;
-        display: flex !important;
-        flex-direction: column !important;
-        align-items: center !important; 
-    }
-    
-    .nav-wrapper,
-    body .nav-wrapper,
-    body:not(:has(.portfolio-grid)) .nav-wrapper { 
-        position: relative !important; 
-        left: auto !important; 
-        right: auto !important;
-        top: auto !important; 
-        bottom: auto !important;
-        margin: 15px auto 20px auto !important; 
-        width: 100% !important; 
-        max-width: 100% !important;
-        display: flex !important; 
-        justify-content: center !important; 
-        align-items: center !important;
-        transform: none !important;
-    }
-    
-    .main-nav-links { 
-        display: flex !important;
-        justify-content: center !important;
-        align-items: center !important;
-        gap: 20px !important; 
-        width: auto !important;
-    }
-    
-    .portfolio-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
-    body.nav-open #site-wrapper { transform: translateX(var(--nav-width)); margin-left: 0; width: 100%; }
-    
-    .project-top-text,
-    .project-bottom-text,
-    .contact-content,
-    .about-grid-container {
-        width: 100% !important;
-        max-width: 100% !important;
-        margin-left: 0 !important; /* איפוס המרווח השמאלי במובייל */
-        padding-left: 5% !important;
-        padding-right: 5% !important;
-    }
-    
-    .project-nav-bottom {
-        padding-left: 5% !important;
-        justify-content: flex-start !important;
-    }
-
-    /* REVERT TO VERTICAL SCROLL ON MOBILE */
-    .carousel-container {
-        padding: 0 !important; 
-        margin-left: 0 !important; /* איפוס המרווח השמאלי במובייל */
-        margin-bottom: 40px !important;
-        width: 100% !important;
-    }
-
-    .carousel-track-wrapper {
-        overflow: visible !important;
-        height: auto !important;
-    }
-
-    .carousel-track {
-        flex-direction: column !important; 
-        transform: none !important; 
-        gap: 35px !important; 
-    }
-
-    .carousel-slide {
-        height: auto !important;
-        min-height: auto !important;
-        flex: none !important;
-        display: block !important;
-        width: 100% !important;
-    }
-
-    .carousel-slide > img,
-    .carousel-slide .gallery-figure img {
-        width: 100% !important;
-        max-width: 100% !important;
-        height: auto !important;
-        max-height: none !important; 
-        margin-bottom: 12px !important; 
-        padding-left: 5% !important;
-        padding-right: 5% !important;
-    }
-
-    .carousel-slide .gallery-figure {
-        width: 100% !important;
-        height: auto !important;
-    }
-
-    .photo-credit {
-        padding-left: 5% !important;
-    }
-
-    .carousel-arrow, .carousel-dots {
-        display: none !important;
-    }
-}
-
-@media (max-width: 480px) {
-    .portfolio-grid { grid-template-columns: 1fr; }
-    .logo { font-size: 24px; letter-spacing: 3px; }
-}
+/*
