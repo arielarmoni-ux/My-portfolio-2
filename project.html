@@ -156,7 +156,6 @@
                 let currentIndex = 0;
                 let totalSlides = 0;
 
-                // עדכון: היישור הדינמי עובד עכשיו גם על הכותרת וגם על הטקסט התחתון!
                 function alignTextToImage() {
                     if (window.innerWidth <= 768) {
                         document.querySelectorAll('.project-top-text, .project-bottom-text').forEach(el => {
@@ -200,6 +199,19 @@
                     if (currentIndex < totalSlides - 1) {
                         currentIndex++;
                         updateCarousel();
+                    }
+                });
+                
+                // הוספת ניווט מקלדת המיועד אך ורק למעבר בין התמונות בסליידר
+                document.addEventListener('keydown', (e) => {
+                    if (totalSlides > 1) {
+                        if (e.key === 'ArrowLeft' && currentIndex > 0) {
+                            currentIndex--;
+                            updateCarousel();
+                        } else if (e.key === 'ArrowRight' && currentIndex < totalSlides - 1) {
+                            currentIndex++;
+                            updateCarousel();
+                        }
                     }
                 });
 
@@ -263,7 +275,6 @@
                                 addSlideToCarousel(img); 
                             }
                             
-                            // קריאה ראשונית ליישור הטקסט כשהתמונה הראשונה נטענת
                             if (totalSlides === 1) {
                                 setTimeout(alignTextToImage, 100);
                             }
