@@ -1,0 +1,649 @@
+/* style.css - Full Premium Aligned Portfolio Layout (v5 - Aligned Title and Description) */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+
+:root {
+    --bg: #fff; 
+    --main: #000; 
+    --muted: #888; 
+    --nav-width: 320px; 
+    --grid-gap: 35px;
+}
+
+* { box-sizing: border-box; }
+
+html, body { 
+    margin: 0; 
+    padding: 0; 
+    font-family: 'Inter', sans-serif; 
+    background: var(--bg); 
+    overflow-x: hidden; 
+    -webkit-font-smoothing: antialiased; 
+}
+
+/* --- מבנה האתר ותנועת הסיידבר --- */
+#site-wrapper { 
+    position: relative; 
+    width: 100%; 
+    transition: all 0.9s cubic-bezier(0.23, 1, 0.32, 1); 
+    background: var(--bg); 
+    min-height: 100vh; 
+    z-index: 1000; 
+}
+
+body.nav-open #site-wrapper { 
+    margin-left: var(--nav-width); 
+    width: calc(100% - var(--nav-width)); 
+}
+
+#side-nav { 
+    position: fixed; 
+    top: 0; 
+    left: calc(-1 * var(--nav-width)); 
+    width: var(--nav-width); 
+    height: 100vh; 
+    background: var(--bg); 
+    z-index: 3000; 
+    padding: 40px 30px; 
+    overflow-y: auto; 
+    transition: left 0.9s cubic-bezier(0.23, 1, 0.32, 1); 
+    text-align: left; 
+    border-right: 1px solid #f0f0f0; 
+    direction: ltr; 
+}
+
+body.nav-open #side-nav { left: 0; }
+
+/* --- ניווט טקסטואלי עליון --- */
+.nav-wrapper { 
+    position: absolute; 
+    left: 5%; 
+    bottom: 15px; 
+    z-index: 4000; 
+    margin: 0;
+    padding: 0;
+    line-height: 1;
+    transition: opacity 0.4s ease, visibility 0.4s ease;
+}
+
+.main-nav-links { 
+    display: flex; 
+    align-items: center; 
+    gap: 25px; 
+    direction: ltr; 
+}
+
+.nav-label { 
+    font-size: 11px; 
+    text-transform: uppercase; 
+    letter-spacing: 2px; 
+    text-decoration: none; 
+    color: var(--main); 
+    font-weight: 400; 
+    transition: 0.3s; 
+    cursor: pointer; 
+    line-height: 1;
+    display: inline-block;
+}
+
+.nav-label:hover { color: var(--muted); }
+
+body.nav-open .nav-wrapper {
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+}
+
+/* --- הגדרות סיידבר --- */
+.project-index-title { 
+    font-size: 11px; 
+    text-transform: uppercase; 
+    color: var(--muted); 
+    margin-bottom: 15px; 
+    border-top: 1px solid #eee; 
+    padding-top: 20px; 
+    letter-spacing: 2px; 
+}
+
+.project-list-nav a { 
+    font-size: 15px; 
+    text-decoration: none; 
+    color: var(--main); 
+    display: block; 
+    margin-bottom: 25px; 
+    font-weight: 400; 
+    line-height: 1.2; 
+    transition: 0.3s; 
+}
+
+.project-list-nav a:hover { color: var(--muted); transform: translateX(8px); }
+
+/* --- Header & Logo --- */
+header { 
+    position: relative; 
+    min-height: 90px; 
+    padding: 20px 5% 15px; 
+    display: flex; 
+    flex-direction: column; 
+    justify-content: center; 
+    align-items: center; 
+    border-bottom: 1px solid #f0f0f0; 
+}
+
+.logo {
+    font-size: 29px;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: #000;
+}
+
+.logo-h1 {
+    font-size: inherit;
+    letter-spacing: inherit;
+    font-weight: inherit;
+    margin: 0;
+    padding: 0;
+    color: inherit;
+}
+
+.sub-logo {
+    font-size: 11px !important; 
+    letter-spacing: 2px;
+    color: #999; 
+    text-transform: uppercase;
+    margin-top: 10px;
+    line-height: 1;
+}
+
+/* --- דף הבית (גריד פרויקטים) --- */
+.portfolio-grid { 
+    display: grid; 
+    grid-template-columns: repeat(5, 1fr); 
+    gap: var(--grid-gap); 
+    padding: 60px 5% 100px; 
+    max-width: 1800px; 
+    margin: 0 auto; 
+    min-height: 100vh;
+}
+
+.project-card { 
+    display: flex; 
+    flex-direction: column; 
+    text-decoration: none; 
+    position: relative; 
+    z-index: 1; 
+}
+
+.img-container { 
+    width: 100%; 
+    aspect-ratio: 4/3; 
+    overflow: hidden; 
+    background: #f7f7f7; 
+    position: relative;
+    transform: translateZ(0);
+}
+
+.img-container img { 
+    width: 100%; 
+    height: 100%; 
+    object-fit: cover; 
+    display: block; 
+    backface-visibility: hidden;
+}
+
+.img-container::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background-color: rgba(0, 0, 0, 0.2); 
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    pointer-events: none;
+}
+
+.project-card:hover .img-container::after { opacity: 1; }
+
+.project-info { 
+    padding: 12px 0; 
+    opacity: 0; 
+    transition: opacity 0.4s ease; 
+    text-align: left; 
+    direction: ltr; 
+}
+
+.project-card:hover .project-info { opacity: 1; }
+
+.project-title { 
+    font-size: 11px; 
+    letter-spacing: 1.2px; 
+    text-transform: uppercase; 
+    color: var(--main); 
+    font-weight: 500; 
+}
+
+/* --- ניווט פרויקטים תחתון (Previous | Next) --- */
+.project-nav-bottom {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    padding: 20px 0 80px 0;
+    width: 100%;
+    direction: ltr;
+}
+
+.project-nav-bottom a {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--main);
+    text-decoration: none;
+    opacity: 0.6;
+    transition: all 0.3s ease;
+}
+
+.project-nav-bottom a:hover {
+    opacity: 1;
+}
+
+.nav-divider {
+    color: var(--muted);
+    font-size: 12px;
+    opacity: 0.6;
+}
+
+/* --- עיצוב משותף לכותרת עליונה ולטקסט תחתון (ליישור לגריד) --- */
+.project-top-text,
+.project-bottom-text {
+    width: 80vw !important; 
+    max-width: 1100px; /* נדרס ע"י ה-JS בהתאם לרוחב התמונה */
+    margin: 0 auto !important; 
+    text-align: left !important; 
+    direction: ltr !important; 
+    padding: 0 !important;
+    transition: max-width 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.project-top-text {
+    margin-top: 50px !important;
+    margin-bottom: 30px !important;
+}
+
+.project-bottom-text {
+    margin-top: 40px !important;
+}
+
+#project-title {
+    font-size: 20px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    font-weight: 400;
+    margin: 0;
+}
+
+.project-meta { 
+    width: 100% !important;
+    padding: 0 !important; 
+    display: flex !important; 
+    flex-direction: column !important; 
+    gap: 6px !important; 
+    margin: 0 0 20px 0 !important; 
+}
+
+.meta-item .label { font-weight: 400; color: var(--muted); margin-right: 8px; }
+.meta-item .value { font-weight: 500; color: var(--main); } 
+
+.project-description { 
+    width: 100% !important;
+    padding: 0 !important; 
+    font-size: 15px; 
+    line-height: 1.6; 
+    color: #333; 
+    white-space: pre-wrap !important; 
+    margin: 0 0 15px 0 !important; 
+}
+
+.project-description a { color: inherit; text-decoration: none; transition: all 0.3s ease; border-bottom: 1px solid transparent; }
+.project-description a:hover { color: var(--muted); border-bottom: 1px solid var(--muted); }
+
+/* --- דף קשר (Contact Page) --- */
+.contact-content {
+    width: 80vw !important;
+    max-width: 1100px !important;
+    margin: 0 auto;
+    padding: 60px 0 100px !important;
+    text-align: left;
+    direction: ltr;
+}
+
+/* =========================================
+   NEW ABOUT PAGE LAYOUT (FIXED IMAGE SIZE)
+   ========================================= */
+
+.about-grid-container {
+    display: grid !important;
+    grid-template-columns: 1fr 300px !important; 
+    gap: 80px !important;
+    width: 80vw !important;
+    max-width: 1100px !important;
+    margin: 0 auto !important;
+    padding: 80px 0 100px !important;
+    align-items: start !important;
+    direction: ltr !important;
+    box-sizing: border-box !important;
+}
+
+.about-text-col {
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: flex-start !important;
+    text-align: left !important;
+    height: auto !important; 
+}
+
+.about-text-col p {
+    font-size: 15px !important;
+    line-height: 1.7 !important;
+    margin-top: 0 !important;
+    margin-bottom: 25px !important;
+    color: #333 !important;
+}
+
+.clients-section {
+    margin-top: 120px !important; 
+    padding-top: 0 !important;
+}
+
+.clients-section h3 {
+    font-size: 11px !important;
+    text-transform: uppercase !important;
+    letter-spacing: 2px !important;
+    color: var(--muted) !important;
+    margin-bottom: 20px !important;
+    font-weight: 500 !important;
+}
+
+.clients-list {
+    list-style: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 12px !important;
+}
+
+.clients-list li {
+    font-size: 14px !important;
+    color: #444 !important;
+    border-bottom: 1px solid #f0f0f0 !important;
+    padding-bottom: 8px !important;
+}
+
+.about-image-col {
+    width: 100% !important;
+    height: auto !important; 
+    display: block !important;
+}
+
+.about-image-col img {
+    width: 100% !important;
+    height: auto !important; 
+    display: block !important;
+}
+
+/* =========================================
+   PROJECT SLIDER & DYNAMIC CREDITS
+   ========================================= */
+
+.carousel-container {
+    position: relative;
+    width: 80vw !important;
+    max-width: 1100px !important;
+    margin: 0 auto 10px auto !important; 
+    padding: 0 !important; 
+    direction: ltr !important;
+    box-sizing: border-box !important;
+}
+
+.carousel-track-wrapper {
+    overflow: hidden;
+    width: 100%;
+    position: relative;
+}
+
+.carousel-track {
+    display: flex !important;
+    flex-direction: row !important;
+    transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1) !important;
+    width: 100% !important;
+}
+
+.carousel-slide {
+    flex: 0 0 100% !important;
+    width: 100% !important;
+    height: 55vh !important; 
+    min-height: 350px !important;
+    display: flex !important;
+    justify-content: center !important; 
+    align-items: flex-start !important; 
+    box-sizing: border-box !important;
+}
+
+.carousel-slide .gallery-figure {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important; 
+    justify-content: flex-start !important; 
+    height: 100% !important;
+    width: auto !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    direction: ltr !important;
+}
+
+.carousel-slide > img {
+    height: 100% !important;
+    width: auto !important;
+    max-width: 100% !important;
+    object-fit: contain !important;
+    display: block !important;
+    margin: 0 !important;
+}
+
+.carousel-slide .gallery-figure img {
+    height: calc(100% - 22px) !important; 
+    width: auto !important;
+    max-width: 100% !important;
+    object-fit: contain !important;
+    display: block !important;
+    margin: 0 0 8px 0 !important;
+}
+
+.photo-credit {
+    font-size: 10px !important;
+    color: var(--muted) !important;
+    text-transform: uppercase !important;
+    letter-spacing: 1.5px !important;
+    margin: 0 !important;
+    font-weight: 400 !important;
+    line-height: 1 !important;
+    text-align: left !important; 
+    width: 100% !important;
+}
+
+/* חצים */
+.carousel-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid #eee;
+    color: var(--main);
+    font-size: 16px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 20;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+.carousel-arrow:hover {
+    background: #fff;
+    color: var(--muted);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.12);
+    transform: translateY(-50%) scale(1.05);
+}
+
+.carousel-arrow.prev { left: -20px; }
+.carousel-arrow.next { right: -20px; }
+
+/* נקודות ניווט */
+.carousel-dots {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    margin-top: 15px !important; 
+    width: 100%;
+}
+
+.carousel-dot {
+    width: 6px;
+    height: 6px;
+    background-color: #ddd;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.carousel-dot.active {
+    background-color: var(--muted);
+    transform: scale(1.3);
+}
+
+/* --- מובייל והתאמות רספונסיביות --- */
+@media (max-width: 1024px) {
+    .portfolio-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+@media (max-width: 900px) {
+    .about-grid-container { 
+        grid-template-columns: 1fr !important; 
+        gap: 40px !important; 
+    }
+    .about-image-col { 
+        order: -1 !important; 
+        width: 100% !important;
+        height: auto !important; 
+    }
+}
+
+@media (max-width: 768px) {
+    header { 
+        padding-top: 30px !important; 
+        min-height: auto !important; 
+        padding-bottom: 15px !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important; 
+    }
+    
+    .nav-wrapper,
+    body .nav-wrapper,
+    body:not(:has(.portfolio-grid)) .nav-wrapper { 
+        position: relative !important; 
+        left: auto !important; 
+        right: auto !important;
+        top: auto !important; 
+        bottom: auto !important;
+        margin: 15px auto 20px auto !important; 
+        width: 100% !important; 
+        max-width: 100% !important;
+        display: flex !important; 
+        justify-content: center !important; 
+        align-items: center !important;
+        transform: none !important;
+    }
+    
+    .main-nav-links { 
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        gap: 20px !important; 
+        width: auto !important;
+    }
+    
+    .portfolio-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
+    body.nav-open #site-wrapper { transform: translateX(var(--nav-width)); margin-left: 0; width: 100%; }
+    
+    .project-top-text,
+    .project-bottom-text,
+    .contact-content,
+    .about-grid-container {
+        width: 100% !important;
+        max-width: 100% !important;
+        padding-left: 5% !important;
+        padding-right: 5% !important;
+    }
+    
+    .carousel-container {
+        padding: 0 !important; 
+        margin-bottom: 40px !important;
+        width: 100% !important;
+    }
+
+    .carousel-track-wrapper {
+        overflow: visible !important;
+        height: auto !important;
+    }
+
+    .carousel-track {
+        flex-direction: column !important; 
+        transform: none !important; 
+        gap: 35px !important; 
+    }
+
+    .carousel-slide {
+        height: auto !important;
+        min-height: auto !important;
+        flex: none !important;
+        display: block !important;
+        width: 100% !important;
+    }
+
+    .carousel-slide > img,
+    .carousel-slide .gallery-figure img {
+        width: 100% !important;
+        max-width: 100% !important;
+        height: auto !important;
+        max-height: none !important; 
+        margin-bottom: 12px !important; 
+        padding-left: 5% !important;
+        padding-right: 5% !important;
+    }
+
+    .carousel-slide .gallery-figure {
+        width: 100% !important;
+        height: auto !important;
+    }
+
+    .photo-credit {
+        padding-left: 5% !important;
+    }
+
+    .carousel-arrow, .carousel-dots {
+        display: none !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .portfolio-grid { grid-template-columns: 1fr; }
+    .logo { font-size: 24px; letter-spacing: 3px; }
+}
